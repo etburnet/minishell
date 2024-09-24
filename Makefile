@@ -6,7 +6,7 @@
 #    By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/09/23 16:41:01 by opdi-bia         ###   ########.fr        #
+#    Updated: 2024/09/24 16:53:28 by opdi-bia         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ CFLAGS=-Wall -Wextra -Werror
 SRC=main.c\
 	parsing.c\
 	utils_minishell.c\
+	split.c\
 
 OBJ=$(SRC:.c=.o)
 NAME=minisehll

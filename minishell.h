@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/23 17:16:34 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/24 18:34:13 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@
 # include <termios.h>
 # include <unistd.h>
 
-void	check_arg(char *s);
+int	check_arg(char *s);
 
 void	ft_exit(char *arg);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	**ft_split(char const *s, char **tab, char c, size_t len);
 void	handle_signal(int signum);
+void 	ft_error();
 #endif

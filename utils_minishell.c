@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/23 17:17:02 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:49:02 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ void	ft_exit(char *arg)
 	exit(EXIT_FAILURE);
 }
 
+void 	ft_error()
+{
+	printf("error invalid command\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 void	handle_signal(int signum)
 {
 	if (signum == SIGINT)
@@ -45,3 +53,4 @@ void	handle_signal(int signum)
 		rl_redisplay();
 	}
 }
+
