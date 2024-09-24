@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 09:22:10 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/23 16:12:23 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/24 12:56:09 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,7 @@ void			ft_free_split(char	**tab);
 void			ft_close(int fd1, int fd2);
 int				ft_free_all(char ***cmd_tab, char *error);
 char			*ft_find_cmd(char **cmd_tab);
+int				ft_create_pipe(int pipe_fd[2]);
+int				ft_wait_all(int *status, t_pipe_cmd p);
 
 #endif
