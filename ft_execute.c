@@ -6,13 +6,13 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 09:37:54 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/23 16:46:40 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/24 12:31:36 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	ft_forking(t_pipe_cmd pipe_cmd, int fdout, int fdin)
+int	ft_forking(t_pipe_cmd pipe_cmd, int fdin, int fdout)
 {
 	pid_t	pid;
 
@@ -69,7 +69,7 @@ int	ft_path(char *cmd, t_pipe_cmd pipe_cmd, int i)
 	pipe_cmd.cmd_path = ft_find_cmd(pipe_cmd.cmd_tab);
 	if (pipe_cmd.cmd_path == NULL)
 		return (ft_free_split(pipe_cmd.cmd_tab), 1);
-	ret = ft_forking(pipe_cmd, fdout, fdin);
+	ret = ft_forking(pipe_cmd, fdin, fdout);
 	close(pipe_cmd.fd_pipe[1]);
 	ft_free_split(pipe_cmd.cmd_tab);
 	free(pipe_cmd.cmd_path);
