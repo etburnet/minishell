@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/23 17:31:42 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:25:43 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	main(void)
 {
 	struct sigaction	action;
 	char				*arg;
+	t_tokenizer tok;
 
 	action.sa_handler = &handle_signal;
 	signal(SIGQUIT, SIG_IGN);
@@ -28,7 +29,8 @@ int	main(void)
 		if (*arg)
 		{
 			add_history(arg);
-			check_arg(arg);
+			init_tokenizer_state(&tok, arg);
+			check_arg(tok.source, &tok);
 			free(arg);
 		}
 	}

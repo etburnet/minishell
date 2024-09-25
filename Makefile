@@ -6,7 +6,7 @@
 #    By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/09/24 16:53:28 by opdi-bia         ###   ########.fr        #
+#    Updated: 2024/09/25 15:59:11 by opdi-bia         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC=main.c\
 	split.c\
 
 OBJ=$(SRC:.c=.o)
-NAME=minisehll
+NAME=minishell
 
 .PHONY: all clean fclean re
 

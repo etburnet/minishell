@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/25 14:16:00 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/25 17:03:33 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 typedef enum e_lexeme
 {
+    undefine,
 	string,
 	number,
 	less,
@@ -41,23 +42,24 @@ typedef struct s_token
 	e_lexeme	lexeme;
 	char		*litteral;
 	double		value;
-	int			position;
+	int		position;
 }				t_token;
 
 typedef struct	s_tokenizer
 {
 	t_token *token;
-	size_t nb_token;
-	size_t lenght;
+	int nb_token;
+	int lenght_token;
 	char *source;
-	size_t cur;
-	size_t source_lenght;
-	size_t start;
+	int cur;
+	int source_lenght;
+	int start;
 }               t_tokenizer;
 
-int				check_arg(char *s);
+int				check_arg(char *s, t_tokenizer *tok);
 void			ft_exit(char *arg);
 size_t	ft_strlen(const char *s);
+void	init_tokenizer_state(t_tokenizer *tok, char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			**ft_split(char const *s, char c);
