@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/25 17:03:33 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:58:08 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct	s_tokenizer
 	int start;
 }               t_tokenizer;
 
-int				check_arg(char *s, t_tokenizer *tok);
+void				check_arg(char *s, t_tokenizer *tok);
 void			ft_exit(char *arg);
 size_t	ft_strlen(const char *s);
 void	init_tokenizer_state(t_tokenizer *tok, char *s);
