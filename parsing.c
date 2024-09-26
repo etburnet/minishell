@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:54 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/25 18:53:41 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:31:23 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,51 @@ static size_t    ft_countword(const char *s, char c)
 {
     size_t    i;
     size_t    count;
+    int quote = 0;
 
     i = 0;
     count = 0;
     while (s[i] != '\0')
     {
-        if (s[i] != c && s[i] != '\'' && s[i] != '\"')
+        while(s[i] == ' ')
+            i++;
+        if (s[i] != c && s[i] != '\0')
         {
-            count++;
             while (s[i] != '\"' && s[i] != '\'' && s[i] != c && s[i] != '\0')
                 i++;
-            
-        }
-        else
-        {
-            i++;
             if(s[i] == '\'' && s[i] != '\0')
             {
-                count++;
                 i++;
+                quote = 1;
                 while(s[i] != '\'' && s[i] != '\0')
                     i++;
+                if(s[i] == '\'' && s[i] != '\0')
+                { 
+                    quote = 0;
+                    i++;
+                }
+                if(s[i] == '\0' && quote == 1)
+                    return(0);
             }
             if(s[i] == '\"' && s[i] != '\0')
             {
-                count++;
                 i++;
+                quote = 1;
                 while(s[i] != '\"' && s[i] != '\0')
                     i++;
+                if(s[i] == '\"' && s[i] != '\0')
+                { 
+                    quote = 0;
+                    i++;
+                }
+                if(s[i] == '\0' && quote == 1)
+                    return(0);
             }
+            while (s[i] != '\"' && s[i] != '\'' && s[i] != c && s[i] != '\0')
+                i++;
+            if(s[i] == ' ' || s[i] == '\0')
+                count++;
+            
         }
     }
     return (count);
@@ -136,11 +152,9 @@ void	init_token(t_token *token)
 {
 	token = malloc(sizeof(t_token));
 	token->lexeme = undefine;
-	// token->litteral = NULL;
 	token->value = 0;
 	token->position = 0;
 }
-
 
 int		check_arg(char *s, t_tokenizer *tok)
 {
@@ -151,87 +165,58 @@ int		check_arg(char *s, t_tokenizer *tok)
 	tok->token = malloc(sizeof(t_token) * word);
 	while (s[tok->cur] != '\0')
     {
-        if (s[tok->cur] != ' ' && s[tok->cur]!= '\'' && s[tok->cur] != '\"')
-        {
-			tok->start = tok->cur;
-            while (s[tok->cur] != ' ' && s[tok->cur] != '\0')
-			{
-				tok->cur++;
-				if(s[tok->cur] == ' ' || s[tok->cur] == '\0')
-				{
-					init_token(&tok->token[i]);
-					tok->token[i].litteral = ft_substr(s, tok->start, (tok->cur - tok->start));
-					tok->nb_token += 1;
-					tok->token[i].position = tok->nb_token;
-					i++;
-				}
-            	// if(s[tok->cur] == '\'' && s[tok->cur] != '\0')
-				// {
-				// 	tok->cur++;
-				// 	quote = 1;
-				// 	while(s[tok->cur] != '\"' && s[tok->cur] != '\0')
-                // 	{
-                //     	tok->cur++;
-				// 		if(s[tok->cur] == '\"')
-				// 		{
-                //     		tok->cur++;
-				// 			quote = 0;
-				// 		}
-				// 	}
-				// }
-				// if(quote == 1)
-				// 	ft_error();
-			} 
-        }
-        else
-        {
+        while(s[tok->cur] == ' ')
             tok->cur++;
+		tok->start = tok->cur;
+        if (s[tok->cur] != ' ' && s[tok->cur] != '\0')
+        {
+            while (s[tok->cur] != '\"' && s[tok->cur] != '\'' && s[tok->cur] != ' ' && s[tok->cur] != '\0')
+                tok->cur++;;
             if(s[tok->cur] == '\'' && s[tok->cur] != '\0')
             {
-				tok->start = tok->cur;
-                tok->cur++;
+                tok->cur++;;
+                quote = 1;
                 while(s[tok->cur] != '\'' && s[tok->cur] != '\0')
-				{
-                    tok->cur++;
-					if(s[tok->cur] == '\'')
-					{
-						while(s[tok->cur] != ' ')
-							tok->cur++;
-						init_token(&tok->token[i]);
-						tok->token[i].litteral = ft_substr(s, tok->start, (tok->cur - tok->start) + 1);
-						tok->nb_token += 1;
-						tok->token[i].position = tok->nb_token;
-						i++;
-						break;
-					}
-				}
+                    tok->cur++;;
+                if(s[tok->cur] == '\'' && s[tok->cur] != '\0')
+                { 
+                    quote = 0;
+                    tok->cur++;;
+                }
+                if(s[tok->cur] == '\0' && quote == 1)
+                    ft_error();
             }
             if(s[tok->cur] == '\"' && s[tok->cur] != '\0')
             {
-                tok->start = tok->cur;
-                tok->cur++;
+                tok->cur++;;
+                quote = 1;
                 while(s[tok->cur] != '\"' && s[tok->cur] != '\0')
-                {
-                    tok->cur++;
-					if(s[tok->cur] == '\"')
-					{
-						while(s[tok->cur] != ' ')
-							tok->cur++;
-						init_token(&tok->token[i]);
-						tok->token[i].litteral = ft_substr(s, tok->start, (tok->cur - tok->start) + 1);
-						tok->nb_token += 1;
-						tok->token[i].position = tok->nb_token;
-						i++;
-						break;
-					}
-				}
+                    tok->cur++;;
+                if(s[tok->cur] == '\"' && s[tok->cur] != '\0')
+                { 
+                    quote = 0;
+                    tok->cur++;;
+                }
+                if(s[tok->cur] == '\0' && quote == 1)
+                    ft_error();
             }
-        }
+            while (s[tok->cur] != '\"' && s[tok->cur] != '\'' && s[tok->cur] != ' ' && s[tok->cur] != '\0')
+                tok->cur++;;
+            if(s[tok->cur] == ' ' || s[tok->cur] == '\0')
+            {
+				init_token(&tok->token[i]);
+				tok->token[i].litteral = ft_substr(tok->source, tok->start, (tok->cur - tok->start));
+				tok->nb_token += 1;
+				tok->token[i].position = tok->nb_token;
+				i++;
+			}
+		}
+
     }
 	i = 0;
 	while(i < word)
 	{
-		printf("token num %d = %s\n", i, tok->token[i].litteral);
+		printf("token %d pos %d = %s\n", i, tok->token[i].position, tok->token[i].litteral);
 		i++;
 	}
 	return(0);
