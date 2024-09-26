@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   utils_tokenizing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:54 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/26 14:04:26 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:13:12 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ int     check_quote(const char *s, int i, char c)
             i++;
         }
         if(s[i] == '\0' && quote == 1)
-            return(0);
+            return(-1);
     }
     return(i);
 }
 
-static size_t    ft_countword(const char *s, int i)
+size_t    ft_countword(const char *s, int i)
 {
     size_t    count;
     
@@ -48,11 +48,11 @@ static size_t    ft_countword(const char *s, int i)
             while (s[i] != '\"' && s[i] != '\'' && s[i] != ' ' && s[i] != '\0')
                 i++;
             i = check_quote(s, i, '\"');
-            if(i == 0)
-                return(0);
+            if(i == -1)
+                return(-1);
             i = check_quote(s, i, '\'');
-            if(i == 0)
-                return(0);
+            if(i == -1)
+                return(-1);
             while (s[i] != '\"' && s[i] != '\'' && s[i] != ' ' && s[i] != '\0')
                 i++;
             if(s[i] == ' ' || s[i] == '\0')
@@ -101,64 +101,30 @@ char	*ft_strdup(const char *s)
 	news[i] = '\0';
 	return (news);
 }
-void	init_tokenizer_state(t_tokenizer *tok, char *s)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	tok->nb_token = 0;
-	tok->lenght_token = ft_countword(s, 0);
-	tok->cur = 0;
-	tok->source_lenght = (int)ft_strlen(s);
-	tok->start = 0;
-	tok->source = ft_strdup(s);
-}
-void	init_token(t_token *token)
-{
-	token = malloc(sizeof(t_token));
-	token->lexeme = undefine;
-	token->value = 0;
-	token->position = 0;
-}
-int	tokenise(t_tokenizer *tok, int i)
-{
-	init_token(&tok->token[i]);
-	tok->token[i].litteral = ft_substr(tok->source, tok->start, (tok->cur - tok->start));
-	tok->nb_token += 1;
-	tok->token[i].position = tok->nb_token;
-	i++;
-	return(i);
-}
+	char	*news;
+	size_t	size;
+	size_t	i;
 
-void		check_arg(char *s, t_tokenizer *tok)
-{
-	int i;
-	
+	size = 0;
 	i = 0;
-	tok->token = malloc(sizeof(t_token) * tok->lenght_token);
-	while (s[tok->cur] != '\0')
-    {
-        while(s[tok->cur] == ' ')
-            tok->cur++;
-		tok->start = tok->cur;
-        if (s[tok->cur] != ' ' && s[tok->cur] != '\0')
-        {
-            while (s[tok->cur] != '\"' && s[tok->cur] != '\'' && s[tok->cur] != ' ' && s[tok->cur] != '\0')
-                tok->cur++;;
-           	tok->cur = check_quote(s, tok->cur, '\'');
-			if(tok->cur == 0)
-				ft_error();
-            tok->cur = check_quote(s, tok->cur, '\"');
-			if(tok->cur == 0)
-				ft_error();
-            while (s[tok->cur] != '\"' && s[tok->cur] != '\'' && s[tok->cur] != ' ' && s[tok->cur] != '\0')
-                tok->cur++;;
-            if(s[tok->cur] == ' ' || s[tok->cur] == '\0')
-				i = tokenise(tok, i);
-		}
-    }
+	if (s == 0)
+		return (NULL);
+	while (s[size] != '\0')
+		size++;
+	if (start >= size)
+		len = 0;
+	if ((len > start + size || start + len > size) && start < size)
+		len = size - start;
+	news = malloc((len + 1) * sizeof(char));
+	if (news == NULL)
+		return (NULL);
+	while (i < len && s[start + i] != '\0' && start < size)
+	{
+		news[i] = s[start + i];
+		i++;
+	}
+	news[i] = '\0';
+	return (news);
 }
-
-// i = 0;
-// 	while(i < tok->lenght_token)
-// 	{
-// 		printf("token %d pos %d = %s\n", i, tok->token[i].position, tok->token[i].litteral);
-// 		i++;
-// 	}

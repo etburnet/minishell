@@ -6,16 +6,20 @@
 #    By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/09/25 15:59:11 by opdi-bia         ###   ########.fr        #
+#    Updated: 2024/09/26 18:17:04 by opdi-bia         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=cc -g 
 CFLAGS=-Wall -Wextra -Werror 
 SRC=main.c\
-	parsing.c\
+init.c\
+	tokenizing.c\
+	utils_tokenizing.c\
 	utils_minishell.c\
-	split.c\
+	signal.c\
+	token_identify.c\
+	
 
 OBJ=$(SRC:.c=.o)
 NAME=minishell

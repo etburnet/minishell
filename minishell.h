@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/26 13:58:08 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:52:36 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ typedef enum e_lexeme
 	greatergreater,
 	here_doc,
 	semi_colon,
-	open_par,
-	close_par,
+	exit_status,
 	pipes,
-	word,
+	infile,
+	outfile,
 	var_env,
 }				e_lexeme;
 
@@ -45,7 +45,7 @@ typedef struct s_token
 	int		position;
 }				t_token;
 
-typedef struct	s_tokenizer
+typedef struct	s_data
 {
 	t_token *token;
 	int nb_token;
@@ -54,15 +54,22 @@ typedef struct	s_tokenizer
 	int cur;
 	int source_lenght;
 	int start;
-}               t_tokenizer;
+}               t_data;
 
-void				check_arg(char *s, t_tokenizer *tok);
-void			ft_exit(char *arg);
-size_t	ft_strlen(const char *s);
-void	init_tokenizer_state(t_tokenizer *tok, char *s);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
+
+void	handle_signal(int signum);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
-char			**ft_split(char const *s, char c);
-void			handle_signal(int signum);
-void			ft_error(void);
+void	ft_exit(char *arg);
+void	init_data(t_data *tok, char *s);
+void	init_token(t_token *token);
+size_t    ft_countword(const char *s, int i);
+size_t	ft_strlen(const char *s);
+char	*ft_strdup(const char *s);
+int		search_token(char *s, t_data *data);
+int     check_quote(const char *s, int i, char c);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+void 	ft_error();
+int    identify_token(t_data *data);
+
+
 #endif
