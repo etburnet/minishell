@@ -6,46 +6,34 @@
 #    By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/09/26 12:02:09 by eburnet          ###   ########.fr        #
+#    Updated: 2024/09/24 17:31:08 by eburnet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3
+CC=cc -g 
+CFLAGS=-Wall -Wextra -Werror 
 SRC=main.c\
 	parsing.c\
 	utils_minishell.c\
-	builtins/env.c\
-	builtins/pwd.c\
-	builtins/echo.c\
-	builtins/cd.c\
-	builtins/exit.c\
-	
-OBJS = $(SRC:.c=.o)
-HEADERS = minishell.h
-LIBFT_PATH = ./libft
+
+OBJ=$(SRC:.c=.o)
+NAME=minisehll
 
 .PHONY: all clean fclean re
 
-all: $(NAME)
+all : $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT_PATH)/libft.a
-	cc $(CFLAGS) $(OBJS) -L $(LIBFT_PATH) -lft -o $(NAME) -lreadline
-
-%.o: %.c $(HEADERS)
-	$(CC) -c $(CFLAGS) $< -o $@
-
-$(LIBFT_PATH)/libft.a:
-	make -C $(LIBFT_PATH)
+%.o: %.c
+		$(CC) -c $(CFLAGS) $<
+		
+$(NAME): $(OBJ)
+		$(CC) $(OBJ) -o $(NAME) -lreadline
 
 clean:
-	rm -f $(OBJS)
-	make -C $(LIBFT_PATH) clean
+	rm -f $(OBJ) $(OBJALL)
+	rm -f *.out
 
-fclean:
-	rm -f $(OBJS)
+fclean: clean
 	rm -f $(NAME)
-	make -C $(LIBFT_PATH) fclean
 
 re: fclean all
