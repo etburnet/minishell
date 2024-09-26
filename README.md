@@ -1,2 +1,2 @@
-# Pipex (minishell)
-Pipex project with bonus for minishell.
+# minishell
+The 42 school project about creating a simple shell.

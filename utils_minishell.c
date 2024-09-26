@@ -1,37 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   utils_minishell.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 14:11:05 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/25 12:52:05 by eburnet          ###   ########.fr       */
+/*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
+/*   Updated: 2024/09/26 11:59:26 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	handle_signal(int signum)
 {
-	size_t	i;
-
-	i = 0;
-	if (n == 0)
-		return (0);
-	while (*s1 && *s1 == *s2 && i < n - 1)
+	if (signum == SIGINT)
 	{
-		s1++;
-		s2++;
-		i++;
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
-/* #include <stdio.h>
-int	main(void)
+void	free_tab(char **tab)
 {
-	char *s1 = "\200";
-	char *s2 = "\0";
-} */
+	int	i;
+
+	i = 0;
+	while (tab[i] != NULL)
+		free(tab[i++]);
+	free(tab);
+}

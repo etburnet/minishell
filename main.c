@@ -5,30 +5,46 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/05 09:16:21 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/24 12:56:30 by eburnet          ###   ########.fr       */
+/*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
+/*   Updated: 2024/09/26 13:54:58 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
-int	main(int argc, char *argv[])
+int	main(void)
 {
-	t_pipe_cmd	*pipe_cmd;
-	int			ret;
+	struct sigaction	action;
+	t_data				*data;
 
-	if (argc >= 5)
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (1);
+	action.sa_handler = &handle_signal;
+	signal(SIGQUIT, SIG_IGN);
+	sigaction(SIGINT, &action, NULL);
+	if (ft_copy_env(data) == 3)
+		return(ERR_MALLOC, ft_exit(data), 1);
+	data->input = malloc(sizeof(char *) * 3);
+	data->input[0] = "cd";
+	data->input[1] = "./libft";
+	data->input[2] = NULL;
+	//ft_print_env(data);
+	cd(data);
+	//echo(tab_test);
+	while (1)
 	{
-		pipe_cmd = malloc(sizeof(t_pipe_cmd));
-		if (!pipe_cmd)
-			return (1);
-		pipe_cmd->fd1 = -1;
-		pipe_cmd->fd2 = -1;
-		ret = ft_execute(argv, argc, *pipe_cmd);
-		ft_close(pipe_cmd->fd1, pipe_cmd->fd2);
-		free(pipe_cmd);
-		return (ret);
+		data->arg = readline("minishell$ ");
+		if (data->arg == NULL || ft_strncmp(data->arg, "exit", 5) == 0)
+			ft_exit(data);
+		if (ft_strncmp(data->arg, "pwd", 4) == 0)
+			pwd();		
+		if (*data->arg)
+		{
+			add_history(data->arg);
+			//check_arg(data->arg);
+			free(data->arg);
+		}
 	}
-	else
-		return (ft_putstr_fd("4 args Minimum", 2), 1);
+	return (0);
 }
