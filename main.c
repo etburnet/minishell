@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/24 17:53:58 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/26 13:54:58 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	main(void)
 {
 	struct sigaction	action;
 	t_data				*data;
-	char				*arg;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -24,17 +23,27 @@ int	main(void)
 	action.sa_handler = &handle_signal;
 	signal(SIGQUIT, SIG_IGN);
 	sigaction(SIGINT, &action, NULL);
-	ft_copy_env(&data);
+	if (ft_copy_env(data) == 3)
+		return(ERR_MALLOC, ft_exit(data), 1);
+	data->input = malloc(sizeof(char *) * 3);
+	data->input[0] = "cd";
+	data->input[1] = "./libft";
+	data->input[2] = NULL;
+	//ft_print_env(data);
+	cd(data);
+	//echo(tab_test);
 	while (1)
 	{
-		arg = readline("minishell$ ");
-		if (arg == NULL || ft_strncmp(arg, "exit", 5) == 0)// faire split pour "exit      "
-			ft_exit(arg);
-		if (*arg)
+		data->arg = readline("minishell$ ");
+		if (data->arg == NULL || ft_strncmp(data->arg, "exit", 5) == 0)
+			ft_exit(data);
+		if (ft_strncmp(data->arg, "pwd", 4) == 0)
+			pwd();		
+		if (*data->arg)
 		{
-			add_history(arg);
-			check_arg(arg);
-			free(arg);
+			add_history(data->arg);
+			//check_arg(data->arg);
+			free(data->arg);
 		}
 	}
 	return (0);
