@@ -1,37 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 14:11:05 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/25 12:52:05 by eburnet          ###   ########.fr       */
+/*   Created: 2024/09/25 12:34:11 by eburnet           #+#    #+#             */
+/*   Updated: 2024/09/25 12:55:46 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include "libft.h"
+#include "../minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int	pwd()
 {
-	size_t	i;
-
-	i = 0;
-	if (n == 0)
-		return (0);
-	while (*s1 && *s1 == *s2 && i < n - 1)
-	{
-		s1++;
-		s2++;
-		i++;
-	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+	char buf[PATH_MAX];
+	
+	if (getcwd(buf, PATH_MAX))
+		printf("%s\n", buf);
+	else
+		return (1);
+	return (0);
 }
-
-/* #include <stdio.h>
-int	main(void)
-{
-	char *s1 = "\200";
-	char *s2 = "\0";
-} */
