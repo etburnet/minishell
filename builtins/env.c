@@ -6,13 +6,13 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:30:50 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/26 11:02:55 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/27 17:15:06 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void ft_print_env(t_data *data)
+void	print_env(t_data *data)
 {
 	int i;
 
@@ -21,15 +21,14 @@ void ft_print_env(t_data *data)
 		printf("%s\n", data->env[i++]);
 }
 
-
-int	ft_copy_env(t_data *data)
+int	copy_env(t_data *data)
 {
 	int	tab_len;
 	int	i;
 
 	i = 0;
 	tab_len = 0;
-	while (environ[tab_len] != 0)
+	while (environ[tab_len])
 		tab_len++;
 	data->env = malloc(sizeof(char *) * (tab_len + 1));
 	if (data->env == NULL)

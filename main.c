@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/26 13:54:58 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/27 17:15:25 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,18 @@ int	main(void)
 	action.sa_handler = &handle_signal;
 	signal(SIGQUIT, SIG_IGN);
 	sigaction(SIGINT, &action, NULL);
-	if (ft_copy_env(data) == 3)
+	if (copy_env(data) == 3)
 		return(ERR_MALLOC, ft_exit(data), 1);
+	if (update_shlvl(data) == 3)
+		return (ERR_MALLOC, ft_exit(data), 1);
 	data->input = malloc(sizeof(char *) * 3);
-	data->input[0] = "cd";
-	data->input[1] = "./libft";
+	data->input[0] = "export";
+	data->input[1] = "varest=545";
 	data->input[2] = NULL;
-	//ft_print_env(data);
-	cd(data);
-	//echo(tab_test);
+	if (export(data) == 3)
+		return (ERR_MALLOC, ft_exit(data), 1);
+	// cd(data);
+	print_env(data);
 	while (1)
 	{
 		data->arg = readline("minishell$ ");

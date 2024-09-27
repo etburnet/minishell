@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/26 13:19:58 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/27 16:05:38 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,21 @@ typedef struct s_data {
 extern char		**environ;
 
 /* Builtins */
-void			ft_print_env(t_data *data);
-int				ft_copy_env(t_data *data);
+void			print_env(t_data *data);
+int				copy_env(t_data *data);
 int				echo(char **tab);
 int				cd(t_data *data);
 int				pwd();
 void			ft_exit(t_data *data);
+int				update_shlvl(t_data *data);
+int				export(t_data *data);
 
+/* Utils */
 void			free_tab(char **tab);
+int				get_this_env(char *var, char **env);
+void			put_error(char *message, char *var);
+
 void			check_arg(char *s);
-int				ft_strncmp(const char *s1, const char *s2, size_t n);
 void			handle_signal(int signum);
 
 #endif

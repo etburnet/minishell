@@ -6,7 +6,7 @@
 #    By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/09/26 12:02:09 by eburnet          ###   ########.fr        #
+#    Updated: 2024/09/27 10:42:21 by eburnet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,8 @@ SRC=main.c\
 	builtins/echo.c\
 	builtins/cd.c\
 	builtins/exit.c\
+	builtins/export.c\
+	builtins/shlvl.c\
 	
 OBJS = $(SRC:.c=.o)
 HEADERS = minishell.h
