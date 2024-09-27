@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   command_identify.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 18:15:29 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/27 19:43:17 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <errno.h>
 
 void    check_arg(t_data *data, int i)
 {
@@ -23,7 +24,7 @@ void    check_arg(t_data *data, int i)
         if((data->token[i - 1].type == command || data->token[i - 1].type == arg) && (data->token[i].type == word || data->token[i].type == string))
         {
             data->token[i].type = arg;
-            data->token[i].litteral[j] = ft_strdup(data->token[i].litteral[j]);
+            data->token[i].litteral[j] = ft_strdup(data->token[i].litteral[0]);
             data->token[i].nb_arg += 1;
             j++;
         }
@@ -40,12 +41,16 @@ void    check_command(t_data *data)
     {
         if(data->token[i].type == word || data->token[i].type == string)
         {
+            // printf("ici %d\n", access(data->token[i].litteral[0], X_OK));
+            // int err = errno;
+            // fprintf(stderr, "Erreur : %s\n", strerror(err));
             if(access(data->token[i].litteral[0], X_OK) == 0)
             {
                 data->token[i].type = command;
                 check_arg(data, i);
             }
         }
+        i++;
     }
 }
 
@@ -83,7 +88,6 @@ void    identify_command(t_data *data)
 {
     check_infile(data);
     check_outfile(data);
-    
     check_command(data);
     int i = 0;
     while(i < data->lenght_token)
