@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   token_identify.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 17:01:03 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:06:31 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int   check_nb(t_data *data, int i)
 {
     if(data->token[i].type != undefine)
         return(0);
-    if(ft_isdigit(data->token[i].litteral[0]) != 0)
+    if(ft_isdigit_edit(data->token[i].litteral[0]) != 0)
     {
         data->token[i].value = ft_atoi(data->token[i].litteral[0]);
         data->token[i].type = number;

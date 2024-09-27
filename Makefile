@@ -6,7 +6,7 @@
 #    By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/09/27 17:46:33 by eburnet          ###   ########.fr        #
+#    Updated: 2024/09/27 18:14:57 by eburnet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,14 +14,13 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3
 SRC=main.c\
-	init.c\
-	tokenizing.c\
-	utils_tokenizing.c\
+	parsing/init.c\
+	parsing/tokenizing.c\
+	parsing/utils_tokenizing.c\
 	utils_minishell.c\
 	signal.c\
-	token_identify.c\
-	exit.c\
-	command_identify.c\
+	parsing/token_identify.c\
+	parsing/command_identify.c\
 	builtins/env.c\
 	builtins/pwd.c\
 	builtins/echo.c\
@@ -48,10 +47,12 @@ $(LIBFT_PATH)/libft.a:
 	make -C $(LIBFT_PATH)
 
 clean:
-	rm -f $(OBJ) $(OBJALL)
-	rm -f *.out
+	rm -f $(OBJS)
+	make -C $(LIBFT_PATH) clean
 
 fclean: clean
+	rm -f $(OBJS)
 	rm -f $(NAME)
+	make -C $(LIBFT_PATH) fclean
 
 re: fclean all

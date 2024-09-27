@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 16:49:21 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:06:37 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	tokenise(t_data *data, int i)
 {
