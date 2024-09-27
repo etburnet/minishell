@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 14:42:01 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/27 16:49:21 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	tokenise(t_data *data, int i)
 {
 	init_token(&data->token[i]);
-	data->token[i].litteral = ft_substr(data->source, data->start, (data->cur - data->start));
+	data->token[i].litteral[0] = ft_substr(data->source, data->start, (data->cur - data->start));
 	data->nb_token += 1;
 	data->token[i].position = data->nb_token;
 	i++;

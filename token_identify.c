@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 14:45:55 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:01:03 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,50 +14,51 @@
 
 int   check_nb(t_data *data, int i)
 {
-    if(data->token[i].lexeme != undefine)
+    if(data->token[i].type != undefine)
         return(0);
-    if(ft_isdigit(data->token[i].litteral) != 0)
+    if(ft_isdigit(data->token[i].litteral[0]) != 0)
     {
-        data->token[i].value = ft_atoi(data->token[i].litteral);
-        data->token[i].lexeme = number;
+        data->token[i].value = ft_atoi(data->token[i].litteral[0]);
+        data->token[i].type = number;
     }
     return(0);
 }
 
 int    check_operator(t_data *data, int i)
 {
-    if(data->token[i].lexeme != undefine)
+    if(data->token[i].type != undefine)
         return(0);
-    if(ft_strncmp(data->token[i].litteral, "<", 2) == 0)
-        data->token[i].lexeme = less;
-    if(ft_strncmp(data->token[i].litteral, ">", 2) == 0)
-        data->token[i].lexeme = greater;
-    if(ft_strncmp(data->token[i].litteral, "<<", 3) == 0)
-        data->token[i].lexeme = here_doc;
-    if(ft_strncmp(data->token[i].litteral, ">>", 3) == 0)
-        data->token[i].lexeme = greatergreater;
-    if(ft_strncmp(data->token[i].litteral, "|", 2) == 0)
-        data->token[i].lexeme = pipes;   
-    if(ft_strncmp(data->token[i].litteral, "$?", 3) == 0)
-        data->token[i].lexeme = exit_status;  
+    if(ft_strncmp(data->token[i].litteral[0], "<", 2) == 0)
+        data->token[i].type = less;
+    if(ft_strncmp(data->token[i].litteral[0], ">", 2) == 0)
+        data->token[i].type = greater;
+    if(ft_strncmp(data->token[i].litteral[0], "<<", 3) == 0)
+        data->token[i].type = here_doc;
+    if(ft_strncmp(data->token[i].litteral[0], ">>", 3) == 0)
+        data->token[i].type = greatergreater;
+    if(ft_strncmp(data->token[i].litteral[0], "|", 2) == 0)
+        data->token[i].type = pipes;   
+    if(ft_strncmp(data->token[i].litteral[0], "$?", 3) == 0)
+        data->token[i].type = exit_status;  
     return(0);
 }
 
 int    check_var(t_data *data, int i)
 {
-    if(data->token[i].lexeme != undefine)
+    if(data->token[i].type != undefine)
         return(0);
-    if(ft_strncmp(data->token[i].litteral, "$", 1) == 0)
-        data->token[i].lexeme = var;
+    if(ft_strncmp(data->token[i].litteral[0], "$", 1) == 0)
+        data->token[i].type = var;
     return(0);
 }
 
 int     check_string(t_data *data , int i)
 {
-    if(data->token[i].lexeme != undefine)
+    if(data->token[i].type != undefine)
         return(0);
-    if(ft_strchr(data->token[i].litteral, "\'") != 0 || ft_strchr(data->token[i].litteral, "\'") != 0)
-       data->token[i].lexeme = string;
+    if(ft_strchr(data->token[i].litteral[0], '\'') != 0 || ft_strchr(data->token[i].litteral[0], '\'') != 0)
+       data->token[i].type = string;
+    return(0);
 }
 
 int    identify_token(t_data *data)
@@ -73,9 +74,9 @@ int    identify_token(t_data *data)
         check_operator(data, i);
         check_var(data, i);
         check_string(data, i);
-        if(data->token[i].lexeme == undefine)
-            data->token[i].lexeme = word;
+        if(data->token[i].type == undefine)
+            data->token[i].type = word;
         i++;
     }
-    return(0);
+	return(0);
 }

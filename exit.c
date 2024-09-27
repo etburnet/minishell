@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 13:46:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 14:44:59 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:08:43 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,18 @@
 void	free_data_token(t_data *data)
 {
 	int i;
+	int j;
 
+	j = 0;
 	i = 0;
 	while(i < data->lenght_token)
 	{
+		while(j < data->token[i].nb_arg)
+		{
+			free(data->token[i].litteral[j]);
+			j++;
+		}
 		free(data->token[i].litteral);
-		
 		i++;
 	}
 	free(data->token);
@@ -42,7 +48,7 @@ void 	ft_error()
 
 int    check_error(t_data *data, int i)
 {
-    if(ft_strncmp(data->token[i].litteral, ";",2) == 0|| ft_strncmp(data->token[i].litteral, "\\", 2) == 0)
+    if(ft_strncmp(data->token[i].litteral[0], ";",2) == 0|| ft_strncmp(data->token[i].litteral[0], "\\", 2) == 0)
         return(ft_error(), -1);
     return(0);
 }

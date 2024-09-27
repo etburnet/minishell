@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 14:45:05 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:06:55 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <termios.h>
 # include <unistd.h>
 
-typedef enum e_lexeme
+typedef enum e_type
 {
     undefine,
 	string,
@@ -36,14 +36,17 @@ typedef enum e_lexeme
 	infile,
 	outfile,
 	var,
-}				e_lexeme;
+	command,
+	arg,
+}				e_type;
 
 typedef struct s_token
 {
-	e_lexeme	lexeme;
-	char		*litteral;
+	e_type	type;
+	char		**litteral;
 	double		value;
 	int		position;
+	int		nb_arg;
 }				t_token;
 
 typedef struct	s_data
@@ -75,5 +78,9 @@ void	free_data_token(t_data *data);
 int	ft_isdigit(char *c);
 int	ft_atoi(const char *nptr);
 int    check_error(t_data *data, int i);
+void    identify_command(t_data *data);
+int	ft_strchr(const char *s, char c);
+
+
 
 #endif
