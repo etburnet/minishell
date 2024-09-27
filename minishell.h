@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/26 18:52:36 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/27 14:45:05 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef enum e_lexeme
 {
     undefine,
 	string,
+	word,
 	number,
 	less,
 	greater,
@@ -34,7 +35,7 @@ typedef enum e_lexeme
 	pipes,
 	infile,
 	outfile,
-	var_env,
+	var,
 }				e_lexeme;
 
 typedef struct s_token
@@ -70,6 +71,9 @@ int     check_quote(const char *s, int i, char c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 void 	ft_error();
 int    identify_token(t_data *data);
-
+void	free_data_token(t_data *data);
+int	ft_isdigit(char *c);
+int	ft_atoi(const char *nptr);
+int    check_error(t_data *data, int i);
 
 #endif

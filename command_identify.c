@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   command_identify.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/26 18:06:50 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 13:45:12 by opdi-bia         ###   ########.fr       */
+/*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
+/*   Updated: 2024/09/27 14:47:58 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_data(t_data *tok, char *s)
+void    check_command(t_data *data)
 {
-	tok->nb_token = 0;
-	tok->lenght_token = ft_countword(s, 0);
-	tok->cur = 0;
-	tok->source_lenght = (int)ft_strlen(s);
-	tok->start = 0;
-	tok->source = ft_strdup(s);
+    
 }
-void	init_token(t_token *token)
+void    check_outfile(t_data *data)
 {
-	token->lexeme = undefine;
-	token->value = 0;
-	token->position = 0;
-} 
+    
+}
+
+void    check_infile(t_data *data)
+{
+    
+}
+void    identify_command(t_data *data)
+{
+    check_infile();
+    check_outfile();
+    check_command(data);
+}
+

@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/26 18:13:16 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/27 14:44:06 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,50 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
 }
-
-void	ft_exit(char *arg)
+int	ft_atoi(const char *nptr)
 {
-	clear_history();
-	free(arg);
-	exit(EXIT_FAILURE);
+	int	i;
+	int	sign;
+	int	result;
+
+	i = 0;
+	sign = 1;
+	result = 0;
+	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == 32)
+		i++;
+	while (nptr[i] == '-' || nptr[i] == '+')
+	{
+		if (nptr[i] == '-')
+		{
+			sign *= -1;
+		}
+		i++;
+		if (nptr[i] == '-' || nptr[i] == '+')
+			return (0);
+	}
+	while (nptr[i] >= '0' && nptr[i] <= '9')
+	{
+		result = result * 10 + (nptr[i] - '0');
+		i++;
+	}
+	return (result * sign);
 }
 
-void 	ft_error()
+int	ft_isdigit(char *c)
 {
-	printf("error invalid command\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-}
+	int	i;
 
+	i = 0;
+	if (c[i] == '-' || c[i] == '+')
+		i++;
+	while (c[i] != '\0')
+	{
+		if (c[i] >= '0' && c[i] <= '9')
+			i++;
+		else
+			return (0);
+	}
+	return (!0);
+}
 
 

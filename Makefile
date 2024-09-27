@@ -6,7 +6,7 @@
 #    By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/09/26 18:17:04 by opdi-bia         ###   ########.fr        #
+#    Updated: 2024/09/27 14:43:32 by opdi-bia         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ init.c\
 	utils_minishell.c\
 	signal.c\
 	token_identify.c\
+	exit.c\
+	command_identify.c\
 	
 
 OBJ=$(SRC:.c=.o)

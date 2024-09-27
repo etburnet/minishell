@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/26 18:59:44 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/27 14:42:01 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,13 @@ int		search_token(char *s, t_data *data)
     {
        i = split_token(data, s, i);
     }
-	i = 0;
 	identify_token(data);
+	identify_command(data);
+	free_data_token(data);
 	return(0);
 }
+// 	return(0);
+// }
 
 // 	i = 0;
 // 	while(i < data->lenght_token)
