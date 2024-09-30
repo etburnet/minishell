@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/30 13:01:30 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/30 14:34:33 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,22 +49,22 @@ void	put_error(char *message, char *var)
 }
 
 
-int	ft_isdigit_edit(char *c)
-{
-	int	i;
+// int	ft_isdigit_edit(char *c)
+// {
+// 	int	i;
 
-	i = 0;
-	if (c[i] == '-' || c[i] == '+')
-		i++;
-	while (c[i] != '\0')
-	{
-		if (c[i] >= '0' && c[i] <= '9')
-			i++;
-		else
-			return (0);
-	}
-	return (!0);
-}
+// 	i = 0;
+// 	if (c[i] == '-' || c[i] == '+')
+// 		i++;
+// 	while (c[i] != '\0')
+// 	{
+// 		if (c[i] >= '0' && c[i] <= '9')
+// 			i++;
+// 		else
+// 			return (0);
+// 	}
+// 	return (!0);
+// }
 
 void *my_realloc(void *src, size_t size)
 {

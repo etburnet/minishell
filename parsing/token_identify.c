@@ -6,23 +6,23 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/30 11:09:53 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/30 14:34:27 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int   check_nb(t_data *data, int i)
-{
-    if(data->token[i].type != undefine)
-        return(0);
-    if(ft_isdigit_edit(data->token[i].litteral[0]) != 0)
-    {
-        data->token[i].value = ft_atoi(data->token[i].litteral[0]);
-        data->token[i].type = number;
-    }
-    return(0);
-}
+// int   check_nb(t_data *data, int i)
+// {
+//     if(data->token[i].type != undefine)
+//         return(0);
+//     if(ft_isdigit_edit(data->token[i].litteral[0]) != 0)
+//     {
+//         data->token[i].value = ft_atoi(data->token[i].litteral[0]);
+//         data->token[i].type = number;
+//     }
+//     return(0);
+// }
 
 int    check_operator(t_data *data, int i)
 {
@@ -70,7 +70,7 @@ int    identify_token(t_data *data)
     {
         if(check_error(data, i) != 0)
             return(-1);
-        check_nb(data, i);
+        // check_nb(data, i);
         check_operator(data, i);
         check_var(data, i);
         check_string(data, i);

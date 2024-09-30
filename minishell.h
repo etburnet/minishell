@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/30 13:02:46 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:34:15 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef enum e_type
 	undefine,
 	string,
 	word,
-	number,
 	less,
 	greater,
 	greatergreater,
@@ -43,6 +42,7 @@ typedef enum e_type
 	variable,
 	command,
 	arg,
+	built_in,
 }			e_type;
 
 typedef struct s_token
@@ -86,7 +86,7 @@ int			export(t_data *data);
 void		free_tab(char **tab);
 int			get_this_env(char *var, char **env);
 void		put_error(char *message, char *var);
-int			ft_isdigit_edit(char *c);
+// int			ft_isdigit_edit(char *c);
 void *my_realloc(void *src, size_t size);
 
 /* Signal */
