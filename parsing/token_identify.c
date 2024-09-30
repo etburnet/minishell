@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_identify.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 18:06:31 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/30 11:09:53 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int    check_var(t_data *data, int i)
     if(data->token[i].type != undefine)
         return(0);
     if(ft_strncmp(data->token[i].litteral[0], "$", 1) == 0)
-        data->token[i].type = var;
+        data->token[i].type = variable;
     return(0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 19:34:21 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/09/30 12:35:04 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	main(void)
 			add_history(data->arg);
 			init_data(&tok, data->arg);
 			search_token(tok.source, &tok);
-			// check_arg(data->arg);
 			free(data->arg);
 		}
 	}

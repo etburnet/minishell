@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:06:50 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 18:06:26 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/30 12:48:35 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	init_data(t_data *tok, char *s)
 }
 void	init_token(t_token *token)
 {
-	token->litteral = malloc(sizeof(char *));
+	token->size = 5;
+	token->litteral = malloc(sizeof(char *) * token->size);
 	token->type = undefine;
 	token->value = 0;
 	token->position = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 18:08:31 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/30 13:02:46 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,11 @@ typedef enum e_type
 	greater,
 	greatergreater,
 	here_doc,
-	semi_colon,
 	exit_status,
 	pipes,
 	infile,
 	outfile,
-	var,
+	variable,
 	command,
 	arg,
 }			e_type;
@@ -50,7 +49,9 @@ typedef struct s_token
 {
 	e_type	type;
 	char	**litteral;
+	char *full_path;
 	double	value;
+	int size;
 	int		position;
 	int		nb_arg;
 }			t_token;
@@ -86,6 +87,7 @@ void		free_tab(char **tab);
 int			get_this_env(char *var, char **env);
 void		put_error(char *message, char *var);
 int			ft_isdigit_edit(char *c);
+void *my_realloc(void *src, size_t size);
 
 /* Signal */
 void		handle_signal(int signum);
@@ -102,5 +104,6 @@ void		free_data_token(t_data *data);
 int			check_error(t_data *data, int i);
 void		identify_command(t_data *data);
 int	ft_strchr_edit(const char *s, char c);
+char	*ft_find_cmd(char **cmd_tab);
 
 #endif

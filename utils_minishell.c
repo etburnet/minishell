@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_minishell.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 18:11:12 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/30 13:01:30 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,14 @@ int	ft_isdigit_edit(char *c)
 	return (!0);
 }
 
+void *my_realloc(void *src, size_t size)
+{
+    void *temp;
 
+    temp = malloc(size * 2);
+    if(temp == NULL)
+        return(NULL);
+    ft_memcpy(temp, src, size);
+    free(src);
+    return(temp);
+}
