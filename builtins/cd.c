@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:01:13 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/26 16:49:13 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/30 16:10:37 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,17 @@ int	open_ch_dir(char *dir)
 	return (0);
 }
 
-int	cd(t_data *data)
+int	cd(t_data *data, char **tab)
 {
 	char	cp_pwd[PATH_MAX];
 
-	if (data->input[2] != NULL)
+	if (tab[2] != NULL)
 		return (ft_putstr_fd("Too much args\n", 2), 1);
 	else
 	{
 		if (getcwd(cp_pwd, PATH_MAX))
 		{
-			if (open_ch_dir(data->input[1]) == 0)
+			if (open_ch_dir(tab[1]) == 0)
 				edit_old_pwd(data, cp_pwd);
 			else
 				return (1);

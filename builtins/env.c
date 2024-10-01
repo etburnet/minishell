@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:30:50 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/27 17:15:06 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/09/30 17:31:50 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	copy_env(t_data *data)
 
 	i = 0;
 	tab_len = 0;
+	if (environ == NULL || environ[i] == NULL)
+		return (3);
 	while (environ[tab_len])
 		tab_len++;
 	data->env = malloc(sizeof(char *) * (tab_len + 1));

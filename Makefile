@@ -6,7 +6,7 @@
 #    By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/09/27 18:14:57 by eburnet          ###   ########.fr        #
+#    Updated: 2024/10/01 13:52:32 by eburnet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,8 @@ SRC=main.c\
 	builtins/exit.c\
 	builtins/export.c\
 	builtins/shlvl.c\
+	builtins/unset.c\
+	builtins/utils_exit.c\
 	
 OBJS = $(SRC:.c=.o)
 HEADERS = minishell.h
@@ -38,7 +40,7 @@ LIBFT_PATH = ./libft
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_PATH)/libft.a
-	cc $(CFLAGS) $(OBJS) -L $(LIBFT_PATH) -lft -o $(NAME) -lreadline
+	$(CC) $(CFLAGS) $(OBJS) -L $(LIBFT_PATH) -lft -o $(NAME) -lreadline
 
 %.o: %.c $(HEADERS)
 	$(CC) -c $(CFLAGS) $< -o $@
