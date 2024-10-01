@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/30 14:34:27 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/03 18:51:29 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,24 @@
 //     return(0);
 // }
 
+void    set_heredoc(t_data *data, int i)
+{
+    char *delimiter;
+    char *buffer;
+    
+    if(data->token[i].type == here_doc)
+    {
+        delimiter = data->token[i + 1]. litteral[0];
+        // printf("\n");
+        while(strncmp(buffer, delimiter, (strlen(delimiter) + 1)) != 0)
+        {
+		    rl_on_new_line();
+		    rl_replace_line("", 0);
+	    	buffer = readline(">");
+        }
+    }
+}
+
 int    check_operator(t_data *data, int i)
 {
     if(data->token[i].type != undefine)
@@ -33,7 +51,10 @@ int    check_operator(t_data *data, int i)
     if(ft_strncmp(data->token[i].litteral[0], ">", 2) == 0)
         data->token[i].type = greater;
     if(ft_strncmp(data->token[i].litteral[0], "<<", 3) == 0)
-        data->token[i].type = here_doc;
+    {
+            data->token[i].type = here_doc;
+            set_heredoc(data, i);
+    }
     if(ft_strncmp(data->token[i].litteral[0], ">>", 3) == 0)
         data->token[i].type = greatergreater;
     if(ft_strncmp(data->token[i].litteral[0], "|", 2) == 0)
