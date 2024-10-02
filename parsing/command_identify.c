@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/02 13:38:39 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/02 16:35:26 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void    check_arg(t_data *data, int i, e_type type)
 {
     int j;
+    int cmd;
     
     j = 1;
     i++;
@@ -22,13 +23,17 @@ void    check_arg(t_data *data, int i, e_type type)
     {
         if((data->token[i - 1].type == type || data->token[i - 1].type == arg) && (data->token[i].type == word || data->token[i].type == string))
         {
+            if(data->token[i - 1].type == type)
+                cmd = i - 1;
             data->token[i].type = arg;
-            data->token[i].nb_arg += 1;
-            if(data->token[i].nb_arg > data->token[i].size - 1)
-                data->token[i].litteral = my_realloc(data->token[i].litteral,data->token[i].size + 1);
-            data->token[i].litteral[j] = ft_strdup(data->token[i].litteral[0]);
+            data->token[cmd].nb_arg += 1;
+            if(data->token[cmd].nb_arg + 1 > data->token[cmd].size)
+            {
+                data->token[cmd].litteral = my_realloc(data->token[cmd], data->token[cmd].size);
+                data->token[cmd].size += 1;
+            }
+            data->token[cmd].litteral[j] = ft_strdup(data->token[i].litteral[0]);
             j++;
-            data->token[i].litteral[j] = NULL;
         }
         i++;
     }
@@ -135,10 +140,10 @@ void    identify_command(t_data *data)
     check_outfile(data);
     check_command(data);
     // int i = 0;
-    // while(i < data->lenght_token)
-	// {
-	// 	printf("token %d type %s = %s\n path = %s\n", data->token[i].position, gettypeName(data->token[i].type), data->token[i].litteral[0], data->token[i].full_path);
-	// 	i++;
-	// }
+    // // while(i < data->lenght_token)
+	// // {
+	// // 	printf("token %d type %s = %s\n path = %s\n", data->token[i].position, gettypeName(data->token[i].type), data->token[i].litteral[0], data->token[i].full_path);
+	// // 	i++;
+	// // }
 }
 

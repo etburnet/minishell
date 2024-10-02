@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/02 13:35:55 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/02 16:33:46 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,23 @@ void	put_error(char *message, char *var)
 // 	return (!0);
 // }
 
-void *my_realloc(void *src, size_t size)
+char **my_realloc(t_token token, size_t size)
 {
-    void *temp;
-
-    temp = malloc(size);
-    if(temp == NULL)
-        return(NULL);
-    ft_memcpy(temp, src, size);
-    free(src);
-    return(temp);
+	char **temp;
+	int i;
+	
+	i = 0;
+	temp = malloc(sizeof(char *) * (size + 2));
+	if(temp == NULL)
+		return(NULL);
+	temp[size + 1] = NULL;
+	while(token.litteral[i] != NULL)
+	{
+		temp[i] = ft_strdup(token.litteral[i]);
+		if(temp == NULL)
+			return(NULL);
+		i++;
+	}
+	free_tab(token.litteral);
+	return(temp);
 }

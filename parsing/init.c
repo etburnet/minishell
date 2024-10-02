@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:06:50 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/02 13:43:17 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/02 16:34:11 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,17 @@ void	init_data(t_data *tok, char *s)
 	tok->start = 0;
 	tok->source = ft_strdup(s);
 }
-void	init_token(t_token *token)
+int	init_token(t_token *token)
 {
-	token->size = 5;
-	token->litteral = malloc(sizeof(char *) * token->size);
-	token->litteral[token->size] = NULL;
+	token->size = 1;
+	token->litteral = malloc(sizeof(char *) * 2);
+	if(token->litteral == NULL)
+		return(ft_putstr_fd(ERR_MALLOC, 2), 3);
+	token->litteral[1] = NULL;
 	token->type = undefine;
 	token->value = 0;
 	token->position = 0;
 	token->nb_arg = 0;
 	token->full_path = NULL;
+	return(0);
 } 

@@ -6,7 +6,7 @@
 #    By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/10/02 12:59:56 by opdi-bia         ###   ########.fr        #
+#    Updated: 2024/10/02 14:44:18 by opdi-bia         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,6 @@ SRC=main.c\
 	parsing/token_identify.c\
 	parsing/command_identify.c\
 	parsing/search_cmd.c\
-	parsing/redirection.c\
 	builtins/env.c\
 	builtins/pwd.c\
 	builtins/echo.c\
@@ -30,6 +29,7 @@ SRC=main.c\
 	builtins/exit.c\
 	builtins/export.c\
 	builtins/shlvl.c\
+	redirection.c\
 	
 OBJS = $(SRC:.c=.o)
 HEADERS = minishell.h

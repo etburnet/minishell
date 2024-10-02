@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/02 13:22:28 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/02 16:30:17 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,14 @@ void		free_tab(char **tab);
 int			get_this_env(char *var, char **env);
 void		put_error(char *message, char *var);
 // int			ft_isdigit_edit(char *c);
-void *my_realloc(void *src, size_t size);
+char **my_realloc(t_token token, size_t size);
 
 /* Signal */
 void		handle_signal(int signum);
 
 /* Parsing */
 void		init_data(t_data *tok, char *s);
-void		init_token(t_token *token);
+int		init_token(t_token *token);
 size_t		ft_countword(const char *s, int i);
 int			search_token(char *s, t_data *data);
 int			check_quote(const char *s, int i, char c);

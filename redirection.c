@@ -6,11 +6,11 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 11:48:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/02 13:27:29 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/02 17:39:19 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 void	ft_close(int fd1, int fd2)
 {
@@ -23,8 +23,8 @@ void	ft_close(int fd1, int fd2)
 int	ft_execute(char *full_path, char **cmd_tab, int fdin, int fdout)
 {
 	pid_t	pid;
-
-	printf("full path = %s, cmd = %s\n", full_path, cmd_tab[0]);
+	
+	printf("%d, %d\n", fdin, fdout);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
@@ -54,6 +54,10 @@ int   open_file(t_token token, int i)
 		return(perror(token.litteral[0]), -1);
 	return(fd);
 }
+void	exec_built_in()
+{
+	printf("built_in\n");	
+}
 
 int    execution(t_data *data)
 {
@@ -61,11 +65,13 @@ int    execution(t_data *data)
 	int fdin;
 	int fdout;
 	int cmd;
+	int last;
 	int n_pipe[2];
 	pid_t	pid;
-	int *status;
+	int status;
 
 	pid = 0;
+	last = 0;
 	status = 0;
 	i = 0;
 	if (pipe(n_pipe) == -1)
@@ -74,6 +80,8 @@ int    execution(t_data *data)
 	{
 		fdin = n_pipe[0];
 		fdout = n_pipe[1];
+		// fdin = 0;
+		// fdout = 1;
 		cmd = -1;
 		while(i < data->lenght_token && data->token[i].type != pipes)
 		{
@@ -92,14 +100,25 @@ int    execution(t_data *data)
 			}   
 			i++;
 		}
+		if ( data->token[i - 1].type != pipes)
+			last = 1;
 		if(cmd != -1)
-			ft_execute(data->token[cmd].full_path, data->token[cmd].litteral, fdin, fdout);
+		{
+			if(data->token[cmd].type == command)
+			{
+				if (fdout == n_pipe[1] && last == 1)
+					fdout = STDOUT_FILENO;
+				ft_execute(data->token[cmd].full_path, data->token[cmd].litteral, fdin, fdout);	
+			}
+			if(data->token[cmd].type == built_in)
+				exec_built_in();
+		}
 		i++;
 	}
 	while (pid != -1)
 	{
-		pid = waitpid(-1, status, 0);
-		if (!WIFEXITED(*status) || WEXITSTATUS(*status) != 0)
+		pid = waitpid(-1, &status, 0);
+		if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
 			return (ft_close(n_pipe[0], n_pipe[1]), 1);
 	}
 	return(0);
