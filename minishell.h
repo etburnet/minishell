@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/30 16:34:15 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/02 13:22:28 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@
 # include <sys/types.h>
 # include <termios.h>
 # include <unistd.h>
-
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/wait.h>
 # define ERR_MALLOC "Malloc failed !"
 
 typedef enum e_type
@@ -105,5 +107,9 @@ int			check_error(t_data *data, int i);
 void		identify_command(t_data *data);
 int	ft_strchr_edit(const char *s, char c);
 char	*ft_find_cmd(char **cmd_tab);
+
+/* Exec */
+int    execution(t_data *data);
+
 
 #endif

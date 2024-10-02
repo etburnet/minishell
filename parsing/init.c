@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:06:50 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/30 15:15:06 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/02 13:43:17 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	init_token(t_token *token)
 {
 	token->size = 5;
 	token->litteral = malloc(sizeof(char *) * token->size);
+	token->litteral[token->size] = NULL;
 	token->type = undefine;
 	token->value = 0;
 	token->position = 0;

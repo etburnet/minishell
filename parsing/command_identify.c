@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/30 17:41:31 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/02 13:38:39 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ void    check_arg(t_data *data, int i, e_type type)
         {
             data->token[i].type = arg;
             data->token[i].nb_arg += 1;
-            if(data->token[i].nb_arg > data->token[i].size)
-                data->token[i].litteral = my_realloc(data->token[i].litteral,data->token[i].size);
+            if(data->token[i].nb_arg > data->token[i].size - 1)
+                data->token[i].litteral = my_realloc(data->token[i].litteral,data->token[i].size + 1);
             data->token[i].litteral[j] = ft_strdup(data->token[i].litteral[0]);
             j++;
+            data->token[i].litteral[j] = NULL;
         }
         i++;
     }
@@ -81,28 +82,28 @@ void    check_infile(t_data *data)
     }
 }
 
-const char* gettypeName(enum e_type type) 
-{
-   switch (type) 
-   {
-      case undefine: return "undefine";
-      case string: return "string";
-      case word: return "word";
-    //   case number: return "number";
-      case less: return "less";
-      case greater: return "greater";
-      case greatergreater: return "greatergreater";
-      case here_doc: return "here_doc";
-      case exit_status: return "exit_status";
-      case pipes: return "pipes";
-      case infile: return "infile";
-      case outfile: return "outfile";
-      case variable: return "variable";
-      case command: return "command";
-      case arg: return "arg";
-      case built_in: return "built_in";
-   }
-}
+// const char* gettypeName(enum e_type type) 
+// {
+//    switch (type) 
+//    {
+//       case undefine: return "undefine";
+//       case string: return "string";
+//       case word: return "word";
+//     //   case number: return "number";
+//       case less: return "less";
+//       case greater: return "greater";
+//       case greatergreater: return "greatergreater";
+//       case here_doc: return "here_doc";
+//       case exit_status: return "exit_status";
+//       case pipes: return "pipes";
+//       case infile: return "infile";
+//       case outfile: return "outfile";
+//       case variable: return "variable";
+//       case command: return "command";
+//       case arg: return "arg";
+//       case built_in: return "built_in";
+//    }
+// }
 
 void    is_built_in(t_data *data)
 {
@@ -133,20 +134,11 @@ void    identify_command(t_data *data)
     check_infile(data);
     check_outfile(data);
     check_command(data);
-    int i = 0;
-    while(i < data->lenght_token)
-	{
-		printf("token %d type %s = %s\n path = %s\n", data->token[i].position, gettypeName(data->token[i].type), data->token[i].litteral[0], data->token[i].full_path);
-		i++;
-	}
+    // int i = 0;
+    // while(i < data->lenght_token)
+	// {
+	// 	printf("token %d type %s = %s\n path = %s\n", data->token[i].position, gettypeName(data->token[i].type), data->token[i].litteral[0], data->token[i].full_path);
+	// 	i++;
+	// }
 }
 
-
-
-
-//  int i = 0;
-//     while(i < data->lenght_token)
-// 	{
-// 		printf("token %d type %s = %s\n path = %s\n", data->token[i].position, gettypeName(data->token[i].type), data->token[i].litteral[0], data->token[i].full_path);
-// 		i++;
-// 	}

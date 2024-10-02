@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 18:06:37 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/02 12:54:02 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int		search_token(char *s, t_data *data)
     }
 	identify_token(data);
 	identify_command(data);
+	execution(data);
 	free_data_token(data);
 	return(0);
 }

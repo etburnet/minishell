@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/30 16:51:04 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/02 12:53:43 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(void)
 {
 	struct sigaction	action;
 	t_data				*data;
-	t_data				tok;
+	// t_data				tok;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -44,8 +44,9 @@ int	main(void)
 		if (*data->arg)
 		{
 			add_history(data->arg);
-			init_data(&tok, data->arg);
-			search_token(tok.source, &tok);
+			init_data(data, data->arg);
+			search_token(data->source, data);
+			// execution(&data);
 			free(data->arg);
 		}
 	}

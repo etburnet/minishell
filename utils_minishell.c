@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/30 14:34:33 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/02 13:35:55 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void *my_realloc(void *src, size_t size)
 {
     void *temp;
 
-    temp = malloc(size * 2);
+    temp = malloc(size);
     if(temp == NULL)
         return(NULL);
     ft_memcpy(temp, src, size);
