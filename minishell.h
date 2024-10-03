@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/02 16:30:17 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/03 18:54:10 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,14 @@ extern char	**environ;
 void		print_env(t_data *data);
 int			copy_env(t_data *data);
 int			echo(char **tab);
-int			cd(t_data *data);
+int			cd(t_data *data, char **tab);
 int			pwd(void);
-void		ft_exit(t_data *data);
+void		ft_exit(t_data *data, char **tab, int n);
 int			update_shlvl(t_data *data);
-int			export(t_data *data);
-
+int			export(t_data *data, char **tab);
+int			unset(t_data *data, char **tab);
+void		ft_err_exit(char *err_msg, int n);
+long int	ft_atol(const char *nptr);
 /* Utils */
 void		free_tab(char **tab);
 int			get_this_env(char *var, char **env);
@@ -100,7 +102,6 @@ int		init_token(t_token *token);
 size_t		ft_countword(const char *s, int i);
 int			search_token(char *s, t_data *data);
 int			check_quote(const char *s, int i, char c);
-void		ft_error(void);
 int			identify_token(t_data *data);
 void		free_data_token(t_data *data);
 int			check_error(t_data *data, int i);
