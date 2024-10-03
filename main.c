@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/03 11:43:05 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/03 11:49:36 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(void)
 	{
 		data->arg = readline("minishell$ ");
 		if (data->arg == NULL)
-			ft_exit(data);
+			ft_exit(data, NULL, 1);
 		if (*data->arg)
 		{
 			add_history(data->arg);

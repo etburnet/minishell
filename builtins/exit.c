@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:59:33 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/01 13:51:10 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/03 14:28:11 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ void	ft_exit(t_data *data, char **tab, int n)
 	clear_history();
 	ft_clean(data);
 	// printf("%d\n", ft_check_str(tab[1]));
-	if ((tab == NULL && n == 0) || (tab[0] != NULL && tab[1] == NULL))
+	if ((tab == NULL && n == 0))
+		exit(0);
+	else if (tab != NULL && tab[0] != NULL && tab[1] == NULL)
 		exit(0);
 	else if (tab != NULL)
 	{
