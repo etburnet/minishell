@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/03 18:52:42 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/03 19:03:25 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,8 @@ int	main(void)
 	while (1)
 	{
 		data->arg = readline("minishell$ ");
-		if (data->arg == NULL || ft_strncmp(data->arg, "exit", 5) == 0)
-			ft_exit(data, NULL, 0);
-		if (ft_strncmp(data->arg, "pwd", 4) == 0)
-			pwd();
-		if (ft_strncmp(data->arg, "env", 4) == 0)
-			print_env(data);
+		if (data->arg == NULL)
+			ft_exit(data, NULL, 1);
 		if (*data->arg)
 		{
 			add_history(data->arg);
