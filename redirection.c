@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/02 11:48:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/03 19:03:54 by opdi-bia         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/10/03 19:05:39 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -100,6 +101,7 @@ int	ft_execute(char *full_path, char **cmd_tab, int fdin, int fdout)
 	return (0);
 }
 
+
 int	execution(t_data *data)
 {
 	int		i;
@@ -111,12 +113,17 @@ int	execution(t_data *data)
 	int		n_pipe[2];
 	pid_t	pid;
 	int		status;
+	struct sigaction	action;
+
 
 	pid = 0;
 	last = 0;
 	
 	status = 0;
 	i = 0;
+	action.sa_handler = &handle_signal;
+	signal(SIGQUIT, SIG_IGN);
+	sigaction(SIGINT, &action, NULL);
 	if (pipe(n_pipe) == -1)
 		return (perror("pipe"), 1);
 	while (i <= data->lenght_token)
