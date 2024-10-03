@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/02 12:53:43 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/03 11:43:05 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,13 @@ int	main(void)
 	signal(SIGQUIT, SIG_IGN);
 	sigaction(SIGINT, &action, NULL);
 	if (copy_env(data) == 3)
-		return (ERR_MALLOC, ft_exit(data), 1);
+		ft_exit(data, NULL, 3);
 	if (update_shlvl(data) == 3)
-		return (ERR_MALLOC, ft_exit(data), 1);
-	data->input = malloc(sizeof(char *) * 3);
-	data->input[0] = "export";
-	data->input[1] = "varest=545";
-	data->input[2] = NULL;
-	if (export(data) == 3)
-		return (ERR_MALLOC, ft_exit(data), 1);
-	// cd(data);
-	//print_env(data);
+		ft_exit(data, NULL, 3);
+	char *tab[2];
+	tab[0] = "export";
+	tab[1] = "894894";
+	//ft_exit(data, tab, 0);
 	while (1)
 	{
 		data->arg = readline("minishell$ ");
