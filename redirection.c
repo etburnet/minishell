@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 11:48:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/02 17:39:19 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/03 11:31:41 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int    execution(t_data *data)
 			{
 				if (fdout == n_pipe[1] && last == 1)
 					fdout = STDOUT_FILENO;
+				else if (fdin == n_pipe[0] && )
 				ft_execute(data->token[cmd].full_path, data->token[cmd].litteral, fdin, fdout);	
 			}
 			if(data->token[cmd].type == built_in)
