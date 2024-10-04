@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 11:48:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/04 15:06:11 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/04 17:28:37 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,25 +84,27 @@ int	ft_execute(char *full_path, char **cmd_tab, int fdin, int fdout)
 {
 	pid_t	pid;
 
-	// printf("%d, %d\n", fdin, fdout);
+	printf("fdin %d, fdout %d\n", fdin, fdout);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
 	else if (pid == 0)
 	{
 		if (dup2(fdin, STDIN_FILENO) == -1 || dup2(fdout, STDOUT_FILENO) == -1)
-			return (perror("dup2"), 1);
+			return (perror("OUT dup2"), 1);
 		ft_close(fdin, fdout);
 		execve(full_path, cmd_tab, NULL);
 		return (1);
 	}
-	ft_close(fdin, fdout);
+/* 	if ()
+		ft_close(fdin, fdout); */
 	return (0);
 }
 
 int	execution(t_data *data)
 {
 	int		i;
+	int		j;
 	int		fdin;
 	int		fdout;
 	int		cmd;
@@ -117,16 +119,22 @@ int	execution(t_data *data)
 	
 	status = 0;
 	i = 0;
+	j = 0;
 	if (pipe(n_pipe) == -1)
 		return (perror("pipe"), 1);
-	while (i <= data->lenght_token)
+	while (i < data->lenght_token)
 	{
 		fdin = n_pipe[0];
 		fdout = n_pipe[1];
+		printf("----pipe0 %d, pipe1 %d | i %i, len %d ----\n", fdin, fdout, i, data->lenght_token);
 		cmd = -1;
 		first = 0;
 		if (i == 0)
 			first = 1;
+		while (j < data->lenght_token  && data->token[j].type != pipes)
+			j++;
+		if (data->token[j].type != pipes && i == 0)
+			last = 1;
 		while (i < data->lenght_token && data->token[i].type != pipes)
 		{
 			if (data->token[i].type == command
@@ -145,8 +153,9 @@ int	execution(t_data *data)
 			}
 			i++;
 		}
-		if (data->token[i - 1].type != pipes)
+		if (i == data->lenght_token)
 			last = 1;
+		//printf("first %d, last %d\n", first, last);
 		if (cmd != -1)
 		{
 			if (fdout == n_pipe[1] && last == 1)
@@ -159,8 +168,9 @@ int	execution(t_data *data)
 			else if (data->token[cmd].type == built_in)
 			{
 				if(strncmp(data->token[cmd].litteral[0], "exit", 5) == 0 && last == 1 && first == 1)
-					ft_exit(data, data->token[cmd].litteral, 0);
-				exec_built_in(data, data->token[cmd].litteral, fdin, fdout);	
+					(ft_close(n_pipe[0], n_pipe[1]),ft_exit(data, data->token[cmd].litteral, 0));
+				
+				exec_built_in(data, data->token[cmd].litteral, fdin, fdout);
 			}	
 		}
 		i++;
