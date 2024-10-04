@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/03 19:05:39 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/04 14:15:35 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,27 @@ int	open_file(t_token token, int i)
 
 int which_builtin(t_data *data, char **cmd_tab)
 {
-	int i;
+	int ret;
 	
-	i = 0;
+	ret = 0;
 	if (strncmp(cmd_tab[0], "echo", 5) == 0)
-		echo(cmd_tab);
+		ret = echo(cmd_tab);
 	else if(strncmp(cmd_tab[0], "cd", 3) == 0)
-		cd(data, cmd_tab);
+		ret =cd(data, cmd_tab);
 	else if(strncmp(cmd_tab[0], "pwd", 4) == 0)
-		pwd();
+		ret = pwd();
 	else if(strncmp(cmd_tab[0], "export", 7) == 0)
-		export(data, cmd_tab);
+		ret = export(data, cmd_tab);
 	else if(strncmp(cmd_tab[0], "unset", 6) == 0)
-		unset(data, cmd_tab);
+		ret = unset(data, cmd_tab);
 	else if(strncmp(cmd_tab[0], "env", 4) == 0)
-		print_env(data);
+		ret = print_env(data);
 	else if(strncmp(cmd_tab[0], "exit", 5) == 0)
 		ft_exit(data, cmd_tab, 0);
+		// ret = ft_exit(data, cmd_tab, 0);
 	else
 		return (put_error("This is not a builtin", cmd_tab[0]), 1);	
-	return (0);
+	return (ret);
 }
 
 int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
@@ -64,9 +65,9 @@ int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
 	pid_t	pid;
 	int		ret;
 
-	// printf("%d, %d\n", fdin, fdout);
 	pid = fork();
 	ret = 0;
+	// printf("pid = %d\n", pid);
 	if (pid == -1)
 		return (perror("fork"), 1);
 	else if (pid == 0)
@@ -85,7 +86,8 @@ int	ft_execute(char *full_path, char **cmd_tab, int fdin, int fdout)
 {
 	pid_t	pid;
 
-	// printf("%d, %d\n", fdin, fdout);
+	if(full_path == NULL)
+		return(put_error("error invalid command", NULL), -1);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
@@ -121,6 +123,7 @@ int	execution(t_data *data)
 	
 	status = 0;
 	i = 0;
+	memset(&action, 0, sizeof(action));
 	action.sa_handler = &handle_signal;
 	signal(SIGQUIT, SIG_IGN);
 	sigaction(SIGINT, &action, NULL);
@@ -161,7 +164,6 @@ int	execution(t_data *data)
 			if (fdin == n_pipe[0] && first == 1)
 				fdin = STDIN_FILENO;
 			if (data->token[cmd].type == command)
-				else if (fdin == n_pipe[0] && )
 				ft_execute(data->token[cmd].full_path,
 					data->token[cmd].litteral, fdin, fdout);
 			else if (data->token[cmd].type == built_in)
@@ -175,7 +177,20 @@ int	execution(t_data *data)
 	{
 		pid = waitpid(-1, &status, 0);
 		if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
+		{
+			printf("erreur wifexited\n");
 			return (ft_close(n_pipe[0], n_pipe[1]), 1);
+		}
 	}
+	// waitpid(-1, &status, 0);
+	// printf("%d\n", status);
+	// if (WIFEXITED(status))
+	// 	printf("fils a termine correctement\n");
+	// if (WIFSIGNALED(status))
+	// {
+	// 	printf("fils a ete interompu\n");
+	// 	if (WTERMSIG(status) == SIGINT)
+	// 		printf("fils a recu signal ctrl_c\n");	
+	// }	
 	return (ft_close(n_pipe[0], n_pipe[1]), 0);
 }

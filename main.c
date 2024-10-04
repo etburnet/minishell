@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/03 19:05:13 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:24:04 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	main(void)
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
+	memset(&action, 0, sizeof(action));
 	action.sa_handler = &handle_signal;
 	signal(SIGQUIT, SIG_IGN);
 	sigaction(SIGINT, &action, NULL);

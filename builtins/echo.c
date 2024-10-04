@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:14:53 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/30 17:31:56 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/04 14:07:13 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ int	echo(char **tab)
 	last = 1;
 	if (!check_n(tab[1]))
 		last = 0;
-	if (tab[2] == NULL)
-		return (printf("\n"), 0);
+	// if (tab[2] == NULL)
+	// 	return (printf("ici\n"), 0);
 	while (tab[i] != NULL && !check_n(tab[i]))
 		i++;
 	while (tab[i] != NULL)

@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:30:50 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/30 17:31:50 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/04 12:52:01 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_env(t_data *data)
+int		print_env(t_data *data)
 {
 	int i;
 
 	i = 0;
 	while (data->env[i])
 		printf("%s\n", data->env[i++]);
+	return(0);
 }
 
 int	copy_env(t_data *data)
