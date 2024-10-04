@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:49 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/01 13:52:55 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/04 13:44:50 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,16 @@ void	free_data_token(t_data *data)
 	free(data->source);
 }
 
-void	ft_err_exit(char *err_msg, int n)
+int	ft_err_exit(t_data *data, char *err_msg, int n)
 {
 	put_error(err_msg, NULL);
-	exit(n);
+	if (n == 2)
+	{
+		clear_history();
+		ft_clean(data);
+		exit(n);
+	}
+	return (n);
 }
 
 int	check_error(t_data *data, int i)

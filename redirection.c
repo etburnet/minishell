@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 11:48:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/03 15:18:41 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/04 15:06:11 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int which_builtin(t_data *data, char **cmd_tab)
 	else if(strncmp(cmd_tab[0], "exit", 5) == 0)
 		ft_exit(data, cmd_tab, 0);
 	else
-		return (put_error("This is not a builtin", cmd_tab[0]), 1);	
+		return (put_error("This is not a builtin: ", cmd_tab[0]), 1);	
 	return (0);
 }
 
@@ -157,7 +157,11 @@ int	execution(t_data *data)
 				ft_execute(data->token[cmd].full_path,
 					data->token[cmd].litteral, fdin, fdout);
 			else if (data->token[cmd].type == built_in)
-				exec_built_in(data, data->token[cmd].litteral, fdin, fdout);
+			{
+				if(strncmp(data->token[cmd].litteral[0], "exit", 5) == 0 && last == 1 && first == 1)
+					ft_exit(data, data->token[cmd].litteral, 0);
+				exec_built_in(data, data->token[cmd].litteral, fdin, fdout);	
+			}	
 		}
 		i++;
 	}

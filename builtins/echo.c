@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:14:53 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/30 17:31:56 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/04 11:19:41 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	check_n(char *str)
 
 	i = 0;
 	len = ft_strlen(str);
-	if (str[i] == '-')
+	if (str[i] && str[i] == '-')
 	{
 		i++;
-		while (str[i] == 'n')
+		while (str[i] && str[i] == 'n')
 			i++;
 		if (i == len)
 			return (0);
@@ -39,14 +39,18 @@ int	echo(char **tab)
 
 	i = 1;
 	last = 1;
-	if (!check_n(tab[1]))
-		last = 0;
-	if (tab[2] == NULL)
+	if (tab[1] == NULL)
 		return (printf("\n"), 0);
-	while (tab[i] != NULL && !check_n(tab[i]))
+	if (check_n(tab[1]) == 0)
+		last = 0;
+	while (tab[i] != NULL && check_n(tab[i]) == 0)
 		i++;
 	while (tab[i] != NULL)
+	{
 		printf("%s", tab[i++]);
+		if (tab[i] != NULL)
+			printf(" ");
+	}
 	if (last == 1)
 		printf("\n");
 	return (0);	
