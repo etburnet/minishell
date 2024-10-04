@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/04 15:28:44 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/04 16:51:22 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef enum e_type
 	greater,
 	greatergreater,
 	here_doc,
+	delimiter,
 	exit_status,
 	pipes,
 	infile,
@@ -57,6 +58,7 @@ typedef struct s_token
 	char *full_path;
 	double	value;
 	int size;
+	int fd;
 	int		position;
 	int		nb_arg;
 }			t_token;
@@ -115,6 +117,7 @@ char	*ft_find_cmd(char **cmd_tab);
 
 /* Exec */
 int    execution(t_data *data);
+int	open_file(t_token token, int i);
 
 
 #endif

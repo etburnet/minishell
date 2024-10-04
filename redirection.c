@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/04 15:32:27 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/04 17:39:36 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ int	open_file(t_token token, int i)
 		fd = open(token.litteral[0], O_RDONLY);
 	else if (i == 1)
 		fd = open(token.litteral[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if(i == 3)
+	{
+		fd = open("testheredoc.txt",  O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd < 0)
+			return (perror("testheredoc.txt"), -1);
+	}
 	if (fd < 0)
 		return (perror(token.litteral[0]), -1);
 	return (fd);
@@ -86,8 +92,10 @@ int	ft_execute(char *full_path, char **cmd_tab, int fdin, int fdout)
 {
 	pid_t	pid;
 
+	
 	if(full_path == NULL)
 		return(put_error("error invalid command", NULL), -1);
+	// printf("%s, %s\n", full_path, cmd_tab[0]);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
@@ -139,6 +147,10 @@ int	execution(t_data *data)
 				fdin = open_file(data->token[i], 0);
 			else if (data->token[i].type == outfile)
 				fdout = open_file(data->token[i], 1);
+			else if(data->token[i].type == here_doc)
+			{
+				fdin = data->token[i].fd;
+			}
 			if (fdin == -1 || fdout == -1)
 			{
 				while (i < data->lenght_token && data->token[i].type != pipes)
@@ -179,15 +191,6 @@ int	execution(t_data *data)
 			return (ft_close(n_pipe[0], n_pipe[1]), 1);
 		}
 	}
-	// waitpid(-1, &status, 0);
-	// printf("%d\n", status);
-	// if (WIFEXITED(status))
-	// 	printf("fils a termine correctement\n");
-	// if (WIFSIGNALED(status))
-	// {
-	// 	printf("fils a ete interompu\n");
-	// 	if (WTERMSIG(status) == SIGINT)
-	// 		printf("fils a recu signal ctrl_c\n");	
-	// }	
+	
 	return (ft_close(n_pipe[0], n_pipe[1]), 0);
 }

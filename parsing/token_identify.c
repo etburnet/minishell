@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/03 19:05:47 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/04 16:53:12 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,23 @@
 
 void    set_heredoc(t_data *data, int i)
 {
-    char *delimiter;
+    char *tmp;
     char *buffer;
+    int fd;
+   
     
     if(data->token[i].type == here_doc)
     {
-        delimiter = data->token[i + 1]. litteral[0];
-        // printf("\n");
-        while(strncmp(buffer, delimiter, (strlen(delimiter) + 1)) != 0)
+        fd = open_file(data->token[i], 3);
+        printf("fd = %i\n", fd);
+        data->token[i + 1].type = delimiter;
+        tmp = strdup(data->token[i + 1]. litteral[0]);
+        while(strncmp(buffer, tmp, (strlen(tmp) + 1)) != 0)
         {
-		    rl_on_new_line();
-		    rl_replace_line("", 0);
-	    	buffer = readline(">");
+            buffer = readline(">");
+		    write(fd, buffer, ft_strlen(buffer));
         }
+        data->token[i].fd = fd;
     }
 }
 
