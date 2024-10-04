@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:59:33 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/03 14:28:11 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/04 15:24:15 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 
 void	ft_clean(t_data *data)
 {
@@ -19,8 +20,6 @@ void	ft_clean(t_data *data)
 		free(data->arg);
 	if (data->env != NULL)
 		free_tab(data->env);
-	/* 	if (data->input != NULL)
-			free_tab(data->input); */
 }
 
 int	ft_check_str(char *str)
@@ -68,27 +67,27 @@ int	ft_long_check(char *str)
 	return (0);
 }
 
-void	ft_exit(t_data *data, char **tab, int n)
+int	ft_exit(t_data *data, char **tab, int n)
 {
-	clear_history();
-	ft_clean(data);
-	// printf("%d\n", ft_check_str(tab[1]));
 	if ((tab == NULL && n == 0))
-		exit(0);
+		n = 0;
 	else if (tab != NULL && tab[0] != NULL && tab[1] == NULL)
-		exit(0);
+		n = 0;
 	else if (tab != NULL)
 	{
 		if (tab[2] != NULL && ft_check_str(tab[1]) == 0)
-			ft_err_exit("too many arguments", 1);
+			return (ft_err_exit(data, "too many arguments", 1));
 		else if (tab[2] != NULL && ft_check_str(tab[1]) == 1)
-			ft_err_exit("numeric argument required", 2);
+			return (ft_err_exit(data, "numeric argument required", 2));
 		else if (tab[2] == NULL && ft_check_str(tab[1]) == 1)
-			ft_err_exit("numeric argument required", 2);
+			return (ft_err_exit(data, "numeric argument required", 2));
 		else if (tab[2] == NULL && ft_long_check(tab[1]) == 1)
-			ft_err_exit("numeric argument required", 2);
+			return (ft_err_exit(data, "numeric argument required", 2));
 		else
-			exit(ft_atol(tab[1]) % 256);
+			n = ft_atol(tab[1]) % 256;
 	}
+	clear_history();
+	ft_clean(data);
 	exit(n);
+	return (1);
 }

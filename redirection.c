@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/04 14:15:35 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/04 15:32:27 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int which_builtin(t_data *data, char **cmd_tab)
 		ft_exit(data, cmd_tab, 0);
 		// ret = ft_exit(data, cmd_tab, 0);
 	else
-		return (put_error("This is not a builtin", cmd_tab[0]), 1);	
+		return (put_error("This is not a builtin:", cmd_tab[0]), 1);	
 	return (ret);
 }
 
@@ -115,18 +115,11 @@ int	execution(t_data *data)
 	int		n_pipe[2];
 	pid_t	pid;
 	int		status;
-	struct sigaction	action;
-
 
 	pid = 0;
 	last = 0;
-	
 	status = 0;
 	i = 0;
-	memset(&action, 0, sizeof(action));
-	action.sa_handler = &handle_signal;
-	signal(SIGQUIT, SIG_IGN);
-	sigaction(SIGINT, &action, NULL);
 	if (pipe(n_pipe) == -1)
 		return (perror("pipe"), 1);
 	while (i <= data->lenght_token)
@@ -167,7 +160,11 @@ int	execution(t_data *data)
 				ft_execute(data->token[cmd].full_path,
 					data->token[cmd].litteral, fdin, fdout);
 			else if (data->token[cmd].type == built_in)
-				exec_built_in(data, data->token[cmd].litteral, fdin, fdout);
+			{
+				if(strncmp(data->token[cmd].litteral[0], "exit", 5) == 0 && last == 1 && first == 1)
+					ft_exit(data, data->token[cmd].litteral, 0);
+				exec_built_in(data, data->token[cmd].litteral, fdin, fdout);	
+			}	
 		}
 		i++;
 	}
