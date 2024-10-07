@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/03 11:47:26 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/07 17:31:32 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ int		split_token(t_data *data, char *s, int i)
 		data->cur = check_quote(s, data->cur, '\'');
 		if(data->cur == -1)
 			return(put_error("error invalid command", NULL), -1);
+			return(put_error("error invalid command", NULL), -1);
 		data->cur = check_quote(s, data->cur, '\"');
 		if(data->cur == -1)
+			return(put_error("error invalid command", NULL), -1);
 			return(put_error("error invalid command", NULL), -1);
 		while (s[data->cur] != '\"' && s[data->cur] != '\'' && s[data->cur] != ' ' && s[data->cur] != '\0')
 			data->cur++;;

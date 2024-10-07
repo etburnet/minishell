@@ -6,9 +6,10 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 11:48:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 17:14:06 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/07 17:35:27 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -29,6 +30,12 @@ int	open_file(t_token token, int i)
 		fd = open(token.litteral[0], O_RDONLY);
 	else if (i == 1)
 		fd = open(token.litteral[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if(i == 3)
+	{
+		fd = open("testheredoc.txt",  O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd < 0)
+			return (perror("testheredoc.txt"), -1);
+	}
 	if (fd < 0)
 		return (perror(token.litteral[0]), -1);
 	return (fd);
@@ -80,6 +87,7 @@ int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
 	ft_close(fdin, fdout);
 	return (ret);
 }
+
 
 int	ft_execute(char *full_path, char **cmd_tab, int fdin, int fdout)
 {

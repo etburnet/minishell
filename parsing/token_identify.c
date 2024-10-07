@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/30 14:34:27 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/04 16:53:12 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,28 @@
 //     return(0);
 // }
 
+void    set_heredoc(t_data *data, int i)
+{
+    char *tmp;
+    char *buffer;
+    int fd;
+   
+    
+    if(data->token[i].type == here_doc)
+    {
+        fd = open_file(data->token[i], 3);
+        printf("fd = %i\n", fd);
+        data->token[i + 1].type = delimiter;
+        tmp = strdup(data->token[i + 1]. litteral[0]);
+        while(strncmp(buffer, tmp, (strlen(tmp) + 1)) != 0)
+        {
+            buffer = readline(">");
+		    write(fd, buffer, ft_strlen(buffer));
+        }
+        data->token[i].fd = fd;
+    }
+}
+
 int    check_operator(t_data *data, int i)
 {
     if(data->token[i].type != undefine)
@@ -33,7 +55,10 @@ int    check_operator(t_data *data, int i)
     if(ft_strncmp(data->token[i].litteral[0], ">", 2) == 0)
         data->token[i].type = greater;
     if(ft_strncmp(data->token[i].litteral[0], "<<", 3) == 0)
-        data->token[i].type = here_doc;
+    {
+            data->token[i].type = here_doc;
+            set_heredoc(data, i);
+    }
     if(ft_strncmp(data->token[i].litteral[0], ">>", 3) == 0)
         data->token[i].type = greatergreater;
     if(ft_strncmp(data->token[i].litteral[0], "|", 2) == 0)

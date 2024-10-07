@@ -5,13 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/25 12:30:50 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/07 15:10:18 by opdi-bia         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/10/07 17:30:40 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../minishell.h"
 
+int		print_env(t_data *data)
 int		print_env(t_data *data)
 {
 	int i;
@@ -22,6 +24,7 @@ int		print_env(t_data *data)
 	while (data->env[i])
 		printf("%s\n", data->env[i++]);
 	return(0);
+	return(0);
 }
 
 int	copy_env(t_data *data)
@@ -31,6 +34,8 @@ int	copy_env(t_data *data)
 
 	i = 0;
 	tab_len = 0;
+	if (environ == NULL || environ[i] == NULL)
+		return (3);
 	if (environ == NULL || environ[i] == NULL)
 		return (3);
 	while (environ[tab_len])
@@ -48,3 +53,4 @@ int	copy_env(t_data *data)
 	}
 	return(0);
 }
+

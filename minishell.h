@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 15:08:30 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/07 17:29:45 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "./libft/libft.h"
 # include <dirent.h>
 # include <fcntl.h>
+# include <fcntl.h>
 # include <linux/limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -22,7 +23,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/stat.h>
+# include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
@@ -37,6 +40,7 @@ typedef enum e_type
 	greater,
 	greatergreater,
 	here_doc,
+	delimiter,
 	exit_status,
 	pipes,
 	infile,
@@ -53,7 +57,8 @@ typedef struct s_token
 	char	**litteral;
 	char	*full_path;
 	double	value;
-	int		size;
+	int size;
+	int fd;
 	int		position;
 	int		nb_arg;
 	int		first;
@@ -80,8 +85,10 @@ extern char	**environ;
 
 /* Builtins */
 int		print_env(t_data *data);
+int		print_env(t_data *data);
 int			copy_env(t_data *data);
 int			echo(char **tab);
+int			cd(t_data *data, char **tab);
 int			cd(t_data *data, char **tab);
 int			pwd(void);
 int			ft_exit(t_data *data, char **tab, int n);
@@ -115,7 +122,8 @@ int			ft_strchr_edit(const char *s, char c);
 char		*ft_find_cmd(char **cmd_tab);
 
 /* Exec */
-int			execution(t_data *data);
-int			ft_strchr_edit(const char *s, char c);
+int    execution(t_data *data);
+int	open_file(t_token token, int i);
+
 
 #endif

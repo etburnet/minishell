@@ -6,9 +6,10 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 15:07:43 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/07 17:28:13 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -38,12 +39,12 @@ int	main(void)
 		data->arg = readline("minishell$ ");
 		if (data->arg == NULL)
 			ft_exit(data, NULL, 1);
+			ft_exit(data, NULL, 1);
 		if (*data->arg)
 		{
 			add_history(data->arg);
 			init_data(data, data->arg);
 			search_token(data->source, data);
-			// execution(&data);
 			free(data->arg);
 		}
 	}

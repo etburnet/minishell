@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 16:49:49 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/07 17:29:58 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	put_error(char *message, char *var)
 	if (var != NULL)
 		ft_putstr_fd(var, 2);
 	ft_putstr_fd("\n", 2);
+	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 }
