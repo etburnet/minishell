@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 12:37:47 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/07 15:08:30 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_data
 extern char	**environ;
 
 /* Builtins */
-void		print_env(t_data *data);
+int		print_env(t_data *data);
 int			copy_env(t_data *data);
 int			echo(char **tab);
 int			cd(t_data *data, char **tab);

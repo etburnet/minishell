@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 11:48:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 14:15:46 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/07 17:14:06 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,31 @@ int	open_file(t_token token, int i)
 		fd = open(token.litteral[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 		return (perror(token.litteral[0]), -1);
-	// printf("open file i = %d, fd = %d\n", i, fd);
 	return (fd);
 }
 
 int which_builtin(t_data *data, char **cmd_tab)
 {
-	int i;
+	int ret;
 	
-	i = 0;
+	ret = 0;
 	if (strncmp(cmd_tab[0], "echo", 5) == 0)
-		echo(cmd_tab);
+		ret = echo(cmd_tab);
 	else if(strncmp(cmd_tab[0], "cd", 3) == 0)
-		cd(data, cmd_tab);
+		ret = cd(data, cmd_tab);
 	else if(strncmp(cmd_tab[0], "pwd", 4) == 0)
-		pwd();
+		ret = pwd();
 	else if(strncmp(cmd_tab[0], "export", 7) == 0)
-		export(data, cmd_tab);
+		ret = export(data, cmd_tab);
 	else if(strncmp(cmd_tab[0], "unset", 6) == 0)
-		unset(data, cmd_tab);
+		ret = unset(data, cmd_tab);
 	else if(strncmp(cmd_tab[0], "env", 4) == 0)
-		print_env(data);
+		ret = print_env(data);
 	else if(strncmp(cmd_tab[0], "exit", 5) == 0)
-		ft_exit(data, cmd_tab, 0);
+		ret = ft_exit(data, cmd_tab, 0);
 	else
-		return (put_error("This is not a builtin: ", cmd_tab[0]), 1);	
-	return (0);
+		return (put_error("This is not a builtin:", cmd_tab[0]), 1);	
+	return (ret);
 }
 
 int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
@@ -64,28 +63,35 @@ int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
 	pid_t	pid;
 	int		ret;
 
-	// printf("%d, %d\n", fdin, fdout);
+	//printf("built Fork fdin %d, fdout %d\n", fdin, fdout);
+	ret = -1;
 	pid = fork();
-	ret = 0;
 	if (pid == -1)
 		return (perror("fork"), 1);
-	else if (pid == 0)
+	if (pid == 0)
 	{
 		if (dup2(fdin, STDIN_FILENO) == -1 || dup2(fdout, STDOUT_FILENO) == -1)
 			return (perror("dup2"), 1);
 		ft_close(fdin, fdout);
 		ret = which_builtin(data, cmd_tab);
-		return (ret);
+		// printf("ret = %d\n", ret);
+		exit(0);
 	}
 	ft_close(fdin, fdout);
-	return (0);
+	return (ret);
 }
 
 int	ft_execute(char *full_path, char **cmd_tab, int fdin, int fdout)
 {
 	pid_t	pid;
 
-	printf("Fork fdin %d, fdout %d\n", fdin, fdout);
+	// printf("ex: %s Fork fdin %d, fdout %d\n",cmd_tab[0], fdin, fdout);
+	if (full_path == NULL)
+	{
+		put_error("Command not found: ", cmd_tab[0]);
+		ft_close(fdin, fdout);
+		return (1);
+	}
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
@@ -94,7 +100,8 @@ int	ft_execute(char *full_path, char **cmd_tab, int fdin, int fdout)
 		if (dup2(fdin, STDIN_FILENO) == -1 || dup2(fdout, STDOUT_FILENO) == -1)
 			return (perror("OUT dup2"), 1);
 		ft_close(fdin, fdout);
-		execve(full_path, cmd_tab, NULL);
+		if (execve(full_path, cmd_tab, NULL) == -1)
+			put_error("Command not found: ", cmd_tab[0]);
 		return (1);
 	}
 	ft_close(fdin, fdout);
@@ -125,9 +132,10 @@ void	check_first_last(t_data *data)
 		}
 		i++;
 	}
-	if (i == data->lenght_token)
-		data->token[cmd].last = 1;
+	// if (i == data->lenght_token)
+	data->token[cmd].last = 1;
 }
+
 int		bring_command(t_data *data, int *i)
 {
 	int cmd;
@@ -139,10 +147,10 @@ int		bring_command(t_data *data, int *i)
 		if (data->token[*i].type == command || data->token[*i].type == built_in)
 			cmd = *i;
 		else if (data->token[*i].type == infile)
-			data->token[*i].fdin = open_file(data->token[*i], 0);
+			data->token[cmd].fdin = open_file(data->token[*i], 0);
 		else if (data->token[*i].type == outfile)
-			data->token[*i].fdout = open_file(data->token[*i], 1);
-		if (data->token[*i].fdin == -1 || data->token[*i].fdout == -1)
+			data->token[cmd].fdout = open_file(data->token[*i], 1);
+		if (data->token[cmd].fdin == -1 || data->token[cmd].fdout == -1)
 		{
 			while (*i < data->lenght_token && data->token[*i].type != pipes)
 				(*i)++;
@@ -153,6 +161,7 @@ int		bring_command(t_data *data, int *i)
 	}
 	return(cmd);
 }
+
 int		prepare_fd(t_data *data, t_token token, int *pipe_fd)
 {
 	if(token.first != 1 && token.fdin == STDIN_FILENO)
@@ -160,8 +169,8 @@ int		prepare_fd(t_data *data, t_token token, int *pipe_fd)
 	if(token.last != 1 && token.fdout == STDOUT_FILENO)
 		token.fdout = pipe_fd[1];
 	if (token.type == command)
-			ft_execute(token.full_path, token.litteral, token.fdin, token.fdout);
-	else if (token.type == built_in)
+		ft_execute(token.full_path, token.litteral, token.fdin, token.fdout);
+	if (token.type == built_in)
 	{
 		if(strncmp(token.litteral[0], "exit", 5) == 0 && token.last == 1 && token.first == 1)
 			ft_exit(data, token.litteral, 0);
@@ -184,7 +193,6 @@ int		prepare_exec(t_data *data, int *pipe_fd)
 	{
 		if (pipe(next_pipe) == -1)
 			return (perror("pipe"), 1);
-		printf("pipe_fd[0]: %d pipe_fd[1]: %d, next_pipe[0]: %d next_pipe[1]: %d\n", pipe_fd[0], pipe_fd[1], next_pipe[0], next_pipe[1]);
 		cmd = bring_command(data, &i);
 		pipe_fd[1] = next_pipe[1];
 		prepare_fd(data, data->token[cmd], pipe_fd);
@@ -192,6 +200,7 @@ int		prepare_exec(t_data *data, int *pipe_fd)
 		pipe_fd[0] = next_pipe[0];
 		i++;
 	}
+	ft_close(next_pipe[0], next_pipe[1]);
 	return(0);
 }
 
@@ -206,11 +215,12 @@ int		execution(t_data *data)
 	if (pipe(pipe_fd) == -1)
 		return (perror("pipe"), 1);
 	prepare_exec(data, pipe_fd);
+	ft_close(pipe_fd[0], pipe_fd[1]);
 	while (pid != -1)
 	{
 		pid = waitpid(-1, &status, 0);
 		if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
-			return (1);
+			return (ft_close(pipe_fd[0], pipe_fd[1]), 1);
 	}
-	return (0);
+	return (ft_close(pipe_fd[0], pipe_fd[1]), 0);
 }
