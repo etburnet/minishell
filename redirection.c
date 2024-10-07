@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 11:48:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 17:35:27 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:52:00 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
 	pid_t	pid;
 	int		ret;
 
-	//printf("built Fork fdin %d, fdout %d\n", fdin, fdout);
+	// printf("built Fork fdin %d, fdout %d\n", fdin, fdout);
 	ret = -1;
 	pid = fork();
 	if (pid == -1)
@@ -93,7 +93,7 @@ int	ft_execute(char *full_path, char **cmd_tab, int fdin, int fdout)
 {
 	pid_t	pid;
 
-	// printf("ex: %s Fork fdin %d, fdout %d\n",cmd_tab[0], fdin, fdout);
+	printf("ex: %s Fork fdin %d, fdout %d\n",cmd_tab[0], fdin, fdout);
 	if (full_path == NULL)
 	{
 		put_error("Command not found: ", cmd_tab[0]);

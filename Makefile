@@ -6,7 +6,7 @@
 #    By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/10/07 17:28:29 by opdi-bia         ###   ########.fr        #
+#    Updated: 2024/10/07 17:46:10 by opdi-bia         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,6 @@ SRC=main.c\
 	builtins/export.c\
 	builtins/shlvl.c\
 	redirection.c\
-	builtins/unset.c\
-	builtins/utils_exit.c\
 	builtins/unset.c\
 	builtins/utils_exit.c\
 	

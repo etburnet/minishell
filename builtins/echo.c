@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:14:53 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/07 17:30:20 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/07 17:50:10 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	check_n(char *str)
 
 	i = 0;
 	len = ft_strlen(str);
-	if (str[i] && str[i] == '-')
 	if (str[i] && str[i] == '-')
 	{
 		i++;
@@ -41,22 +40,14 @@ int	echo(char **tab)
 	i = 1;
 	last = 1;
 	if (tab[1] == NULL)
-	if (tab[1] == NULL)
 		return (printf("\n"), 0);
-	if (check_n(tab[1]) == 0)
-		last = 0;
-	while (tab[i] != NULL && check_n(tab[i]) == 0)
 	if (check_n(tab[1]) == 0)
 		last = 0;
 	while (tab[i] != NULL && check_n(tab[i]) == 0)
 		i++;
 	while (tab[i] != NULL)
 	{
-	{
 		printf("%s", tab[i++]);
-		if (tab[i] != NULL)
-			printf(" ");
-	}
 		if (tab[i] != NULL)
 			printf(" ");
 	}
