@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 11:48:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/04 17:28:37 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/07 14:15:46 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	open_file(t_token token, int i)
 		fd = open(token.litteral[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 		return (perror(token.litteral[0]), -1);
+	// printf("open file i = %d, fd = %d\n", i, fd);
 	return (fd);
 }
 
@@ -84,7 +85,7 @@ int	ft_execute(char *full_path, char **cmd_tab, int fdin, int fdout)
 {
 	pid_t	pid;
 
-	printf("fdin %d, fdout %d\n", fdin, fdout);
+	printf("Fork fdin %d, fdout %d\n", fdin, fdout);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
@@ -96,92 +97,120 @@ int	ft_execute(char *full_path, char **cmd_tab, int fdin, int fdout)
 		execve(full_path, cmd_tab, NULL);
 		return (1);
 	}
-/* 	if ()
-		ft_close(fdin, fdout); */
+	ft_close(fdin, fdout);
 	return (0);
 }
 
-int	execution(t_data *data)
+void	check_first_last(t_data *data)
 {
-	int		i;
-	int		j;
-	int		fdin;
-	int		fdout;
-	int		cmd;
-	int		last;
-	int		first;
-	int		n_pipe[2];
-	pid_t	pid;
-	int		status;
-
-	pid = 0;
-	last = 0;
+	int i;
+	int cmd;
+	int first;
 	
-	status = 0;
+	first = 0;
 	i = 0;
-	j = 0;
-	if (pipe(n_pipe) == -1)
-		return (perror("pipe"), 1);
+	cmd = 0;
+	if (i == 0)
+		data->token[i].first = 1;
 	while (i < data->lenght_token)
 	{
-		fdin = n_pipe[0];
-		fdout = n_pipe[1];
-		printf("----pipe0 %d, pipe1 %d | i %i, len %d ----\n", fdin, fdout, i, data->lenght_token);
-		cmd = -1;
-		first = 0;
-		if (i == 0)
-			first = 1;
-		while (j < data->lenght_token  && data->token[j].type != pipes)
-			j++;
-		if (data->token[j].type != pipes && i == 0)
-			last = 1;
-		while (i < data->lenght_token && data->token[i].type != pipes)
-		{
-			if (data->token[i].type == command
-				|| data->token[i].type == built_in)
-				cmd = i;
-			else if (data->token[i].type == infile)
-				fdin = open_file(data->token[i], 0);
-			else if (data->token[i].type == outfile)
-				fdout = open_file(data->token[i], 1);
-			if (fdin == -1 || fdout == -1)
+		if (data->token[i].type == command || data->token[i].type == built_in)
+		{	
+			cmd = i;
+			if(first == 0)
 			{
-				while (i < data->lenght_token && data->token[i].type != pipes)
-					i++;
-				cmd = -1;
-				break ;
+				first = 1;
+				data->token[i].first = 1;
 			}
-			i++;
-		}
-		if (i == data->lenght_token)
-			last = 1;
-		//printf("first %d, last %d\n", first, last);
-		if (cmd != -1)
-		{
-			if (fdout == n_pipe[1] && last == 1)
-				fdout = STDOUT_FILENO;
-			if (fdin == n_pipe[0] && first == 1)
-				fdin = STDIN_FILENO;
-			if (data->token[cmd].type == command)
-				ft_execute(data->token[cmd].full_path,
-					data->token[cmd].litteral, fdin, fdout);
-			else if (data->token[cmd].type == built_in)
-			{
-				if(strncmp(data->token[cmd].litteral[0], "exit", 5) == 0 && last == 1 && first == 1)
-					(ft_close(n_pipe[0], n_pipe[1]),ft_exit(data, data->token[cmd].litteral, 0));
-				
-				exec_built_in(data, data->token[cmd].litteral, fdin, fdout);
-			}	
 		}
 		i++;
 	}
-	ft_close(fdin, fdout);
-	ft_close(n_pipe[0], n_pipe[1]);
+	if (i == data->lenght_token)
+		data->token[cmd].last = 1;
+}
+int		bring_command(t_data *data, int *i)
+{
+	int cmd;
+
+	cmd = -1;
+	
+	while (*i < data->lenght_token && data->token[*i].type != pipes)
+	{
+		if (data->token[*i].type == command || data->token[*i].type == built_in)
+			cmd = *i;
+		else if (data->token[*i].type == infile)
+			data->token[*i].fdin = open_file(data->token[*i], 0);
+		else if (data->token[*i].type == outfile)
+			data->token[*i].fdout = open_file(data->token[*i], 1);
+		if (data->token[*i].fdin == -1 || data->token[*i].fdout == -1)
+		{
+			while (*i < data->lenght_token && data->token[*i].type != pipes)
+				(*i)++;
+			cmd = -1;
+			break ;
+		}
+		(*i)++;
+	}
+	return(cmd);
+}
+int		prepare_fd(t_data *data, t_token token, int *pipe_fd)
+{
+	if(token.first != 1 && token.fdin == STDIN_FILENO)
+		token.fdin = pipe_fd[0];
+	if(token.last != 1 && token.fdout == STDOUT_FILENO)
+		token.fdout = pipe_fd[1];
+	if (token.type == command)
+			ft_execute(token.full_path, token.litteral, token.fdin, token.fdout);
+	else if (token.type == built_in)
+	{
+		if(strncmp(token.litteral[0], "exit", 5) == 0 && token.last == 1 && token.first == 1)
+			ft_exit(data, token.litteral, 0);
+		exec_built_in(data, token.litteral, token.fdin, token.fdout);
+	}
+	return(0);
+}
+
+int		prepare_exec(t_data *data, int *pipe_fd)
+{
+	int i;
+	int		next_pipe[2];
+	int cmd;
+	
+	
+	i = 0;
+	cmd = -1;
+	check_first_last(data);
+	while(i < data->lenght_token)
+	{
+		if (pipe(next_pipe) == -1)
+			return (perror("pipe"), 1);
+		printf("pipe_fd[0]: %d pipe_fd[1]: %d, next_pipe[0]: %d next_pipe[1]: %d\n", pipe_fd[0], pipe_fd[1], next_pipe[0], next_pipe[1]);
+		cmd = bring_command(data, &i);
+		pipe_fd[1] = next_pipe[1];
+		prepare_fd(data, data->token[cmd], pipe_fd);
+		close (pipe_fd[0]);
+		pipe_fd[0] = next_pipe[0];
+		i++;
+	}
+	return(0);
+}
+
+int		execution(t_data *data)
+{
+	int		pipe_fd[2];
+	pid_t	pid;
+	int		status;
+	
+	status = 0;
+	pid = 0;
+	if (pipe(pipe_fd) == -1)
+		return (perror("pipe"), 1);
+	prepare_exec(data, pipe_fd);
 	while (pid != -1)
 	{
 		pid = waitpid(-1, &status, 0);
 		if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
-			return (ft_close(n_pipe[0], n_pipe[1]), 1);
+			return (1);
 	}
-	return (ft_close(n_pipe[0], n_pipe[1]), 0);
+	return (0);
 }

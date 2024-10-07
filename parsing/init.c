@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:06:50 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/02 16:34:11 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/07 12:47:01 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,9 @@ int	init_token(t_token *token)
 	token->position = 0;
 	token->nb_arg = 0;
 	token->full_path = NULL;
+	token->first = 0;
+	token->last = 0;
+	token->fdin = STDIN_FILENO;
+	token->fdout = STDOUT_FILENO;
 	return(0);
 } 
