@@ -6,96 +6,39 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/08 14:43:58 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/08 16:20:23 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
- 
-int     search_cmd(t_data *data, int i)
-{
-    i--;
-    while(i >= 0)
-    {
-        if(data->token[i].type == command || data->token[i].type == built_in)
-            return(i);
-        i--;
-    }
-    return(i);
-}
-// void    check_global(int new)
-// {
-//     while(1)
-//     {
-//         if(g_sig_recieved == 1)
-//         {
-//             close(0);
-//             dup2(new, STDIN_FILENO);
-//         }  
-//     }
-// }
 int    set_heredoc(t_data *data)
 {
-    char *tmp;
-    char *buffer;
+    char *buffer; 
     int cmd;
     int i; 
-    int fd;
-	struct sigaction	action;
-
-    ft_memset(&action, 0, sizeof(action));
-    action.sa_handler = &handle_signal2;
-    signal(SIGQUIT, SIG_IGN);
-    sigaction(SIGINT, &action, NULL);
+    int new;
+	
     i = 0;
+    init_signal_handler(2);
     while(i < data->lenght_token)
     {
         if(data->token[i].type == here_doc)
         {
+		    new = dup(0);
             cmd = search_cmd(data, i);
-            fd = open_file(data->token[i], 3);
-            tmp = strdup(data->token[i + 1]. litteral[0]);
-            while((buffer = readline(">")) > 0)
-            {
-                if(strncmp(buffer, tmp, (strlen(tmp) + 1)) == 0)
-                    break;
-                write(fd, buffer, ft_strlen(buffer) + 1);
-                write(fd, "\n", 2); 
-            }
-            data->token[cmd].fdin = fd;
-            close(fd);
+            data->token[cmd].fdin = open_file(data->token[i], 3);
+            buffer = readline(">");
+            while(buffer != NULL)
+                buffer = check_line(data, buffer, data->token[i + 1]. litteral[0], cmd);
+            if(buffer == NULL && g_sig_recieved == 1)
+                interrupt_heredoc(data, new, cmd);
+            close(data->token[cmd].fdin);
         }
         i++;
     }
+    init_signal_handler(3);
     return(0);
-}
-
-void    check_arg(t_data *data, int i, e_type type)
-{
-    int j;
-    int cmd;
-    
-    j = 1;
-    i++;
-    while(i < data->lenght_token)
-    {
-        if((data->token[i - 1].type == type || data->token[i - 1].type == arg) && (data->token[i].type == word || data->token[i].type == string))
-        {
-            if(data->token[i - 1].type == type)
-                cmd = i - 1;
-            data->token[i].type = arg;
-            data->token[cmd].nb_arg += 1;
-            if(data->token[cmd].nb_arg + 1 > data->token[cmd].size)
-            {
-                data->token[cmd].litteral = my_realloc(data->token[cmd], data->token[cmd].size);
-                data->token[cmd].size += 1;
-            }
-            data->token[cmd].litteral[j] = ft_strdup(data->token[i].litteral[0]);
-            j++;
-        }
-        i++;
-    }
 }
 
 int    check_command(t_data *data)
@@ -146,29 +89,6 @@ void    check_infile(t_data *data)
     }
 }
 
-// const char* gettypeName(enum e_type type) 
-// {
-//    switch (type) 
-//    {
-//       case undefine: return "undefine";
-//       case string: return "string";
-//       case word: return "word";
-//     //   case number: return "number";
-//       case less: return "less";
-//       case greater: return "greater";
-//       case greatergreater: return "greatergreater";
-//       case here_doc: return "here_doc";
-//       case exit_status: return "exit_status";
-//       case pipes: return "pipes";
-//       case infile: return "infile";
-//       case outfile: return "outfile";
-//       case variable: return "variable";
-//       case command: return "command";
-//       case arg: return "arg";
-//       case built_in: return "built_in";
-//    }
-// }
-
 void    is_built_in(t_data *data)
 {
     int i;
@@ -199,11 +119,5 @@ void    identify_command(t_data *data)
     check_outfile(data);
     check_command(data);
     set_heredoc(data);
-    // int i = 0;
-    // // while(i < data->lenght_token)
-	// // {
-	// // 	printf("token %d type %s = %s\n path = %s\n", data->token[i].position, gettypeName(data->token[i].type), data->token[i].litteral[0], data->token[i].full_path);
-	// // 	i++;
-	// // }
 }
 

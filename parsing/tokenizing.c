@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/08 14:04:12 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/08 16:43:53 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	tokenise(t_data *data, int i)
 }
 int		split_token(t_data *data, char *s, int i)
 {
-	 while(s[data->cur] == ' ')
+	while(s[data->cur] == ' ')
 		data->cur++;
 	data->start = data->cur;
 	if (s[data->cur] != ' ' && s[data->cur] != '\0')
@@ -60,14 +60,3 @@ int		search_token(char *s, t_data *data)
 	free_data_token(data);
 	return(0);
 }
-// 	return(0);
-// }
-
-// 	i = 0;
-// 	while(i < data->lenght_token)
-// 	{
-// 		printf("token %d pos %d = %s\n", i, data->token[i].position, data->token[i].litteral);
-// 		i++;
-// 	}
-// 	return(0);
-// }

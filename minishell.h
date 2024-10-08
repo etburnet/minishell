@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/08 14:40:34 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/08 16:27:38 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_data
 }			t_data;
 
 extern char	**environ;
+extern int g_sig_recieved;
 
 /* Builtins */
 int			print_env(t_data *data);
@@ -102,22 +103,31 @@ char		**my_realloc(t_token token, size_t size);
 void		ft_clean(t_data *data);
 
 /* Signal */
+void    init_signal_handler(int i);
 void		handle_signal(int signum);
-void	handle_signal2(int signum);
+void	handle_sig_heredoc(int signum);
 
-
-/* Parsing */
+/*Init*/
 void		init_data(t_data *tok, char *s);
 int			init_token(t_token *token);
+
+/* Parsing */
 size_t		ft_countword(const char *s, int i);
 int			search_token(char *s, t_data *data);
 int			check_quote(const char *s, int i, char c);
 int			identify_token(t_data *data);
 void		free_data_token(t_data *data);
 int			check_error(t_data *data, int i);
-void		identify_command(t_data *data);
 int			ft_strchr_edit(const char *s, char c);
 char		*ft_find_cmd(char **cmd_tab);
+
+/*cmd_identify*/
+void    identify_command(t_data *data);
+int     search_cmd(t_data *data, int i);
+char    *check_line(t_data *data, char *buffer, char *delimiter, int cmd);
+void    interrupt_heredoc(t_data *data, int new, int cmd);
+void    check_arg(t_data *data, int i, e_type type)
+
 
 /* Exec */
 int			execution(t_data *data);
