@@ -6,11 +6,70 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/02 16:35:26 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/08 14:43:58 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+ 
+int     search_cmd(t_data *data, int i)
+{
+    i--;
+    while(i >= 0)
+    {
+        if(data->token[i].type == command || data->token[i].type == built_in)
+            return(i);
+        i--;
+    }
+    return(i);
+}
+// void    check_global(int new)
+// {
+//     while(1)
+//     {
+//         if(g_sig_recieved == 1)
+//         {
+//             close(0);
+//             dup2(new, STDIN_FILENO);
+//         }  
+//     }
+// }
+int    set_heredoc(t_data *data)
+{
+    char *tmp;
+    char *buffer;
+    int cmd;
+    int i; 
+    int fd;
+	struct sigaction	action;
+
+    ft_memset(&action, 0, sizeof(action));
+    action.sa_handler = &handle_signal2;
+    signal(SIGQUIT, SIG_IGN);
+    sigaction(SIGINT, &action, NULL);
+    i = 0;
+    while(i < data->lenght_token)
+    {
+        if(data->token[i].type == here_doc)
+        {
+            cmd = search_cmd(data, i);
+            fd = open_file(data->token[i], 3);
+            tmp = strdup(data->token[i + 1]. litteral[0]);
+            while((buffer = readline(">")) > 0)
+            {
+                if(strncmp(buffer, tmp, (strlen(tmp) + 1)) == 0)
+                    break;
+                write(fd, buffer, ft_strlen(buffer) + 1);
+                write(fd, "\n", 2); 
+            }
+            data->token[cmd].fdin = fd;
+            close(fd);
+        }
+        i++;
+    }
+    return(0);
+}
 
 void    check_arg(t_data *data, int i, e_type type)
 {
@@ -139,6 +198,7 @@ void    identify_command(t_data *data)
     check_infile(data);
     check_outfile(data);
     check_command(data);
+    set_heredoc(data);
     // int i = 0;
     // // while(i < data->lenght_token)
 	// // {

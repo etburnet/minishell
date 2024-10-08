@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/25 12:30:50 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/04 12:52:01 by opdi-bia         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/10/07 17:50:41 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int		print_env(t_data *data)
 	int i;
 
 	i = 0;
+	if(data->env == NULL)
+		return(1);
 	while (data->env[i])
 		printf("%s\n", data->env[i++]);
 	return(0);
@@ -46,3 +48,4 @@ int	copy_env(t_data *data)
 	}
 	return(0);
 }
+

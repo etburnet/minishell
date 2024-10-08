@@ -6,12 +6,11 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:59:33 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/04 15:24:15 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/07 17:51:10 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 void	ft_clean(t_data *data)
 {
@@ -45,7 +44,6 @@ int	ft_long_check(char *str)
 {
 	const char	*long_max_str;
 	const char	*long_min_str;
-
 	long_max_str = "9223372036854775807";
 	long_min_str = "-9223372036854775808";
 	if (str[0] == '-')
@@ -91,3 +89,4 @@ int	ft_exit(t_data *data, char **tab, int n)
 	exit(n);
 	return (1);
 }
+
