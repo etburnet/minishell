@@ -6,7 +6,7 @@
 #    By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/10/08 16:19:26 by opdi-bia         ###   ########.fr        #
+#    Updated: 2024/10/09 10:50:50 by opdi-bia         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC=main.c\
 	utils_minishell.c\
 	signal.c\
 	parsing/token_identify.c\
+	parsing/utils_token_identify.c\
 	parsing/command_identify.c\
 	parsing/utils_cmd_identify.c\
 	parsing/search_cmd.c\

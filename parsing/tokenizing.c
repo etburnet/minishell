@@ -6,57 +6,67 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/08 16:43:53 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:51:20 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	tokenise(t_data *data, int i)
+int	tokenise(t_data *data, int *i)
 {
-	init_token(&data->token[i]);
-	data->token[i].litteral[0] = ft_substr(data->source, data->start, (data->cur - data->start));
+	if(init_token(&data->token[*i]) == -1)
+		return(-1);
+	data->token[*i].litteral[0] = ft_substr(data->source, data->start, (data->cur - data->start));
+	if(data->token[*i].litteral[0] == NULL)
+		return(put_error(ERR_MALLOC, NULL), -1);
 	data->nb_token += 1;
-	data->token[i].position = data->nb_token;
-	i++;
-	return(i);
+	data->token[*i].position = data->nb_token;
+	(*i)++;
+	return(1);
 }
-int		split_token(t_data *data, char *s, int i)
+int		split_token(t_data *data, char *s, int *i, int tok)
 {
-	while(s[data->cur] == ' ')
-		data->cur++;
-	data->start = data->cur;
 	if (s[data->cur] != ' ' && s[data->cur] != '\0')
 	{
 		while (s[data->cur] != '\"' && s[data->cur] != '\'' && s[data->cur] != ' ' && s[data->cur] != '\0')
 			data->cur++;;
 		data->cur = check_quote(s, data->cur, '\'');
 		if(data->cur == -1)
-			return(put_error("error invalid command", NULL), -1);
+			return(put_error(ERR_CMD, "\'"), -1);
 		data->cur = check_quote(s, data->cur, '\"');
 		if(data->cur == -1)
-			return(put_error("error invalid command", NULL), -1);
+			return(put_error(ERR_CMD, "\""), -1);
 		while (s[data->cur] != '\"' && s[data->cur] != '\'' && s[data->cur] != ' ' && s[data->cur] != '\0')
 			data->cur++;;
 		if(s[data->cur] == ' ' || s[data->cur] == '\0')
-			i = tokenise(data, i);
+			tok = tokenise(data, i);
 	}
-	return(i);
+	return(tok);
 }
 
 int		search_token(char *s, t_data *data)
 {
 	int i;
-	
+	int tok;
+
+	tok = 0;
 	i = 0;
-	data->token = malloc(sizeof(t_token) * data->lenght_token);
+	data->start = data->cur;
+	data->token = malloc(sizeof(t_token) * (data->lenght_token + 1));
+	if(data->token == NULL)
+		return(put_error(ERR_MALLOC, NULL), -1);
 	while (s[data->cur] != '\0')
     {
-       i = split_token(data, s, i);
+		while(s[data->cur] == ' ')
+		data->cur++;
+		if(tok == 1)
+		{
+			data->start = data->cur;
+			tok = 0;
+		}
+        tok = split_token(data, s, &i, tok);
+		if(tok == -1)
+			return(-1);
     }
-	identify_token(data);
-	identify_command(data);
-	execution(data);
-	free_data_token(data);
 	return(0);
 }

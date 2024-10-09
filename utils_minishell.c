@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 17:57:07 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/09 14:36:51 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,17 @@ int	get_this_env(char *var, char **env)
 	return (i);
 }
 
+void	clean_and_put_error(t_data *data, char *message, char *var)
+{
+	ft_clean(data);
+	ft_putstr_fd(message, 2);
+	if (var != NULL)
+		ft_putstr_fd(var, 2);
+	ft_putstr_fd("\n", 2);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 void	put_error(char *message, char *var)
 {
 	ft_putstr_fd(message, 2);
@@ -48,6 +59,7 @@ void	put_error(char *message, char *var)
 	ft_putstr_fd("\n", 2);
 	rl_on_new_line();
 	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 // int	ft_isdigit_edit(char *c)
@@ -75,13 +87,13 @@ char **my_realloc(t_token token, size_t size)
 	i = 0;
 	temp = malloc(sizeof(char *) * (size + 2));
 	if(temp == NULL)
-		return(NULL);
+		return(put_error(ERR_MALLOC, NULL), NULL);
 	temp[size + 1] = NULL;
 	while(token.litteral[i] != NULL)
 	{
 		temp[i] = ft_strdup(token.litteral[i]);
-		if(temp == NULL)
-			return(NULL);
+		if(temp[i] == NULL)
+			return(put_error(ERR_MALLOC, NULL), NULL);
 		i++;
 	}
 	free_tab(token.litteral);

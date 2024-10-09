@@ -6,13 +6,24 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/08 16:27:56 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/09 17:17:39 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
 
+int		ft_minishell(char *s, t_data *data)
+{
+	if(search_token(s, data) == -1)
+		return(-1);
+	if(identify_token(data) == -1)
+		return(-1);
+	identify_command(data);
+	execution(data);
+	free_data_token(data);
+	return(0);
+}
 
 int	main(void)
 {
@@ -37,9 +48,11 @@ int	main(void)
 		if (*data->arg)
 		{
 			add_history(data->arg);
-			init_data(data, data->arg);
-			search_token(data->source, data);
-			free(data->arg);
+			if(init_data(data, data->arg) == -1)
+				return(-1);
+			if(ft_minishell(data->source, data) == -1)
+				return(ft_clean(data), -1);
+			// free(data->arg);
 		}
 	}
 	return (0);

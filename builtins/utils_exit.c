@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:49 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/07 17:31:20 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/09 12:54:55 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ int	ft_err_exit(t_data *data, char *err_msg, int n)
 	return (n);
 }
 
-int	check_error(t_data *data, int i)
-{
-	if (ft_strncmp(data->token[i].litteral[0], ";", 2) == 0
-		|| ft_strncmp(data->token[i].litteral[0], "\\", 2) == 0)
-		return (put_error("error invalid command", NULL), -1);
-	return (0);
-}
+// int	check_error(t_data *data, int i)
+// {
+// 	if (ft_strncmp(data->token[i].litteral[0], ";", 2) == 0
+// 		|| ft_strncmp(data->token[i].litteral[0], "\\", 2) == 0)
+// 		return (put_error("error invalid command", NULL), -1);
+// 	return (0);
+// }
 
 long int	ft_atol(const char *nptr)
 {

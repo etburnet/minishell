@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:11:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/08 16:27:34 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:45:01 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void    init_signal_handler(int i)
     }
 	else if(i == 3)
 	{
+        ft_memset(&action, 0, sizeof(action));
 		action.sa_handler = &handle_signal;
         sigaction(SIGINT, &action, NULL);
 	}

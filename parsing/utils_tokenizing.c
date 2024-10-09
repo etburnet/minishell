@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_tokenizing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:54 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 18:07:58 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/09 11:36:44 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ size_t    ft_countword(const char *s, int i)
                 i++;
             i = check_quote(s, i, '\"');
             if(i == -1)
-                return(-1);
+                return(put_error("error invalid command", NULL), -1);
             i = check_quote(s, i, '\'');
             if(i == -1)
-                return(-1);
+                return(put_error("error invalid command", NULL), -1);
             while (s[i] != '\"' && s[i] != '\'' && s[i] != ' ' && s[i] != '\0')
                 i++;
             if(s[i] == ' ' || s[i] == '\0')

@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 11:48:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/08 14:04:07 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:27:47 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ int	open_file(t_token token, int i)
 		fd = open("temp_file_here_doc.txt",  O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
 			return (perror("temp_file_here_doc.txt"), -1);
-		// fd = open("/goinfre",  O_RDWR | __O_TMPFILE, 0644);
-		// if (fd < 0)
-		// 	return (perror("/goinfre"), -1);
 	}
 	if (i == 4)
 		fd = open("temp_file_here_doc.txt", O_RDONLY);
@@ -187,7 +184,10 @@ int		prepare_fd(t_data *data, t_token token, int *pipe_fd)
 	if(token.last != 1 && token.fdout == STDOUT_FILENO)
 		token.fdout = pipe_fd[1];
 	if (token.type == command)
-		ft_execute(token.full_path, token.litteral, token.fdin, token.fdout);
+	{
+		if(ft_execute(token.full_path, token.litteral, token.fdin, token.fdout) == 1)
+			ft_clean(data);
+	}
 	if (token.type == built_in)
 	{
 		if(strncmp(token.litteral[0], "exit", 5) == 0 && token.last == 1 && token.first == 1)
@@ -195,7 +195,7 @@ int		prepare_fd(t_data *data, t_token token, int *pipe_fd)
 		exec_built_in(data, token.litteral, token.fdin, token.fdout);
 	}
 	return(0);
-}
+}//ne pas faire
 
 int		prepare_exec(t_data *data, int *pipe_fd)
 {
