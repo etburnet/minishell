@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:06:50 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 12:47:01 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/08 15:56:15 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	init_data(t_data *tok, char *s)
 	tok->cur = 0;
 	tok->source_lenght = (int)ft_strlen(s);
 	tok->start = 0;
+	tok->status = 0;
 	tok->source = ft_strdup(s);
 }
 int	init_token(t_token *token)
@@ -38,4 +39,4 @@ int	init_token(t_token *token)
 	token->fdin = STDIN_FILENO;
 	token->fdout = STDOUT_FILENO;
 	return(0);
-} 
+}

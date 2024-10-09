@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:59:33 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/07 17:51:10 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/09 11:48:54 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	ft_clean(t_data *data)
 {
 	clear_history();
+	free_data_token(data);
 	if (data->arg != NULL)
 		free(data->arg);
 	if (data->env != NULL)

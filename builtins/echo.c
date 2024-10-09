@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:14:53 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/07 17:50:10 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/08 16:03:06 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ int	echo(char **tab)
 {
 	int	i;
 	int	last;
-
+	int j;
+	
+	j = 0;
 	i = 1;
 	last = 1;
 	if (tab[1] == NULL)
@@ -47,12 +49,14 @@ int	echo(char **tab)
 		i++;
 	while (tab[i] != NULL)
 	{
-		printf("%s", tab[i++]);
+		while (tab[i][j])
+			ft_putchar(tab[i][j++]);
+		i++;
+		j = 0;
 		if (tab[i] != NULL)
-			printf(" ");
+			ft_putchar(' ');
 	}
 	if (last == 1)
 		printf("\n");
 	return (0);	
 }
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 17:38:47 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/08 13:28:18 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	main(void)
 {
 	struct sigaction	action;
 	t_data				*data;
-	// t_data				tok;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -30,10 +29,6 @@ int	main(void)
 		ft_exit(data, NULL, 3);
 	if (update_shlvl(data) == 3)
 		ft_exit(data, NULL, 3);
-	char *tab[2];
-	tab[0] = "export";
-	tab[1] = "894894";
-	//ft_exit(data, tab, 0);
 	while (1)
 	{
 		data->arg = readline("minishell$ ");
@@ -43,7 +38,8 @@ int	main(void)
 		{
 			add_history(data->arg);
 			init_data(data, data->arg);
-			search_token(data->source, data);
+			if (search_token(data->source, data) == 3)
+				exit (3);
 			free(data->arg);
 		}
 	}

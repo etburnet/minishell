@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 18:17:21 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/09 12:29:00 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_data
 	int		cur;
 	int		source_lenght;
 	int		start;
+	int		status;
 	char	**env;
 	char	**input;
 	char	*arg;
@@ -113,7 +114,8 @@ void		free_data_token(t_data *data);
 int			check_error(t_data *data, int i);
 void		identify_command(t_data *data);
 int			ft_strchr_edit(const char *s, char c);
-char		*ft_find_cmd(char **cmd_tab);
+char		*ft_find_cmd(t_data *data, char **cmd_tab);
+int			expand(t_data *data, int i, int start, int len_var, int full_len);
 
 /* Exec */
 int			execution(t_data *data);

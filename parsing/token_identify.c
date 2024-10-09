@@ -3,72 +3,92 @@
 /*                                                        :::      ::::::::   */
 /*   token_identify.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 18:43:35 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/09 16:46:14 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-int    check_operator(t_data *data, int i)
+int	check_operator(t_data *data, int i)
 {
-    if(data->token[i].type != undefine)
-        return(0);
-    if(ft_strncmp(data->token[i].litteral[0], "<", 2) == 0)
-        data->token[i].type = less;
-    if(ft_strncmp(data->token[i].litteral[0], ">", 2) == 0)
-        data->token[i].type = greater;
-    if(ft_strncmp(data->token[i].litteral[0], "<<", 3) == 0)
-    {
-            data->token[i].type = here_doc;
-            data->token[i + 1].type = delimiter;
-    }
-    if(ft_strncmp(data->token[i].litteral[0], ">>", 3) == 0)
-        data->token[i].type = greatergreater;
-    if(ft_strncmp(data->token[i].litteral[0], "|", 2) == 0)
-        data->token[i].type = pipes;   
-    if(ft_strncmp(data->token[i].litteral[0], "$?", 3) == 0)
-        data->token[i].type = exit_status;  
-    return(0);
+	if (data->token[i].type != undefine)
+		return (0);
+	if (ft_strncmp(data->token[i].litteral[0], "<", 2) == 0)
+		data->token[i].type = less;
+	if (ft_strncmp(data->token[i].litteral[0], ">", 2) == 0)
+		data->token[i].type = greater;
+	if (ft_strncmp(data->token[i].litteral[0], "<<", 3) == 0)
+	{
+		data->token[i].type = here_doc;
+		data->token[i + 1].type = delimiter;
+	}
+	if (ft_strncmp(data->token[i].litteral[0], ">>", 3) == 0)
+		data->token[i].type = greatergreater;
+	if (ft_strncmp(data->token[i].litteral[0], "|", 2) == 0)
+		data->token[i].type = pipes;
+	return (0);
 }
 
-int    check_var(t_data *data, int i)
+int	check_var(t_data *data, int i)
 {
-    if(data->token[i].type != undefine)
-        return(0);
-    if(ft_strncmp(data->token[i].litteral[0], "$", 1) == 0)
-        data->token[i].type = variable;
-    return(0);
+	int	j;
+	int	start;
+	int	full_len;
+
+	full_len = ft_strlen(data->token[i].litteral[0]);
+	j = 0;
+	if (data->token[i].type != undefine)
+		return (0);
+	while (data->token[i].litteral[0][j])
+	{
+		if (data->token[i].litteral[0][j] == '$')
+		{
+			j++;
+			start = j;
+			if (data->token[i].litteral[0][j] == '?')
+				j = start;
+			else
+				while (ft_isalnum(data->token[i].litteral[0][j]) || data->token[i].litteral[0][j] == '_')
+					j++;
+			if (expand(data, i, start, j - start, full_len) == 3)
+				return (put_error(ERR_MALLOC, NULL), 3);
+		}
+		else
+			j++;
+	}
+	return (0);
 }
 
-int     check_string(t_data *data , int i)
+int	check_string(t_data *data, int i)
 {
-    if(data->token[i].type != undefine)
-        return(0);
-    if(ft_strchr(data->token[i].litteral[0], '\'') != 0 || ft_strchr(data->token[i].litteral[0], '\'') != 0)
-       data->token[i].type = string;
-    return(0);
+	if (data->token[i].type != undefine)
+		return (0);
+	if (ft_strchr(data->token[i].litteral[0], '\'') != 0
+			|| ft_strchr(data->token[i].litteral[0], '\'') != 0)
+		data->token[i].type = string;
+	return (0);
 }
 
-int    identify_token(t_data *data)
+int	identify_token(t_data *data)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(i < data->lenght_token)
-    {
-        if(check_error(data, i) != 0)
-            return(-1);
-        // check_nb(data, i);
-        check_operator(data, i);
-        check_var(data, i);
-        check_string(data, i);
-        if(data->token[i].type == undefine)
-            data->token[i].type = word;
-        i++;
-    }
-	return(0);
+	i = 0;
+	while (i < data->lenght_token)
+	{
+		if (check_error(data, i) != 0)
+			return (-1);
+		// check_nb(data, i);
+		check_operator(data, i);
+		if (check_var(data, i) == 3)
+			return (3);
+		check_string(data, i);
+		if (data->token[i].type == undefine)
+			data->token[i].type = word;
+		i++;
+	}
+	return (0);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/10/07 17:46:10 by opdi-bia         ###   ########.fr        #
+#    Updated: 2024/10/08 16:11:42 by eburnet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRC=main.c\
 	signal.c\
 	parsing/token_identify.c\
 	parsing/command_identify.c\
+	parsing/expand.c\
 	parsing/search_cmd.c\
 	builtins/env.c\
 	builtins/pwd.c\

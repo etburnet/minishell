@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_identify.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/07 18:53:10 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/09 12:29:10 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int    check_command(t_data *data)
         if(data->token[i].type == word || data->token[i].type == string)
         {
             data->token[i].type = command;
-            data->token[i].full_path = ft_find_cmd(data->token[i].litteral);
+            data->token[i].full_path = ft_find_cmd(data, data->token[i].litteral);
             check_arg(data, i, command);
         }
         i++;
