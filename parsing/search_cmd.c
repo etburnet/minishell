@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:00:07 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/30 13:04:32 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/09 12:28:16 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,19 @@ void	ft_free_split(char **tab)
 	free (tab);
 }
 
-char	**ft_extract_path(void)
+char	**ft_extract_path(t_data *data)
 {
 	char	*path;
 	char	*trimmed;
 	char	**splited;
 	int		i;
+	int		path_id;
 
 	i = 0;
-	if (environ == NULL || environ[i] == NULL)
+	path_id = get_this_env("PATH=", data->env);
+	if (path_id == -1)
 		return (NULL);
-	while (environ[++i] != NULL)
-		if (ft_strncmp(environ[i], "PATH=", 5) == 0)
-			break ;
-	if (environ[i] == NULL)
-		return (NULL);
-	path = ft_strdup(environ[i]);
+	path = ft_strdup(data->env[path_id]);
 	if (path == NULL)
 		return (NULL);
 	trimmed = ft_strtrim(path, "PATH=");
@@ -80,7 +77,7 @@ char	*ft_cmd_path(char **path, char *full_path, char **cmd_tab)
 	return (full_path);
 }
 
-char	*ft_find_cmd(char **cmd_tab)
+char	*ft_find_cmd(t_data *data, char **cmd_tab)
 {
 	char	**path;
 	char	*full_path;
@@ -98,7 +95,7 @@ char	*ft_find_cmd(char **cmd_tab)
 		ft_strlcat(full_path, cmd_tab[0], ft_strlen(cmd_tab[0]) + 1);
 		return (full_path);
 	}
-	path = ft_extract_path();
+	path = ft_extract_path(data);
 	if (path == NULL)
 		return (NULL);
 	full_path = ft_cmd_path(path, full_path, cmd_tab);

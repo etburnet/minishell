@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/10/09 10:50:50 by opdi-bia         ###   ########.fr        #
+#    Updated: 2024/10/10 11:49:11 by eburnet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC=main.c\
 	parsing/utils_token_identify.c\
 	parsing/command_identify.c\
 	parsing/utils_cmd_identify.c\
+	parsing/expand.c\
 	parsing/search_cmd.c\
 	builtins/env.c\
 	builtins/pwd.c\

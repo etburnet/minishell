@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/09 17:17:39 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/10 11:48:26 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,6 @@ int	main(void)
 		ft_exit(data, NULL, 3);
 	if (update_shlvl(data) == 3)
 		ft_exit(data, NULL, 3);
-	char *tab[2];
-	tab[0] = "export";
-	tab[1] = "894894";
 	while (1)
 	{
 		data->arg = readline("minishell$ ");

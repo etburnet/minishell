@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/09 16:59:25 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/10 11:53:41 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,16 @@ typedef struct s_token
 	e_type	type;
 	char	**litteral;
 	char	*full_path;
+	char	*full_path;
 	double	value;
+	int		size;
 	int		size;
 	int		position;
 	int		nb_arg;
+	int		first;
+	int		last;
+	int		fdin;
+	int		fdout;
 	int		first;
 	int		last;
 	int		fdin;
@@ -78,6 +84,7 @@ typedef struct s_data
 	int		cur;
 	int		source_lenght;
 	int		start;
+	int		status;
 	char	**env;
 	char	**input;
 	char	*arg;
@@ -88,16 +95,19 @@ extern int g_sig_recieved;
 
 /* Builtins */
 int			print_env(t_data *data);
+int			print_env(t_data *data);
 int			copy_env(t_data *data);
 int			echo(char **tab);
 int			cd(t_data *data, char **tab);
 int			pwd(void);
+int			ft_exit(t_data *data, char **tab, int n);
 int			ft_exit(t_data *data, char **tab, int n);
 int			update_shlvl(t_data *data);
 int			export(t_data *data, char **tab);
 int			unset(t_data *data, char **tab);
 int			ft_err_exit(t_data *data, char *err_msg, int n);
 long int	ft_atol(const char *nptr);
+
 
 /* Utils */
 void		free_tab(char **tab);
@@ -142,6 +152,8 @@ int    check_arg(t_data *data, int i, e_type type);
 
 
 /* Exec */
+int			execution(t_data *data);
+int			open_file(t_token token, int i);
 int			execution(t_data *data);
 int			open_file(t_token token, int i);
 
