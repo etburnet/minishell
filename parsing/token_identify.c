@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/10 12:01:22 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/10 13:49:27 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	check_string(t_data *data, int i)
        data->token[i].type = string;
        data->token[i].litteral[0] = remove_quote(data->token[i].litteral[0], 0, 0);
        if(data->token[i].litteral[0] == NULL)
-        return(put_error(ERR_MALLOC, data->token[i].litteral[0]), -1);
+        return(put_error(ERR_MALLOC, data->token[i].litteral[0]), 3);
     }
     return(0);
 }
@@ -85,9 +85,10 @@ int	identify_token(t_data *data)
     while(i < data->lenght_token)
     {
         check_operator(data, i);
-        check_var(data, i);
-        if(check_string(data, i) == -1)
-            return(-1);
+        if(check_var(data, i) == 3)
+			return(3);
+        if(check_string(data, i) == 3)
+            return (3);
         if(data->token[i].type == undefine)
             data->token[i].type = word;
         i++;

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/10 11:48:26 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/10 15:38:18 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,17 @@
 
 int		ft_minishell(char *s, t_data *data)
 {
-	if(search_token(s, data) == -1)
-		return(-1);
-	if(identify_token(data) == -1)
-		return(-1);
-	identify_command(data);
+	int	ret;
+
+	ret = search_token(s, data);
+	if(ret != 0)
+		return(ret);
+	ret = identify_token(data);
+	if(ret != 0)
+		return(ret);
+	ret = identify_command(data);
+	if(ret != 0)
+		return(ret);
 	execution(data);
 	free_data_token(data);
 	return(0);
@@ -28,7 +34,9 @@ int		ft_minishell(char *s, t_data *data)
 int	main(void)
 {
 	t_data				*data;
+	int ret;
 
+	ret = 0;
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
@@ -45,11 +53,12 @@ int	main(void)
 		if (*data->arg)
 		{
 			add_history(data->arg);
-			if(init_data(data, data->arg) == -1)
-				return(-1);
-			if(ft_minishell(data->source, data) == -1)
-				return(ft_clean(data), -1);
-			// free(data->arg);
+			ret = init_data(data, data->arg);
+			if(ret != 0)
+				return(ret);
+			ret = ft_minishell(data->source, data);
+			if(ret != 0)
+				return(ft_clean(data), ret);
 		}
 	}
 	return (0);

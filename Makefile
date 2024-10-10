@@ -6,7 +6,7 @@
 #    By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/10/10 11:49:11 by eburnet          ###   ########.fr        #
+#    Updated: 2024/10/10 15:20:22 by eburnet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ SRC=main.c\
 	builtins/exit.c\
 	builtins/export.c\
 	builtins/shlvl.c\
-	redirection.c\
+	execution.c\
+	execution_utils.c\
 	builtins/unset.c\
 	builtins/utils_exit.c\
 	

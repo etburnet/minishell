@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:01:13 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/09 13:35:25 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/10 13:37:49 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	edit_old_pwd(t_data *data, char *cp_pwd)
 	
 	cat = malloc(sizeof(char) * ft_strlen(cp_pwd) + 8);
 	if (cat == NULL)
-		return (ERR_MALLOC, 3);
+		return (put_error(ERR_MALLOC, NULL), 3);
 	cat[0] = '\0';
 	oldpwd = get_this_env("OLDPWD", data->env);
 	if (oldpwd == -1)
@@ -30,7 +30,7 @@ int	edit_old_pwd(t_data *data, char *cp_pwd)
 	data->env[oldpwd] = ft_strdup(cat);
 	free(cat);
 	if (data->env[oldpwd] == NULL)
-		return (ERR_MALLOC, 3);
+		return (put_error(ERR_MALLOC, NULL), 3);
 	return (0);	
 }
 

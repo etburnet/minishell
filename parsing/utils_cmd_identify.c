@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_cmd_identify.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:18:49 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/09 17:16:22 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/10 13:49:50 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,12 @@ int    check_arg(t_data *data, int i, e_type type)
             {
                 data->token[cmd].litteral = my_realloc(data->token[cmd], data->token[cmd].size);
                 if(data->token[cmd].litteral == NULL)
-                    return(put_error(ERR_MALLOC, NULL), -1);
+                    return(put_error(ERR_MALLOC, NULL), 3);
                 data->token[cmd].size += 1;
             }
             data->token[cmd].litteral[j] = ft_strdup(data->token[i].litteral[0]);
-            free(data->token[i].litteral[0]);
             if(data->token[cmd].litteral[j] == NULL)
-                return(put_error(ERR_MALLOC, NULL), -1);
+                return(put_error(ERR_MALLOC, NULL), 3);
             j++;
         }
         i++;

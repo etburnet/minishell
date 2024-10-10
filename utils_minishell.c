@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/10 11:57:09 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/10 15:41:49 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,6 @@ int	get_this_env(char *var, char **env)
 	return (i);
 }
 
-void	clean_and_put_error(t_data *data, char *message, char *var)
-{
-	ft_clean(data);
-	ft_putstr_fd(message, 2);
-	if (var != NULL)
-		ft_putstr_fd(var, 2);
-	ft_putstr_fd("\n", 2);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
 void	put_error(char *message, char *var)
 {
 	ft_putstr_fd(message, 2);
@@ -61,23 +50,6 @@ void	put_error(char *message, char *var)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
-
-// int	ft_isdigit_edit(char *c)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (c[i] == '-' || c[i] == '+')
-// 		i++;
-// 	while (c[i] != '\0')
-// 	{
-// 		if (c[i] >= '0' && c[i] <= '9')
-// 			i++;
-// 		else
-// 			return (0);
-// 	}
-// 	return (!0);
-// }
 
 char **my_realloc(t_token token, size_t size)
 {

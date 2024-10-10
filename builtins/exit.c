@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:59:33 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/10 11:57:24 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/10 14:09:50 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 void	ft_clean(t_data *data)
 {
 	clear_history();
-	free_data_token(data);
-	if (data->arg != NULL)
-		free(data->arg);
+	if(data->arg != NULL)
+		free_data_token(data);
 	if (data->env != NULL)
 		free_tab(data->env);
 }
@@ -85,7 +84,6 @@ int	ft_exit(t_data *data, char **tab, int n)
 		else
 			n = ft_atol(tab[1]) % 256;
 	}
-	clear_history();
 	ft_clean(data);
 	exit(n);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 16:35:56 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/30 16:12:41 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/10 13:38:06 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int	export(t_data *data, char **tab)
 	{
 		ret = export_parsing(data, i, tab);
 		if (ret == 3)
-			return (ERR_MALLOC, 3);
+			return (put_error(ERR_MALLOC, NULL), 3);
 		else if (ret == 1)
 			return (1);
 		i++;

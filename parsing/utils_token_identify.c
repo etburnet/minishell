@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token_identify.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:41:19 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/09 13:35:18 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:38:15 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	*remove_quote(char *s, int i, int j)
 	tmp = malloc((ft_strlen(s) + 1));
 	if (tmp == NULL)
 		return (put_error(ERR_MALLOC, tmp), NULL);
+	ft_memset(tmp, '\0', ft_strlen(s) + 1);
 	while (s[i] != '\0')
 	{
 		while (s[i] == ' ')
@@ -86,9 +87,5 @@ char	*remove_quote(char *s, int i, int j)
 		}
 	}
 	free(s);
-	s = ft_strdup(tmp);
-	free(tmp);
-	if (s == NULL)
-		return (put_error(ERR_MALLOC, s), NULL);
-	return (s);
+	return (tmp);
 }

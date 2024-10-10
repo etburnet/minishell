@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/07 17:50:41 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:07:30 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ int	copy_env(t_data *data)
 {
 	int	tab_len;
 	int	i;
+	int	j;
 
 	i = 0;
+	j = 0;
 	tab_len = 0;
 	if (environ == NULL || environ[i] == NULL)
 		return (3);
@@ -38,7 +40,8 @@ int	copy_env(t_data *data)
 	data->env = malloc(sizeof(char *) * (tab_len + 1));
 	if (data->env == NULL)
 		return (3);
-	data->env[tab_len] = NULL;
+	while (j <= tab_len)
+		data->env[j++] = NULL;
 	while (i < tab_len)
 	{
 		data->env[i] = ft_strdup(environ[i]);

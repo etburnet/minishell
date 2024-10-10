@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/10 12:01:49 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/10 13:48:39 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	tokenise(t_data *data, int *i)
 		return(-1);
 	data->token[*i].litteral[0] = ft_substr(data->source, data->start, (data->cur - data->start));
 	if(data->token[*i].litteral[0] == NULL)
-		return(put_error(ERR_MALLOC, NULL), -1);
+		return(put_error(ERR_MALLOC, NULL), 3);
 	data->nb_token += 1;
 	data->token[*i].position = data->nb_token;
 	(*i)++;
@@ -54,7 +54,7 @@ int		search_token(char *s, t_data *data)
 	data->start = data->cur;
 	data->token = malloc(sizeof(t_token) * (data->lenght_token + 1));
 	if(data->token == NULL)
-		return(put_error(ERR_MALLOC, NULL), -1);
+		return(put_error(ERR_MALLOC, NULL), 3);
 	while (s[data->cur] != '\0')
     {
 		while(s[data->cur] == ' ')
@@ -65,8 +65,8 @@ int		search_token(char *s, t_data *data)
 			tok = 0;
 		}
         tok = split_token(data, s, &i, tok);
-		if(tok == -1)
-			return(-1);
+		if(tok == -1 || tok == 3)
+			return(tok);
     }
 	return(0);
 }

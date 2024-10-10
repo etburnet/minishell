@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/10 11:59:34 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/10 13:51:48 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,19 @@ int    set_heredoc(t_data *data)
                 return(-1);
             buffer = readline(">");
             if(buffer == NULL)
-                return(put_error(ERR_MALLOC, NULL), -1);
+                return(put_error(ERR_MALLOC, NULL), 3);
             while(buffer != NULL)
             {
                 buffer = check_line(data, buffer, data->token[i + 1]. litteral[0], cmd);
                 if(buffer == NULL)
-                    return(put_error(ERR_MALLOC, NULL), -1);
+                    return(put_error(ERR_MALLOC, NULL), 3);
             } 
             if(buffer == NULL && g_sig_recieved == 1)
             close(data->token[cmd].fdin);
             if(interrupt_heredoc(data, new, cmd) == -1)
                 return(-1);
         }
-        i++;
+        i++; 
     }
     init_signal_handler(3);
     return(0);
@@ -61,9 +61,9 @@ int    check_command(t_data *data)
         if(data->token[i].type == word || data->token[i].type == string)
         {
             data->token[i].type = command;
-            data->token[i].full_path = ft_find_cmd(data->token[i].litteral);
-            if(check_arg(data, i, command) == -1)
-                return(-1);
+            data->token[i].full_path = ft_find_cmd(data, data->token[i].litteral);
+            if(check_arg(data, i, command) == 3)
+                return(3);
         }
         i++;
     }
@@ -120,21 +120,24 @@ int    is_built_in(t_data *data)
     else if(strncmp(data->token[i].litteral[0], "exit", 5) == 0)
         data->token[i].type = built_in;
     if(data->token[i].type == built_in)
-        if(check_arg(data, i, built_in) == -1)
-            return(-1);
+        if(check_arg(data, i, built_in) == 3)
+            return(3);
     return(0);
 }
 
 int    identify_command(t_data *data)
 {
-    if(is_built_in(data) == -1)
-        return(-1);
+    int ret;
+
+    if(is_built_in(data) == 3)
+        return(3);
     check_infile(data);
     check_outfile(data);
-    if(check_command(data) == -1)
-        return(-1);
-    if(set_heredoc(data) == -1)
-        return(-1);
+    if(check_command(data) == 3)
+        return(3);
+    ret = set_heredoc(data);
+    if(ret != 0)
+        return(ret);
     return(0);
 }
 

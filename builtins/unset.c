@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:29:16 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/09 12:54:43 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/10 13:38:28 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	unset(t_data *data, char **tab)
 			i++;
 		ret = del_env(data, tab[i]);
 		if (ret == 3)
-			return (ERR_MALLOC, 3);
+			return (put_error(ERR_MALLOC, NULL), 3);
 		else if (ret == 1)
 			return (1);
 		i++;
