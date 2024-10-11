@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/10 15:41:52 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/11 14:28:33 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ typedef struct s_token
 typedef struct s_data
 {
 	t_token	*token;
+	int	pipe_fd[2];
+	int	old_pipe[2];
 	int		nb_token;
 	int		lenght_token;
 	char	*source;
