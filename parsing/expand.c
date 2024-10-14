@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:09:58 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/09 16:45:43 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/14 12:12:24 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int	replace_var(t_data *data, int i, int total_len, char *var_value)
 			}
 			else
 			{
-				while (ft_isalnum(data->token[i].litteral[0][j]) || data->token[i].litteral[0][j] == '_')
+				while (ft_isalnum(data->token[i].litteral[0][j])
+					|| data->token[i].litteral[0][j] == '_')
 					j++;
 				while (var_value[k])
 					str[l++] = var_value[k++];

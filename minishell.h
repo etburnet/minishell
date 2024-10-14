@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/11 14:28:33 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/14 11:18:59 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ typedef struct s_token
 typedef struct s_data
 {
 	t_token	*token;
-	int	pipe_fd[2];
-	int	old_pipe[2];
+	int		pipe_fd[2];
+	int		old_pipe[2];
 	int		nb_token;
 	int		lenght_token;
 	char	*source;
@@ -144,8 +144,9 @@ int			check_arg(t_data *data, int i, e_type type);
 int			execution(t_data *data);
 int			open_file(t_token token, int i);
 void		check_first_last(t_data *data);
-int	which_builtin(t_data *data, char **cmd_tab);
-int	open_file(t_token token, int i);
-void	ft_close(int fd1, int fd2);
+int			which_builtin(t_data *data, char **cmd_tab);
+int			open_file(t_token token, int i);
+void		ft_close(int fd1, int fd2);
+int			catch_cmd(t_data *data, int i);
 
 #endif
