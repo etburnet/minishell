@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:11:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/10 11:56:57 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/14 16:56:45 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 
 int g_sig_recieved = 0;
 
+void	handle_signalbis(int signum)
+{
+	if (signum == SIGINT)
+	{
+		printf("\n");
+		// rl_on_new_line();
+		// rl_replace_line("", 0);
+		// rl_redisplay();
+	}
+} 
 void    init_signal_handler(int i)
 {
     struct sigaction	sa;
@@ -37,8 +47,18 @@ void    init_signal_handler(int i)
         ft_memset(&action, 0, sizeof(action));
 		action.sa_handler = &handle_signal;
         sigaction(SIGINT, &action, NULL);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if(i == 4)
+	{
+        ft_memset(&action, 0, sizeof(action));
+		action.sa_handler = &handle_signalbis;
+        sigaction(SIGINT, &action, NULL);
+		signal(SIGQUIT, SIG_IGN);
 	}
 }
+
+
 
 void	handle_signal(int signum)
 {

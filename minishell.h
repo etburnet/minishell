@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/14 11:18:59 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/14 17:24:40 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,9 @@ int			init_data(t_data *tok, char *s);
 int			init_token(t_token *token);
 
 /* Parsing */
+int		count_space(char *s, int i, int j);
+char	*set_string(char *s, int len);
+
 size_t		ft_countword(const char *s, int i);
 int			search_token(char *s, t_data *data);
 int			check_quote(const char *s, int i, char c);
@@ -130,7 +133,9 @@ int			expand(t_data *data, int i, int start, int len_var, int full_len);
 int			identify_token(t_data *data);
 void		put_string_to_cpy(char *s, char *tmp, int *i, int *j);
 char		*check_to_remove_dquote(char *s, char *tmp, int *j, int *i);
+char	*check_to_remove_dquote_edit(char *s, char *tmp, int *j, int *i);
 char		*check_to_remove_quote(char *s, char *tmp, int *j, int *i);
+char	*check_to_remove_quote_edit(char *s, char *tmp, int *j, int *i);
 char		*remove_quote(char *s, int i, int j);
 
 /*Cmd_identify*/

@@ -1,7 +1,9 @@
 {
-    "C_Cpp.errorSquiggles": "enabled",
+    "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
         "dirent.h": "c",
-        "readline.h": "c"
+        "readline.h": "c",
+        "minishell.h": "c",
+        "unistd.h": "c"
     }
 }

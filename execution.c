@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/14 12:22:38 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/14 16:55:26 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,16 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 {
 	pid_t	pid;
 
-	printf("fdin %d, fdout %d\n", fdin, fdout);
+	// printf("fdin %d, fdout %d\n", fdin, fdout);
+	// printf("cmd = %s, arg = %s\n", data->token[cmd].litteral[0], data->token[cmd].litteral[1]);
 	if (data->token[cmd].full_path == NULL)
 		return (put_error(ERR_CMD, data->token[cmd].litteral[0]), ft_close(fdin,
 				fdout), 1);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
+	if(pid > 0)
+		init_signal_handler(4);
 	else if (pid == 0)
 	{
 		if (dup2(fdin, STDIN_FILENO) == -1 || dup2(fdout, STDOUT_FILENO) == -1)
@@ -175,6 +178,7 @@ int	execution(t_data *data)
 		data->status = status;
 		if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
 			return (1);
+		// init_signal_handler(3);
 	}
 	return (0);
 }
