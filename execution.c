@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/14 15:11:45 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/14 15:56:14 by eburnet          ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/10/15 15:05:12 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
+	if(pid > 0)
+		init_signal_handler(4);
 	else if (pid == 0)
 	{
 		if (dup2(fdin, STDIN_FILENO) == -1 || dup2(fdout, STDOUT_FILENO) == -1)
@@ -69,7 +71,7 @@ int	dispatch_cmd(t_data *data, int cmd)
 	ret = 0;
 	if (data->token[cmd].type == command)
 		ret = ft_execute(data, cmd, data->token[cmd].fdin,
-				data->token[cmd].fdout);
+			data->token[cmd].fdout);
 	else if (data->token[cmd].type == built_in)
 	{
 		if (strncmp(data->token[cmd].litteral[0], "exit", 5) == 0
@@ -96,7 +98,7 @@ int	dispatch_cmd(t_data *data, int cmd)
 int	bring_command(t_data *data, int *i)
 {
 	int	cmd;
-
+	
 	cmd = -1;
 	while (*i < data->lenght_token && data->token[*i].type != pipes)
 	{
@@ -171,7 +173,7 @@ int	execution(t_data *data)
 	{
 		pid = waitpid(-1, &status, 0);
 		data->status = status % 255;
-		if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
+		if (WEXITSTATUS(status) != 0)
 			return (1);
 	}
 	return (0);

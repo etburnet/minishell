@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/10 13:48:39 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/14 17:57:28 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ int		split_token(t_data *data, char *s, int *i, int tok)
 	if (s[data->cur] != ' ' && s[data->cur] != '\0')
 	{
 		while (s[data->cur] != '\"' && s[data->cur] != '\'' && s[data->cur] != ' ' && s[data->cur] != '\0')
-			data->cur++;;
+			data->cur++;
 		data->cur = check_quote(s, data->cur, '\'');
 		if(data->cur == -1)
-			return(put_error(ERR_CMD, "\'"), -1);
+			return(put_error(ERR_SYNTAX, "\'"), -1);
 		data->cur = check_quote(s, data->cur, '\"');
 		if(data->cur == -1)
-			return(put_error(ERR_CMD, "\""), -1);
+			return(put_error(ERR_SYNTAX, "\""), -1);
 		while (s[data->cur] != '\"' && s[data->cur] != '\'' && s[data->cur] != ' ' && s[data->cur] != '\0')
 			data->cur++;
 		if(s[data->cur] == ' ' || s[data->cur] == '\0')
@@ -56,16 +56,18 @@ int		search_token(char *s, t_data *data)
 	if(data->token == NULL)
 		return(put_error(ERR_MALLOC, NULL), 3);
 	while (s[data->cur] != '\0')
-    {
+    { 
 		while(s[data->cur] == ' ')
-		data->cur++;
+			data->cur++;
 		if(tok == 1)
 		{
 			data->start = data->cur;
 			tok = 0;
 		}
         tok = split_token(data, s, &i, tok);
-		if(tok == -1 || tok == 3)
+		if(tok == -1)
+			break;
+		if(tok == 3)
 			return(tok);
     }
 	return(0);

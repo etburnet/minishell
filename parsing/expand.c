@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:09:58 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/14 18:27:23 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 14:45:20 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	replace_var(t_data *data, int i, int total_len, char *var_value)
 			str[l++] = data->token[i].litteral[0][j++];
 	}
 	str[l] = '\0';
+	free(itoa);
+	free(data->token[i].litteral[0]);
 	data->token[i].litteral[0] = str;
 	return (0);
 }
@@ -102,11 +104,13 @@ int	expand(t_data *data, int i, int start, int len_var, int full_len)
 	pos_var = get_this_env(var, data->env);
 	if (pos_var != -1 || var[0] == '?')
 	{
+		if (var[0] == '\0' && full_len == 1)
+			return (-1);
 		if (var[0] != '?')
 		{
 			var_value = ft_strdup(&data->env[pos_var][len_var + 1]);
 			if (var_value == NULL)
-				return (put_error(ERR_MALLOC, NULL), 3);
+				return (free(var), put_error(ERR_MALLOC, NULL), 3);
 			len_value = ft_strlen(var_value);
 		}
 		ret = replace_var(data, i, ((full_len - len_var) + len_value + 1),
