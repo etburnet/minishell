@@ -6,36 +6,35 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 15:40:12 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:29:14 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
 
-int		ft_minishell(char *s, t_data *data)
+int	ft_minishell(char *s, t_data *data)
 {
 	int	ret;
 
 	ret = search_token(s, data);
-	if(ret != 0)
-		return(ret);
+	if (ret != 0)
+		return (ret);
 	ret = identify_token(data);
-	if(ret != 0)
-		return(ret);
+	if (ret != 0)
+		return (ret);
 	ret = identify_command(data);
-	if(ret != 0 && ret != 1)
-		return(ret);
-	if(ret == 0)
+	if (ret != 0 && ret != 1)
+		return (ret);
+	if (ret == 0)
 		execution(data);
 	free_data_token(data);
-	return(0);
+	return (0);
 }
 
 int	main(void)
 {
-	t_data				*data;
-	int ret;
+	t_data	*data;
+	int		ret;
 
 	ret = 0;
 	data = malloc(sizeof(t_data));
@@ -54,18 +53,18 @@ int	main(void)
 	while (1)
 	{
 		init_signal_handler(1);
-		data->arg = ft_strdup(readline("minishell$ "));
+		data->arg = readline("minishell$ ");
 		if (data->arg == NULL)
 			ft_exit(data, NULL, 1);
 		if (*data->arg)
 		{
 			add_history(data->arg);
 			ret = init_data(data, data->arg);
-			if(ret != 0)
-				return(ret);
+			if (ret != 0)
+				return (ret);
 			ret = ft_minishell(data->source, data);
-			if(ret != 0)
-				return(ft_clean(data), ret);
+			if (ret != 0)
+				return (ft_clean(data), ret);
 		}
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token_identify.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:41:19 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 13:06:30 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/15 16:28:52 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 void	put_string_to_cpy(char *s, char *tmp, int *i, int *j)
 {
-	
-		tmp[*j] = s[*i];
-		(*j)++;
-		(*i)++;
+	tmp[*j] = s[*i];
+	(*j)++;
+	(*i)++;
 }
 
 char	*check_to_remove_dquote(char *s, char *tmp, int *j, int *i)
@@ -64,7 +63,6 @@ char	*check_to_remove_quote(char *s, char *tmp, int *j, int *i)
 	return (tmp);
 }
 
-
 char	*remove_quote(char *s, int i, int j)
 {
 	char	*tmp;
@@ -81,7 +79,8 @@ char	*remove_quote(char *s, int i, int j)
 		{
 			while (s[i] != '\"' && s[i] != '\'' && s[i] != ' ' && s[i] != '\0')
 				put_string_to_cpy(s, tmp, &i, &j);
-			if(check_to_remove_quote(s, tmp, &j, &i) == NULL || check_to_remove_dquote(s, tmp, &j, &i) == NULL)
+			if (check_to_remove_quote(s, tmp, &j, &i) == NULL
+				|| check_to_remove_dquote(s, tmp, &j, &i) == NULL)
 				return (NULL);
 			while (s[i] != '\"' && s[i] != '\'' && s[i] != ' ' && s[i] != '\0')
 				put_string_to_cpy(s, tmp, &i, &j);

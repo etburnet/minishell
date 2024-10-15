@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:11:45 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/15 15:39:31 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:34:41 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 
 	// printf("fdin %d, fdout %d\n", fdin, fdout);
 	if (data->token[cmd].full_path == NULL)
-		return (put_error(ERR_CMD, data->token[cmd].litteral[0]), ft_close(fdin,
+		return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(fdin,
 				fdout), 127);
 	pid = fork();
 	if (pid == -1)
@@ -55,9 +55,9 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 		ft_close(fdin, fdout);
 		ft_close(data->pipe_fd[0], data->pipe_fd[1]);
 		ft_close(data->old_pipe[0], data->old_pipe[1]);
-		if (execve(data->token[cmd].full_path, data->token[cmd].litteral,
+		if (execve(data->token[cmd].full_path, data->token[cmd].tab,
 				NULL) == -1)
-			put_error(ERR_CMD, data->token[cmd].litteral[0]);
+			put_error(ERR_CMD, data->token[cmd].tab[0]);
 		return (2);
 	}
 	ft_close(fdin, fdout);
@@ -74,20 +74,20 @@ int	dispatch_cmd(t_data *data, int cmd)
 			data->token[cmd].fdout);
 	else if (data->token[cmd].type == built_in)
 	{
-		if (strncmp(data->token[cmd].litteral[0], "exit", 5) == 0
+		if (strncmp(data->token[cmd].tab[0], "exit", 5) == 0
 			&& data->token[cmd].last == 1 && data->token[cmd].first == 1)
-			ret = ft_exit(data, data->token[cmd].litteral, 0);
-		else if (strncmp(data->token[cmd].litteral[0], "cd", 5) == 0
+			ret = ft_exit(data, data->token[cmd].tab, 0);
+		else if (strncmp(data->token[cmd].tab[0], "cd", 5) == 0
 			&& data->token[cmd].last == 1 && data->token[cmd].first == 1)
-			ret = cd(data, data->token[cmd].litteral);
-		else if (strncmp(data->token[cmd].litteral[0], "unset", 5) == 0
+			ret = cd(data, data->token[cmd].tab);
+		else if (strncmp(data->token[cmd].tab[0], "unset", 5) == 0
 			&& data->token[cmd].last == 1 && data->token[cmd].first == 1)
-			ret = unset(data, data->token[cmd].litteral);
-		else if (strncmp(data->token[cmd].litteral[0], "export", 5) == 0
+			ret = unset(data, data->token[cmd].tab);
+		else if (strncmp(data->token[cmd].tab[0], "export", 5) == 0
 			&& data->token[cmd].last == 1 && data->token[cmd].first == 1)
-			ret = export(data, data->token[cmd].litteral);
+			ret = export(data, data->token[cmd].tab);
 		else
-			ret = exec_built_in(data, data->token[cmd].litteral,
+			ret = exec_built_in(data, data->token[cmd].tab,
 					data->token[cmd].fdin, data->token[cmd].fdout);
 	}
 	if (ret != 0)

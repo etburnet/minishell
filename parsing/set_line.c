@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 15:42:09 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:31:45 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	count_space(char *s, int i, int j)
 			if ((s[i] == '<' && s[i + 1] == '<') || (s[i] == '>' && s[i
 					+ 1] == '>'))
 			{
-				if (s[i - 1] != ' ')
+				if (s[i - 1] != ' ' && i > 0)
 					j++;
 				i++;
 				if (s[i + 1] != ' ')
@@ -45,7 +45,7 @@ int	count_space(char *s, int i, int j)
 			}
 			else
 			{
-				if (s[i - 1] != ' ')
+				if (s[i - 1] != ' ' && i > 0)
 					j++;
 				if (s[i + 1] != ' ')
 					j++;
@@ -53,7 +53,8 @@ int	count_space(char *s, int i, int j)
 		}
 		i++;
 	}
-	return (j + i + 1);
+	// printf("i = %d j + %d\n", i, j);
+	return (j + i);
 }
 
 void	add_space(char *temp, int *j)
@@ -88,6 +89,7 @@ void	is_operator(char *s, char *temp, int *i, int *j)
 		put_string_to_cpy(s, temp, i, j);
 	}
 }
+
 char	*check_to_remove_quote_edit(char *s, char *tmp, int *j, int *i)
 {
 	int	quote;
@@ -109,6 +111,7 @@ char	*check_to_remove_quote_edit(char *s, char *tmp, int *j, int *i)
 	}
 	return (tmp);
 }
+
 char	*check_to_remove_dquote_edit(char *s, char *tmp, int *j, int *i)
 {
 	int	quote;
@@ -130,7 +133,8 @@ char	*check_to_remove_dquote_edit(char *s, char *tmp, int *j, int *i)
 	}
 	return (tmp);
 }
-char	*set_string(char *s, int len)
+
+char	*set_string(t_data *data, char *s, int len)
 {
 	char	*temp;
 	int		i;
@@ -138,9 +142,14 @@ char	*set_string(char *s, int len)
 
 	i = 0;
 	j = 0;
-	temp = malloc(sizeof(*temp) * (len + 1));
+	temp = malloc(sizeof(char) * (len + 2));
 	if (temp == NULL)
 		return (ft_putstr_fd(ERR_MALLOC, 2), NULL);
+	if (len == (int)ft_strlen(data->arg))
+	{
+		temp = ft_strdup(data->arg);
+		return (temp);
+	}
 	ft_memset(temp, '\0', len + 1);
 	while (s[i] != '\0')
 	{

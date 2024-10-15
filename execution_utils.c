@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:19:29 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/15 11:30:20 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:34:41 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ int	open_file(t_data *data, t_token token, int i)
 
 	fd = 0;
 	if (i == 0)
-		fd = open(token.litteral[0], O_RDONLY);
+		fd = open(token.tab[0], O_RDONLY);
 	else if (i == 1)
-		fd = open(token.litteral[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open(token.tab[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (i == 3)
 	{
 		fd = open("temp_file_here_doc.txt", O_RDWR | O_CREAT | O_TRUNC, 0644);
@@ -69,7 +69,7 @@ int	open_file(t_data *data, t_token token, int i)
 	else if (i == 4)
 		fd = open("temp_file_here_doc.txt", O_RDONLY);
 	if (fd < 0)
-		return (perror(token.litteral[0]), data->status = 1, -1);
+		return (perror(token.tab[0]), data->status = 1, -1);
 	return (fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:14:53 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/10 11:57:16 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:32:23 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	check_n(char *str)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	i = 0;
 	len = ft_strlen(str);
@@ -36,8 +36,8 @@ int	echo(char **tab)
 {
 	int	i;
 	int	last;
-	int j;
-	
+	int	j;
+
 	j = 0;
 	i = 1;
 	last = 1;
@@ -58,6 +58,5 @@ int	echo(char **tab)
 	}
 	if (last == 1)
 		printf("\n");
-	return (0);	
+	return (0);
 }
-

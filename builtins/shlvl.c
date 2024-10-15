@@ -6,15 +6,15 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:28:41 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/30 17:32:10 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:27:50 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int increment_shlvl(char **shlvl_cp, char *str)
+int	increment_shlvl(char **shlvl_cp, char *str)
 {
-	int		shlvl_value;
+	int	shlvl_value;
 
 	*shlvl_cp = ft_strdup(str);
 	if (*shlvl_cp == NULL)
@@ -44,7 +44,7 @@ int	update_shlvl(t_data *data)
 		return (free(shlvl_cp), 3);
 	cat[0] = '\0';
 	if (shlvl == -1)
-		return (ft_putstr_fd("Unable to find SHLVL", 2) ,1);
+		return (ft_putstr_fd("Unable to find SHLVL", 2), 1);
 	ft_strlcat(cat, "SHLVL=", 7);
 	ft_strlcat(cat, shlvl_cp, ft_strlen(shlvl_cp) + 7);
 	free(data->env[shlvl]);
@@ -53,5 +53,5 @@ int	update_shlvl(t_data *data)
 	free(shlvl_cp);
 	if (data->env[shlvl] == NULL)
 		return (3);
-	return (0);	
+	return (0);
 }

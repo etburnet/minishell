@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:09:58 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/15 15:41:27 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:34:41 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int	replace_var(t_data *data, int i, int total_len, char *var_value)
 	if (str == NULL)
 		return (put_error(ERR_MALLOC, NULL), 3);
 	ft_memset(str, '\0', total_len);
-	while (data->token[i].litteral[0][j])
+	while (data->token[i].tab[0][j])
 	{
-		if (data->token[i].litteral[0][j] == '$')
+		if (data->token[i].tab[0][j] == '$')
 		{
 			j++;
-			if (data->token[i].litteral[0][j] == '?')
+			if (data->token[i].tab[0][j] == '?')
 			{
 				itoa = ft_itoa(data->status);
 				ft_strlcat(str, itoa, (ft_strlen(str) + ft_strlen(itoa) + 1));
@@ -41,20 +41,20 @@ int	replace_var(t_data *data, int i, int total_len, char *var_value)
 			}
 			else
 			{
-				while (ft_isalnum(data->token[i].litteral[0][j])
-					|| data->token[i].litteral[0][j] == '_')
+				while (ft_isalnum(data->token[i].tab[0][j])
+					|| data->token[i].tab[0][j] == '_')
 					j++;
 				while (var_value[k])
 					str[l++] = var_value[k++];
 			}
 		}
 		else
-			str[l++] = data->token[i].litteral[0][j++];
+			str[l++] = data->token[i].tab[0][j++];
 	}
 	str[l] = '\0';
 	free(itoa);
-	free(data->token[i].litteral[0]);
-	data->token[i].litteral[0] = str;
+	free(data->token[i].tab[0]);
+	data->token[i].tab[0] = str;
 	return (0);
 }
 
@@ -69,21 +69,21 @@ int	remove_var(t_data *data, int i, int total_len)
 	str = malloc(sizeof(char) * total_len);
 	if (str == NULL)
 		return (put_error(ERR_MALLOC, NULL), 3);
-	while (data->token[i].litteral[0][j])
+	while (data->token[i].tab[0][j])
 	{
-		if (data->token[i].litteral[0][j] == '$')
+		if (data->token[i].tab[0][j] == '$')
 		{
 			j++;
-			while (ft_isalnum(data->token[i].litteral[0][j])
-				|| data->token[i].litteral[0][j] == '_')
+			while (ft_isalnum(data->token[i].tab[0][j])
+				|| data->token[i].tab[0][j] == '_')
 				j++;
 		}
-		str[k++] = data->token[i].litteral[0][j];
+		str[k++] = data->token[i].tab[0][j];
 		j++;
 	}
 	str[k] = '\0';
-	free(data->token[i].litteral[0]);
-	data->token[i].litteral[0] = str;
+	free(data->token[i].tab[0]);
+	data->token[i].tab[0] = str;
 	return (0);
 }
 
@@ -100,7 +100,7 @@ int	expand(t_data *data, int i, int start, int len_var, int full_len)
 	var = malloc(sizeof(char) * (len_var + 1));
 	if (var == NULL)
 		return (put_error(ERR_MALLOC, NULL), 3);
-	ft_strlcpy(var, &data->token[i].litteral[0][start], len_var + 1);
+	ft_strlcpy(var, &data->token[i].tab[0][start], len_var + 1);
 	pos_var = get_this_env(var, data->env);
 	if (pos_var != -1 || var[0] == '?')
 	{

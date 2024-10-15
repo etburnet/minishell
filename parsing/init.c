@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:06:50 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 15:41:37 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:34:41 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	init_data(t_data *tok, char *s)
 	tok->old_pipe[1] = -1;
 	tok->pipe_fd[0] = -1;
 	tok->pipe_fd[1] = -1;
-	tok->source = set_string(s, tok->source_lenght);
+	tok->source = set_string(tok, s, tok->source_lenght);
 	if (tok->source == NULL)
 		return (put_error(ERR_MALLOC, NULL), 3);
 	tok->lenght_token = ft_countword(tok->source, 0);
@@ -32,13 +32,14 @@ int	init_data(t_data *tok, char *s)
 		tok->lenght_token = 0;
 	return (0);
 }
+
 int	init_token(t_token *token)
 {
 	token->size = 1;
-	token->litteral = malloc(sizeof(char *) * 2);
-	if (token->litteral == NULL)
+	token->tab = malloc(sizeof(char *) * 2);
+	if (token->tab == NULL)
 		return (ft_putstr_fd(ERR_MALLOC, 2), 3);
-	token->litteral[1] = NULL;
+	token->tab[1] = NULL;
 	token->type = undefine;
 	token->value = 0;
 	token->position = 0;
