@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/15 11:32:04 by eburnet          ###   ########.fr       */
+/*   Created: 2024/10/14 15:11:45 by eburnet           #+#    #+#             */
+/*   Updated: 2024/10/15 15:39:31 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ int	execution(t_data *data)
 	{
 		pid = waitpid(-1, &status, 0);
 		data->status = status % 255;
-		if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
+		if (WEXITSTATUS(status) != 0)
 			return (1);
 	}
 	return (0);

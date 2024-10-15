@@ -3,31 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   token_identify.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 12:53:10 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:42:20 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 int	wich_operator(t_data *data, int i)
+int	wich_operator(t_data *data, int i)
 {
 	if (data->token[i].type != undefine)
 		return (0);
-	if (ft_strncmp(data->token[i].litteral[0], "<", 2) == 0)
+	else if (ft_strncmp(data->token[i].litteral[0], "<", 2) == 0)
 		data->token[i].type = less;
-	if (ft_strncmp(data->token[i].litteral[0], ">", 2) == 0)
+	else if (ft_strncmp(data->token[i].litteral[0], ">", 2) == 0)
 		data->token[i].type = greater;
-	if (ft_strncmp(data->token[i].litteral[0], "<<", 3) == 0)
+	else if (ft_strncmp(data->token[i].litteral[0], "<<", 3) == 0)
 	{
 		data->token[i].type = here_doc;
 		data->token[i + 1].type = delimiter;
 	}
-	if (ft_strncmp(data->token[i].litteral[0], ">>", 3) == 0)
+	else if (ft_strncmp(data->token[i].litteral[0], ">>", 3) == 0)
 		data->token[i].type = greatergreater;
-	if (ft_strncmp(data->token[i].litteral[0], "|", 2) == 0)
+	else if (ft_strncmp(data->token[i].litteral[0], "|", 2) == 0)
 		data->token[i].type = pipes;
 	return (0);
 }
@@ -110,13 +111,48 @@ char		*remove_metacharacter(char *s)
 	return(temp);
 }
 
+int		is_metacharcter(char c)
+{
+	if(c == '\\' || c == '\n' || c == '\t')
+		return(1);
+	return(0);
+}
+char		*remove_metacharacter(char *s)
+{
+	char *temp;
+	int i;
+	int j;
+	int len;
+
+	i = 0;
+	j = 0;
+	len = ft_strlen(s);
+	temp = malloc(len + 1);
+	ft_memset(temp, '\0', len);
+	while(s[i] != '\0')
+	{
+		if(s[i] == '\"')
+			check_to_remove_dquote_edit(s, temp, &j, &i);
+		else if(s[i] == '\'')
+			check_to_remove_quote_edit(s, temp, &j, &i);
+		else if(is_metacharcter(s[i]) == 1)
+			i++;
+		put_string_to_cpy(s, temp, &i, &j);
+	}
+	temp[j] = '\0';
+	free(s);
+	return(temp);
+}
+
 int	identify_token(t_data *data)
 {
 	int	i;
 
 	i = 0;
+	i = 0;
     while(i < data->lenght_token)
     {
+        wich_operator(data, i);
         wich_operator(data, i);
         if(check_var(data, i) == 3)
 			return(3);
@@ -124,6 +160,7 @@ int	identify_token(t_data *data)
             return (3);
         if(data->token[i].type == undefine)
             data->token[i].type = word;
+		data->token[i].litteral[0] = remove_metacharacter(data->token[i].litteral[0]);
 		data->token[i].litteral[0] = remove_metacharacter(data->token[i].litteral[0]);
         i++;
     }

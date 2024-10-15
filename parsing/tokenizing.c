@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 15:25:35 by opdi-bia         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/10/15 15:42:29 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -30,11 +31,14 @@ int		split_token(t_data *data, char *s, int *i, int tok)
 	{
 		while (s[data->cur] != '\"' && s[data->cur] != '\'' && s[data->cur] != ' ' && s[data->cur] != '\0')
 			data->cur++;
+			data->cur++;
 		data->cur = check_quote(s, data->cur, '\'');
 		if(data->cur == -1)
 			return(put_error(ERR_SYNTAX, "\'"), -1);
+			return(put_error(ERR_SYNTAX, "\'"), -1);
 		data->cur = check_quote(s, data->cur, '\"');
 		if(data->cur == -1)
+			return(put_error(ERR_SYNTAX, "\""), -1);
 			return(put_error(ERR_SYNTAX, "\""), -1);
 		while (s[data->cur] != '\"' && s[data->cur] != '\'' && s[data->cur] != ' ' && s[data->cur] != '\0')
 			data->cur++;
@@ -68,6 +72,9 @@ int		search_token(char *s, t_data *data)
 			tok = 0;
 		}
         tok = split_token(data, s, &i, tok);
+		if(tok == -1)
+			break;
+		if(tok == 3)
 		if(tok == -1)
 			break;
 		if(tok == 3)

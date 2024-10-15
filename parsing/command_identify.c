@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   command_identify.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 15:27:37 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:41:12 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -112,6 +113,27 @@ int	is_built_in(t_data *data)
 	int	i;
 
 	i = 0;
+    while(i < data->lenght_token)
+    {   
+        if (ft_strncmp(data->token[i].litteral[0], "echo", 5) == 0)
+            data->token[i].type = built_in;
+        else if (ft_strncmp(data->token[i].litteral[0], "cd", 3) == 0)
+            data->token[i].type = built_in;
+        else if (ft_strncmp(data->token[i].litteral[0], "pwd", 4) == 0)
+            data->token[i].type = built_in;
+        else if (ft_strncmp(data->token[i].litteral[0], "export", 7) == 0)
+            data->token[i].type = built_in;
+        else if (ft_strncmp(data->token[i].litteral[0], "unset", 6) == 0)
+            data->token[i].type = built_in;
+        else if (ft_strncmp(data->token[i].litteral[0], "env", 4) == 0)
+            data->token[i].type = built_in;
+        else if (ft_strncmp(data->token[i].litteral[0], "exit", 5) == 0)
+            data->token[i].type = built_in;
+        if (data->token[i].type == built_in)
+            if (check_arg(data, i, built_in) == 3)
+                return (3);
+        i++;
+    }
     while(i < data->lenght_token)
     {   
         if (ft_strncmp(data->token[i].litteral[0], "echo", 5) == 0)
