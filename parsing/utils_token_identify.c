@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token_identify.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:41:19 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/10 12:38:15 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 13:06:30 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void	put_string_to_cpy(char *s, char *tmp, int *i, int *j)
 {
-	tmp[*j] = s[*i];
-	(*j)++;
-	(*i)++;
+	
+		tmp[*j] = s[*i];
+		(*j)++;
+		(*i)++;
 }
 
 char	*check_to_remove_dquote(char *s, char *tmp, int *j, int *i)

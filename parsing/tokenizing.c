@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/14 17:57:28 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:25:35 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,11 @@ int		search_token(char *s, t_data *data)
 		return(put_error(ERR_MALLOC, NULL), 3);
 	while (s[data->cur] != '\0')
     { 
-		while(s[data->cur] == ' ')
+		while(s[data->cur] == ' ' && s[data->cur] != '\0')
+		{
 			data->cur++;
+			data->start = data->cur;
+		}
 		if(tok == 1)
 		{
 			data->start = data->cur;

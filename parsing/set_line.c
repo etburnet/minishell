@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/14 17:34:25 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/15 13:17:27 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	is_operator(char *s, char *temp, int *i, int *j)
 	if ((s[*i] == '<' && s[*i + 1] == '<') || (s[*i] == '>' && s[*i + 1] == '>')
 		|| (s[*i] == '|' && s[*i + 1] == '|'))
 	{
-		if (s[*i - 1] != ' ')
+		if (*i > 0 && s[*i - 1] != ' ')
 			add_space(temp, j);
 		put_string_to_cpy(s, temp, i, j);
 		if (s[*i + 1] != ' ')
@@ -80,7 +80,7 @@ void	is_operator(char *s, char *temp, int *i, int *j)
 	}
 	else
 	{
-		if (s[*i - 1] != ' ')
+		if (*i > 0 && s[*i - 1] != ' ')
 			add_space(temp, j);
 		put_string_to_cpy(s, temp, i, j);
 		if (s[*i + 1] != ' ')
@@ -138,9 +138,10 @@ char	*set_string(char *s, int len)
 
 	i = 0;
 	j = 0;
-	temp = malloc(sizeof(char) * (len + 1));
+	temp = malloc(sizeof(*temp) * (len + 1));
 	if (temp == NULL)
 		return (ft_putstr_fd(ERR_MALLOC, 2), NULL);
+	ft_memset(temp, '\0', len + 1);
 	while (s[i] != '\0')
 	{
 		if ((check_operator(s[i]) != 1) && s[i] != '\'' && s[i] != '\"')
@@ -152,6 +153,5 @@ char	*set_string(char *s, int len)
 		if (check_operator(s[i]) == 1)
 			is_operator(s, temp, &i, &j);
 	}
-	temp[j] = '\0';
 	return (temp);
 }

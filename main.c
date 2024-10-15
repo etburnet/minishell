@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 11:32:59 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 15:34:52 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@ int		ft_minishell(char *s, t_data *data)
 	if(ret != 0)
 		return(ret);
 	ret = identify_command(data);
-	if(ret != 0)
+	if(ret != 0 && ret != 1)
 		return(ret);
-	execution(data);
+	if(ret == 0)
+		execution(data);
 	free_data_token(data);
 	return(0);
 }
@@ -45,10 +46,15 @@ int	main(void)
 	if (update_shlvl(data) == 3)
 		ft_exit(data, NULL, 3);
 	data->status = 0;
+	// if(isatty(0) == 0)
+	// {
+	// 	put_error("isatty = 0\n", NULL);
+	// 	return(0);
+	// }
 	while (1)
 	{
 		init_signal_handler(1);
-		data->arg = readline("minishell$ ");
+		data->arg = ft_strdup(readline("minishell$ "));
 		if (data->arg == NULL)
 			ft_exit(data, NULL, 1);
 		if (*data->arg)

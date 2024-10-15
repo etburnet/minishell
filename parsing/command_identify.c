@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_identify.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 11:34:59 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 15:27:37 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,82 @@ int	is_built_in(t_data *data)
     }
 	return (0);
 }
-// int		check_first_token(data)
-// {
-// 		if(data->token[0].litteral[0] == "//" || data->token[0].litteral[0] == ";" ||)
-// }
+
+int		is_symbolic(char *s)
+{
+	if(ft_strncmp(s, "~", 2) == 0)
+		return(put_error("is a directory :", s), 1);
+	else if(ft_strncmp(s, "/", 2) == 0)
+		return(put_error("is a directory :", s), 1);
+	else if(ft_strncmp(s, "./.", 4) == 0)
+		return(put_error("is a directory :", s), 1);
+	else if(ft_strncmp(s, "./", 3) == 0)
+		return(put_error("is a directory :", s), 1);
+	else if(ft_strncmp(s, ".", 2) == 0)
+		return(put_error("filename argument required :", s), 1);
+	return(0);
+}
+
+int		is_special_char(char *s)
+{
+	if(ft_strncmp(s, "#", 2) == 0)
+		return(1);
+	else if(ft_strncmp(s, "!", 2) == 0)
+		return(1);
+	else if(ft_strncmp(s, "$#", 3) == 0)
+		return(1);
+	else if(ft_strncmp(s, "$*", 3) == 0)
+		return(1);
+	else if(ft_strncmp(s, "$@", 3) == 0)
+		return(1);
+	else if(ft_strncmp(s, "$_", 3) == 0)
+		return(1);
+	else if(ft_strncmp(s, "$-", 3) == 0)
+		return(1);
+	else if(ft_strncmp(s, "$!", 3) == 0)
+		return(1);
+	else if(ft_strncmp(s, ";", 2) == 0)
+		return(1);
+	return(0);	
+}
+
+int		is_special_char_bis(char *s)
+{
+	if(ft_strncmp(s, ";;", 3) == 0)
+		return(1);
+	else if(ft_strncmp(s, "`", 2) == 0)
+		return(1);
+	else if(ft_strncmp(s, ":", 2) == 0)
+		return(1);
+	else if(ft_strncmp(s, "&", 2) == 0)
+		return(1);
+	else if(ft_strncmp(s, "&&", 3) == 0)
+		return(1);
+	else if(ft_strncmp(s, "()", 3) == 0)
+		return(1);
+	else if(ft_strncmp(s, "(", 2) == 0)
+		return(1);
+	else if(ft_strncmp(s, ")", 2) == 0)
+		return(1);
+	else if(ft_strncmp(s, "||", 3) == 0)
+		return(1);
+	else if(ft_strncmp(s, "%%", 2) == 0)
+		return(1);
+	return(0);
+}
+
+int		check_first_token(t_data *data)
+{
+	if(data->nb_token == 0)
+		return(0);
+	if(is_symbolic(data->token[0].litteral[0]) == 1)
+		return(1);
+	if(is_special_char(data->token[0].litteral[0]) == 1)
+		return(put_error(ERR_SYNTAX, data->token[0].litteral[0]), 1);
+	if(is_special_char_bis(data->token[0].litteral[0]) == 1)
+		return(put_error(ERR_SYNTAX, data->token[0].litteral[0]), 1);
+	return(0);
+}
 
 int	identify_command(t_data *data)
 {
@@ -153,6 +225,7 @@ int	identify_command(t_data *data)
 	ret = set_heredoc(data);
 	if (ret != 0)
 		return (ret);
-	// check_first_token(data);
+	if(check_first_token(data) == 1)
+		return(1);
 	return (0);
 }
