@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:19:29 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/14 11:18:41 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 11:30:20 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_close(int fd1, int fd2)
 		unlink("temp_file_here_doc.txt");
 }
 
-int	open_file(t_token token, int i)
+int	open_file(t_data *data, t_token token, int i)
 {
 	int	fd;
 
@@ -69,7 +69,7 @@ int	open_file(t_token token, int i)
 	else if (i == 4)
 		fd = open("temp_file_here_doc.txt", O_RDONLY);
 	if (fd < 0)
-		return (perror(token.litteral[0]), -1);
+		return (perror(token.litteral[0]), data->status = 1, -1);
 	return (fd);
 }
 
@@ -93,7 +93,7 @@ int	which_builtin(t_data *data, char **cmd_tab)
 	else if (strncmp(cmd_tab[0], "exit", 5) == 0)
 		ret = ft_exit(data, cmd_tab, 0);
 	else
-		return (put_error(ERR_CMD, cmd_tab[0]), 1);
+		return (put_error(ERR_CMD, cmd_tab[0]), 2);
 	return (ret);
 }
 

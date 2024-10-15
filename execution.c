@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/14 16:55:26 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:32:04 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,9 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 	pid_t	pid;
 
 	// printf("fdin %d, fdout %d\n", fdin, fdout);
-	// printf("cmd = %s, arg = %s\n", data->token[cmd].litteral[0], data->token[cmd].litteral[1]);
 	if (data->token[cmd].full_path == NULL)
 		return (put_error(ERR_CMD, data->token[cmd].litteral[0]), ft_close(fdin,
-				fdout), 1);
+				fdout), 127);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
@@ -59,7 +58,7 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 		if (execve(data->token[cmd].full_path, data->token[cmd].litteral,
 				NULL) == -1)
 			put_error(ERR_CMD, data->token[cmd].litteral[0]);
-		return (1);
+		return (2);
 	}
 	ft_close(fdin, fdout);
 	return (0);
@@ -106,22 +105,20 @@ int	bring_command(t_data *data, int *i)
 		if (cmd == -1)
 			cmd = catch_cmd(data, *i);
 		if (cmd == -1)
-		{
 			while (*i < data->lenght_token && data->token[*i].type != pipes)
 				(*i)++;
-		}
 		else
 		{
 			if (data->token[*i].type == infile)
-				data->token[cmd].fdin = open_file(data->token[*i], 0);
+				data->token[cmd].fdin = open_file(data, data->token[*i], 0);
 			else if (data->token[*i].type == outfile)
-				data->token[cmd].fdout = open_file(data->token[*i], 1);
+				data->token[cmd].fdout = open_file(data, data->token[*i], 1);
 			if (data->token[cmd].fdin == -1 || data->token[cmd].fdout == -1)
 			{
 				while (*i < data->lenght_token && data->token[*i].type != pipes)
 					(*i)++;
 				if (*i == data->lenght_token)
-					return ( -1);
+					return (-1);
 			}
 		}
 		(*i)++;
@@ -154,8 +151,8 @@ int	prepare_fd(t_data *data)
 			data->token[cmd].fdout = data->pipe_fd[1];
 		data->old_pipe[1] = data->pipe_fd[1];
 		ret = dispatch_cmd(data, cmd);
-		if (ret != 0)
-			return (ret);
+		if (ret != 2 && ret != 127 && ret != 0)
+			return (data->status = ret % 255, ret);
 		i++;
 	}
 	return (0);
@@ -175,10 +172,9 @@ int	execution(t_data *data)
 	while (pid != -1)
 	{
 		pid = waitpid(-1, &status, 0);
-		data->status = status;
+		data->status = status % 255;
 		if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
 			return (1);
-		// init_signal_handler(3);
 	}
 	return (0);
 }

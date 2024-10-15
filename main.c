@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/14 17:32:03 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:32:59 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	main(void)
 		ft_exit(data, NULL, 3);
 	if (update_shlvl(data) == 3)
 		ft_exit(data, NULL, 3);
+	data->status = 0;
 	while (1)
 	{
 		init_signal_handler(1);

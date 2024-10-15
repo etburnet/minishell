@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:06:50 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/14 17:36:43 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:36:04 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,7 @@ int	init_data(t_data *tok, char *s)
 	if(tok->source_lenght == -1)
 		tok->source_lenght = 0;
 	tok->start = 0;
-	tok->old_pipe[0] = -1;
-	tok->old_pipe[1] = -1;
-	tok->pipe_fd[0] = -1;
-	tok->pipe_fd[1] = -1;
-	tok->status = 0;
-	tok->source = set_string(s, tok->source_lenght);
+	tok->source = ft_strdup(s);
 	if(tok->source == NULL)
 		return(put_error(ERR_MALLOC, NULL), 3);
 	tok->lenght_token = ft_countword(tok->source, 0);
