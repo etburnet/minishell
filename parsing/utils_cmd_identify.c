@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_cmd_identify.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:18:49 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 16:34:41 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 17:46:15 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ int	search_cmd(t_data *data, int i)
 
 char	*check_line(t_data *data, char *buffer, char *delimiter, int cmd)
 {
-	if (strncmp(buffer, delimiter, (strlen(delimiter) + 1)) == 0)
+	if (ft_strncmp(buffer, delimiter, (strlen(delimiter) + 1)) == 0)
 		return (NULL);
 	write(data->token[cmd].fdin, buffer, ft_strlen(buffer) + 1);
 	write(data->token[cmd].fdin, "\n", 2);
 	buffer = readline(">");
 	if (buffer == NULL)
-		return (put_error(ERR_MALLOC, NULL), NULL);
+		return (put_error(ERR_MALLOC, NULL), 3);
 	return (buffer);
 }
 
