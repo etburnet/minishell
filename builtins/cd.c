@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:01:13 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/10 13:37:49 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/14 15:05:08 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	open_ch_dir(char *dir)
 	if (dir[0] == '\0')
 		return (1);
 	if (stat(dir, &path_stat) != 0)
-		return (perror("stat"), 1);
+		return (perror(dir), 1);
 	if (S_ISREG(path_stat.st_mode))
 		return (put_error("Not a directory: ", dir), 1);
 	else if (S_ISDIR(path_stat.st_mode))

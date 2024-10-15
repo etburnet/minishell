@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/10 15:38:18 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/14 13:50:55 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	main(void)
 		ft_exit(data, NULL, 3);
 	if (update_shlvl(data) == 3)
 		ft_exit(data, NULL, 3);
+	data->status = 0;
 	while (1)
 	{
 		data->arg = readline("minishell$ ");

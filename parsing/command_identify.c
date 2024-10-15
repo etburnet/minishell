@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/14 12:24:03 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/14 16:03:49 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	set_heredoc(t_data *data)
 			if ((new = dup(0)) == -1)
 				return (perror("OUT dup"), -1);
 			cmd = search_cmd(data, i);
-			data->token[cmd].fdin = open_file(data->token[i], 3);
+			data->token[cmd].fdin = open_file(data, data->token[i], 3);
 			if (data->token[cmd].fdin == -1)
 				return (-1);
 			buffer = readline(">");
