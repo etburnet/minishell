@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:49 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/16 13:57:14 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 15:00:28 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void	free_data_token(t_data *data)
 
 	j = 0;
 	i = 0;
-	if(!data->token)
+	if(data->source_lenght < 0 || !data->token)
 		return ;
 	while (i < data->lenght_token)
 	{
-		while (j < data->token[i].nb_arg)
+		while (j <= data->token[i].nb_arg)
 		{
 			ft_free(data->token[i].tab[j]);
 			j++;

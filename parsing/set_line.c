@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 12:57:57 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 14:48:53 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	count_space(char *s, int i, int j)
 		}
 		i++;
 	}
-	// printf("i = %d j + %d\n", i, j);
 	return (j + i);
 }
 
@@ -150,7 +149,6 @@ char	*set_string(t_data *data, char *s, int len)
 
 	i = 0;
 	j = 0;
-	// temp = NULL;
 	if (len == (int)ft_strlen(data->arg))
 	{
 		temp = ft_strdup(data->arg);

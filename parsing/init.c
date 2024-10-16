@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:06:50 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 13:15:05 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 14:58:44 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	init_data(t_data *tok, char *s)
 	tok->nb_token = 0;
 	tok->cur = 0;
 	tok->source_lenght = count_space(s, 0, 0);
-	if (tok->source_lenght == -1)
-		tok->source_lenght = 0;
+	if (tok->source_lenght < 0)
+		return(put_error("len = -1\n", NULL), 1);
 	tok->start = 0;
 	tok->old_pipe[0] = -1;
 	tok->old_pipe[1] = -1;

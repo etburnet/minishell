@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:09:58 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/16 13:27:06 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 15:04:03 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	replace_var(t_data *data, int i, int total_len, char *var_value)
 			{
 				itoa = ft_itoa(data->status);
 				ft_strlcat(str, itoa, (ft_strlen(str) + ft_strlen(itoa) + 1));
+				ft_free(itoa);
 				l = ft_strlen(str);
 				j++;
 			}
@@ -52,7 +53,6 @@ int	replace_var(t_data *data, int i, int total_len, char *var_value)
 			str[l++] = data->token[i].tab[0][j++];
 	}
 	str[l] = '\0';
-	ft_free(itoa);
 	ft_free(data->token[i].tab[0]);
 	data->token[i].tab[0] = str;
 	return (0);

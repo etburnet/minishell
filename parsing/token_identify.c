@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_identify.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 13:35:50 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 15:07:33 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ char	*remove_meta_c(char *s)
 	if(!temp)
 		return(put_error(ERR_MALLOC, NULL), NULL);
 	ft_memset(temp, '\0', len);
+	if(s == NULL)
+		return(NULL);
 	while (s[i] != '\0')
 	{
 		if (s[i] == '\"')
