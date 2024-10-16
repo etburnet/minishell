@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 12:47:55 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 15:35:25 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	set_heredoc(t_data *data)
 			data->token[cmd].fdin = open_file(data, data->token[i], 3);
 			if (data->token[cmd].fdin == -1)
 				return (-1);
-			printf("fdin %d\n", data->token[cmd].fdin );
+			//printf("fdin %d\n", data->token[cmd].fdin );
 			buffer = readline(">");
 			// if (buffer == NULL)
 			// 	return (put_error(ERR_MALLOC, NULL), 3);

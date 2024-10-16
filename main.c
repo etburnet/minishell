@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 14:59:55 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:39:44 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,14 @@ int	main(void)
 		{
 			add_history(data->arg);
 			ret = init_data(data, data->arg);
-			if (ret != 0)
+			if (ret == 3)
 				return (ft_clean(data), ret);
-			ret = ft_minishell(data->source, data);
-			if (ret != 0)
-				return (ft_clean(data), ret);
+			else if(ret == 0)
+			{
+				ret = ft_minishell(data->source, data);
+				if (ret != 0)
+					return (ft_clean(data), ret);
+			}
 		}
 		ft_free(data->arg);
 	}

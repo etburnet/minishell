@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 14:48:53 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:36:26 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int	count_space(char *s, int i, int j)
 	{
 		i = check_quote(s, i, '\'');
 		if (i == -1)
-			return (-1);
+			return (put_error(ERR_SYNTAX, "\'"), 0);
 		i = check_quote(s, i, '\"');
 		if (i == -1)
-			return (-1);
+			return (put_error(ERR_SYNTAX, "\""), 0);
 		if (check_operator(s[i]) == 1)
 		{
 			if ((s[i] == '<' && s[i + 1] == '<') || (s[i] == '>' && s[i
