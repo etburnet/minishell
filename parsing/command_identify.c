@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_identify.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 15:35:25 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 17:48:00 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ void	check_outfile(t_data *data)
 	i = 0;
 	while (i < data->lenght_token)
 	{
-		if (data->token[i].type == greater
-			|| data->token[i].type == append)
+		if ((data->token[i].type == greater
+			|| data->token[i].type == append))
 		{
-			if (i + 1 <= data->lenght_token && (data->token[i + 1].type == word
+			if ((i + 1) < data->lenght_token && (data->token[i + 1].type == word
 					|| data->token[i + 1].type == string))
 				data->token[i + 1].type = outfile;
 		}
@@ -104,7 +104,7 @@ void	check_infile(t_data *data)
 	{
 		if (data->token[i].type == less)
 		{
-			if (i + 1 <= data->lenght_token && (data->token[i + 1].type == word
+			if (i + 1 < data->lenght_token && (data->token[i + 1].type == word
 					|| data->token[i + 1].type == string))
 				data->token[i + 1].type = infile;
 		}
@@ -146,6 +146,8 @@ int	is_symbolic(char *s)
 	if (ft_strncmp(s, "~", 2) == 0)
 		return (put_error("is a directory :", s), 1);
 	else if (ft_strncmp(s, "/", 2) == 0)
+		return (put_error("is a directory :", s), 1);
+	else if (ft_strncmp(s, "//", 2) == 0)
 		return (put_error("is a directory :", s), 1);
 	else if (ft_strncmp(s, "./.", 4) == 0)
 		return (put_error("is a directory :", s), 1);
@@ -201,10 +203,12 @@ int	is_special_char_bis(char *s)
 		return (1);
 	else if (ft_strncmp(s, "%%", 2) == 0)
 		return (1);
+	else if (ft_strncmp(s, "<>", 3) == 0)
+		return (1);
 	return (0);
 }
 
-int	is_chevron(t_data *data, char *s)
+int	first_is_chevron(t_data *data, char *s)
 {
 	if (ft_strncmp(s, "<", 2) == 0 && data->token[1].type != infile)
 		return (1);
@@ -216,6 +220,20 @@ int	is_chevron(t_data *data, char *s)
 		return (1);
 	return (0);
 }
+int		is_chevrons(char *s)
+{
+	if (ft_strncmp(s, "<", 2) == 0)
+		return (1);
+	else if (ft_strncmp(s, ">", 2) == 0)
+		return (1);
+	else if (ft_strncmp(s, "|", 2) == 0)
+		return (1);
+	else if (ft_strncmp(s, "<<", 3) == 0)
+		return (1);
+	else if (ft_strncmp(s, ">>", 3) == 0)
+		return (1);
+	return(0);
+}
 
 int	check_first_token(t_data *data)
 {
@@ -223,12 +241,20 @@ int	check_first_token(t_data *data)
 		return (0);
 	if (is_symbolic(data->token[0].tab[0]) == 1)
 		return (1);
-	if (is_chevron(data, data->token[0].tab[0]) == 1)
-		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
 	if (is_special_char(data->token[0].tab[0]) == 1)
 		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
 	if (is_special_char_bis(data->token[0].tab[0]) == 1)
 		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
+	if(data->nb_token >= 2)
+	{
+		if (first_is_chevron(data, data->token[0].tab[0]) == 1)
+			return (put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
+	}
+	else if(data->nb_token == 1)	
+	{
+		if(is_chevrons(data->token[0].tab[0]) == 1)
+			return(put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
+	}
 	return (0);
 }
 

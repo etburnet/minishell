@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 15:07:33 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:56:02 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	wich_operator(t_data *data, int i)
 	}
 	if (ft_strncmp(data->token[i].tab[0], ">>", 3) == 0)
 	{
-		if (ft_isdigit_edit(data->token[i - 1].tab[0]) == 0)
+		if (i > 0 && (ft_isdigit_edit(data->token[i - 1].tab[0]) == 0))
 			data->token[i - 1].type = append_id;
 		data->token[i].type = append;
 		data->token[i + 1].type = append_out;
