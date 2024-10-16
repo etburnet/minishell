@@ -6,22 +6,22 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/10 16:07:30 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:27:27 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		print_env(t_data *data)
+int	print_env(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	if(data->env == NULL)
-		return(1);
+	if (data->env == NULL)
+		return (1);
 	while (data->env[i])
 		printf("%s\n", data->env[i++]);
-	return(0);
+	return (0);
 }
 
 int	copy_env(t_data *data)
@@ -46,9 +46,8 @@ int	copy_env(t_data *data)
 	{
 		data->env[i] = ft_strdup(environ[i]);
 		if (data->env[i] == NULL)
-			return(free_tab(data->env), 3);
+			return (free_tab(data->env), 3);
 		i++;
 	}
-	return(0);
+	return (0);
 }
-

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 16:35:56 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/14 16:42:08 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:27:39 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	add_env_var(char *name, char *value, t_data *data)
 }
 
 int	export_parsing(t_data *data, char *str)
-{	
+{
 	int		j;
 	int		len;
 	int		val;
@@ -146,7 +146,7 @@ int	export(t_data *data, char **tab)
 {
 	int	i;
 	int	ret;
-	
+
 	i = 1;
 	while (tab[i] != NULL)
 	{

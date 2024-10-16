@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 13:09:01 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 12:28:16 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-# define ERR_MALLOC "Malloc failed !"
+# define ERR_MALLOC "Malloc failed!"
 # define ERR_CMD "Command not found: "
-# define ERR_SYNTAX "Syntax error near unexpected token:"
+# define ERR_SYNTAX "Syntax error near unexpected token: "
 
 typedef enum e_type
 {
@@ -37,7 +37,7 @@ typedef enum e_type
 	word,
 	less,
 	greater,
-	greatergreater,
+	append,
 	here_doc,
 	delimiter,
 	exit_status,
@@ -48,12 +48,14 @@ typedef enum e_type
 	command,
 	arg,
 	built_in,
+	append_out,
+	append_id,
 }			e_type;
 
 typedef struct s_token
 {
 	e_type	type;
-	char	**litteral;
+	char	**tab;
 	char	*full_path;
 	double	value;
 	int		size;
@@ -77,6 +79,7 @@ typedef struct s_data
 	int		source_lenght;
 	int		start;
 	int		status;
+	int		append_id;
 	char	**env;
 	char	**input;
 	char	*arg;
@@ -116,9 +119,9 @@ int			init_data(t_data *tok, char *s);
 int			init_token(t_token *token);
 
 /* Parsing */
-int		count_space(char *s, int i, int j);
-char	*set_string(char *s, int len);
-
+int			count_space(char *s, int i, int j);
+char		*set_string(t_data *data, char *s, int len);
+int			ft_isdigit_edit(char *c);
 size_t		ft_countword(const char *s, int i);
 int			search_token(char *s, t_data *data);
 int			check_quote(const char *s, int i, char c);
@@ -131,9 +134,9 @@ int			expand(t_data *data, int i, int start, int len_var, int full_len);
 int			identify_token(t_data *data);
 void		put_string_to_cpy(char *s, char *tmp, int *i, int *j);
 char		*check_to_remove_dquote(char *s, char *tmp, int *j, int *i);
-char	*check_to_remove_dquote_edit(char *s, char *tmp, int *j, int *i);
+char		*check_to_remove_dquote_edit(char *s, char *tmp, int *j, int *i);
 char		*check_to_remove_quote(char *s, char *tmp, int *j, int *i);
-char	*check_to_remove_quote_edit(char *s, char *tmp, int *j, int *i);
+char		*check_to_remove_quote_edit(char *s, char *tmp, int *j, int *i);
 char		*remove_quote(char *s, int i, int j);
 
 /* Cmd_identify */
@@ -150,5 +153,6 @@ void		check_first_last(t_data *data);
 int			which_builtin(t_data *data, char **cmd_tab);
 void		ft_close(int fd1, int fd2);
 int			catch_cmd(t_data *data, int i);
+void		close_all(t_data *data, int fdin, int fdout);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:59:33 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/10 14:09:50 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:32:20 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_clean(t_data *data)
 {
 	clear_history();
-	if(data->arg != NULL)
+	if (data->arg != NULL)
 		free_data_token(data);
 	if (data->env != NULL)
 		free_tab(data->env);
@@ -44,6 +44,7 @@ int	ft_long_check(char *str)
 {
 	const char	*long_max_str;
 	const char	*long_min_str;
+
 	long_max_str = "9223372036854775807";
 	long_min_str = "-9223372036854775808";
 	if (str[0] == '-')
@@ -88,4 +89,3 @@ int	ft_exit(t_data *data, char **tab, int n)
 	exit(n);
 	return (1);
 }
-

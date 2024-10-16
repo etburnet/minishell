@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:00:07 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/09 12:28:16 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:31:50 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	ft_free_split(char **tab)
 	if (!tab)
 		return ;
 	while (tab[i])
-		free (tab[i++]);
-	free (tab);
+		free(tab[i++]);
+	free(tab);
 }
 
 char	**ft_extract_path(t_data *data)
@@ -79,8 +79,8 @@ char	*ft_cmd_path(char **path, char *full_path, char **cmd_tab)
 
 char	*ft_find_cmd(t_data *data, char **cmd_tab)
 {
-	char	**path;
-	char	*full_path;
+	char **path;
+	char *full_path;
 
 	full_path = NULL;
 	path = NULL;

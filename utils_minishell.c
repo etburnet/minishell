@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 12:40:04 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:34:41 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	free_tab(char **tab)
 
 int	get_this_env(char *var, char **env)
 {
-	int		i;
-	int		len;
+	int	i;
+	int	len;
 
 	len = ft_strlen(var);
 	i = 0;
@@ -50,23 +50,23 @@ void	put_error(char *message, char *var)
 	rl_redisplay();
 }
 
-char **my_realloc(t_token token, size_t size)
+char	**my_realloc(t_token token, size_t size)
 {
-	char **temp;
-	int i;
-	
+	char	**temp;
+	int		i;
+
 	i = 0;
 	temp = malloc(sizeof(char *) * (size + 2));
-	if(temp == NULL)
-		return(put_error(ERR_MALLOC, NULL), NULL);
+	if (temp == NULL)
+		return (put_error(ERR_MALLOC, NULL), NULL);
 	temp[size + 1] = NULL;
-	while(token.litteral[i] != NULL)
+	while (token.tab[i] != NULL)
 	{
-		temp[i] = ft_strdup(token.litteral[i]);
-		if(temp[i] == NULL)
-			return(put_error(ERR_MALLOC, NULL), NULL);
+		temp[i] = ft_strdup(token.tab[i]);
+		if (temp[i] == NULL)
+			return (put_error(ERR_MALLOC, NULL), NULL);
 		i++;
 	}
-	free_tab(token.litteral);
-	return(temp);
+	free_tab(token.tab);
+	return (temp);
 }

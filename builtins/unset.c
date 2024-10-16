@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:29:16 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/10 13:38:28 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:27:56 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ int	unset(t_data *data, char **tab)
 {
 	int	i;
 	int	ret;
-	
+
 	i = 1;
 	while (tab[i] != NULL)
-	{	
+	{
 		if (ft_strchr(tab[i], '='))
 			i++;
 		ret = del_env(data, tab[i]);
@@ -60,5 +60,5 @@ int	unset(t_data *data, char **tab)
 			return (1);
 		i++;
 	}
-	return (0);	
+	return (0);
 }

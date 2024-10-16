@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:49 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/11 15:56:49 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/15 16:34:41 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	free_data_token(t_data *data)
 	{
 		while (j <= data->token[i].nb_arg)
 		{
-			free(data->token[i].litteral[j]);
+			free(data->token[i].tab[j]);
 			j++;
 		}
 		if (data->token[i].full_path)
-				free(data->token[i].full_path);
-		free(data->token[i].litteral);
+			free(data->token[i].full_path);
+		free(data->token[i].tab);
 		ft_close(data->token[i].fdin, data->token[i].fdout);
 		i++;
 		j = 0;
@@ -54,8 +54,8 @@ int	ft_err_exit(t_data *data, char *err_msg, int n)
 
 // int	check_error(t_data *data, int i)
 // {
-// 	if (ft_strncmp(data->token[i].litteral[0], ";", 2) == 0
-// 		|| ft_strncmp(data->token[i].litteral[0], "\\", 2) == 0)
+// 	if (ft_strncmp(data->token[i].tab[0], ";", 2) == 0
+// 		|| ft_strncmp(data->token[i].tab[0], "\\", 2) == 0)
 // 		return (put_error("error invalid command", NULL), -1);
 // 	return (0);
 // }
