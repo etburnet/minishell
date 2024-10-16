@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:18:49 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 16:34:41 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 12:44:23 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,16 @@ int	search_cmd(t_data *data, int i)
 	return (i);
 }
 
-char	*check_line(t_data *data, char *buffer, char *delimiter, int cmd)
+char	*check_line(int fdin, char *buffer, char *delimiter, int *del)
 {
-	if (strncmp(buffer, delimiter, (strlen(delimiter) + 1)) == 0)
+	if (ft_strncmp(buffer, delimiter, (strlen(delimiter) + 1)) == 0)
+	{
+		*del = 1;
 		return (NULL);
-	write(data->token[cmd].fdin, buffer, ft_strlen(buffer) + 1);
-	write(data->token[cmd].fdin, "\n", 2);
+	}
+	write(fdin, buffer, ft_strlen(buffer) + 1);
+	write(fdin, "\n", 2);
 	buffer = readline(">");
-	if (buffer == NULL)
-		return (put_error(ERR_MALLOC, NULL), NULL);
 	return (buffer);
 }
 
@@ -40,7 +41,6 @@ int	interrupt_heredoc(t_data *data, int new, int cmd)
 {
 	if (dup2(new, STDIN_FILENO) == -1)
 		return (perror("dup2"), -1);
-	;
 	close(data->token[cmd].fdin);
 	unlink("temp_file_gere_doc.txt");
 	g_sig_recieved = 0;

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:49 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/15 16:34:41 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 15:23:03 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,30 @@ void	free_data_token(t_data *data)
 
 	j = 0;
 	i = 0;
+	if(data->source_lenght < 0 || !data->token || !data->source)
+		return ;
 	while (i < data->lenght_token)
 	{
+		if (!data->token[i].tab)
+			return ;
 		while (j <= data->token[i].nb_arg)
 		{
-			free(data->token[i].tab[j]);
+			ft_free(data->token[i].tab[j]);
 			j++;
 		}
 		if (data->token[i].full_path)
-			free(data->token[i].full_path);
-		free(data->token[i].tab);
-		ft_close(data->token[i].fdin, data->token[i].fdout);
+			ft_free(data->token[i].full_path);
+		if (data->token[i].tab)
+			free(data->token[i].tab);
+		ft_close(data, data->token[i].fdin, data->token[i].fdout);
 		i++;
 		j = 0;
 	}
-	ft_close(data->pipe_fd[0], data->pipe_fd[1]);
-	ft_close(data->old_pipe[0], data->old_pipe[1]);
-	free(data->arg);
-	free(data->token);
-	free(data->source);
+	ft_close(data, data->pipe_fd[0], data->pipe_fd[1]);
+	ft_close(data, data->old_pipe[0], data->old_pipe[1]);
+	if (data->token)
+		free(data->token);
+	ft_free(data->source);
 }
 
 int	ft_err_exit(t_data *data, char *err_msg, int n)
@@ -51,14 +56,6 @@ int	ft_err_exit(t_data *data, char *err_msg, int n)
 	}
 	return (n);
 }
-
-// int	check_error(t_data *data, int i)
-// {
-// 	if (ft_strncmp(data->token[i].tab[0], ";", 2) == 0
-// 		|| ft_strncmp(data->token[i].tab[0], "\\", 2) == 0)
-// 		return (put_error("error invalid command", NULL), -1);
-// 	return (0);
-// }
 
 long int	ft_atol(const char *nptr)
 {

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 12:28:16 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 17:07:25 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,18 @@ typedef struct s_data
 	int		source_lenght;
 	int		start;
 	int		status;
+	int		here;
 	int		append_id;
 	char	**env;
 	char	**input;
 	char	*arg;
 }			t_data;
 
-extern char	**environ;
 extern int	g_sig_recieved;
 
 /* Builtins */
 int			print_env(t_data *data);
-int			copy_env(t_data *data);
+int			copy_env(t_data *data, char **env);
 int			echo(char **tab);
 int			cd(t_data *data, char **tab);
 int			pwd(void);
@@ -108,6 +108,7 @@ void		put_error(char *message, char *var);
 char		**my_realloc(t_token token, size_t size);
 void		ft_clean(t_data *data);
 int			update_shlvl(t_data *data);
+void		ft_free(char *str);
 
 /* Signal */
 void		init_signal_handler(int i);
@@ -142,7 +143,7 @@ char		*remove_quote(char *s, int i, int j);
 /* Cmd_identify */
 int			identify_command(t_data *data);
 int			search_cmd(t_data *data, int i);
-char		*check_line(t_data *data, char *buffer, char *delimiter, int cmd);
+char		*check_line(int fd, char *buffer, char *delimiter, int *del);
 int			interrupt_heredoc(t_data *data, int new, int cmd);
 int			check_arg(t_data *data, int i, e_type type);
 
@@ -151,7 +152,7 @@ int			execution(t_data *data);
 int			open_file(t_data *data, t_token token, int i);
 void		check_first_last(t_data *data);
 int			which_builtin(t_data *data, char **cmd_tab);
-void		ft_close(int fd1, int fd2);
+void		ft_close(t_data *data, int fd1, int fd2);
 int			catch_cmd(t_data *data, int i);
 void		close_all(t_data *data, int fdin, int fdout);
 

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/15 16:27:27 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 17:41:11 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	print_env(t_data *data)
 	return (0);
 }
 
-int	copy_env(t_data *data)
+int	copy_env(t_data *data, char **environ)
 {
 	int	tab_len;
 	int	i;
@@ -33,8 +33,8 @@ int	copy_env(t_data *data)
 	i = 0;
 	j = 0;
 	tab_len = 0;
-	if (environ == NULL || environ[i] == NULL)
-		return (3);
+	if (environ[0] == NULL)
+		return (put_error("Env not found", NULL), 1);
 	while (environ[tab_len])
 		tab_len++;
 	data->env = malloc(sizeof(char *) * (tab_len + 1));
@@ -46,7 +46,7 @@ int	copy_env(t_data *data)
 	{
 		data->env[i] = ft_strdup(environ[i]);
 		if (data->env[i] == NULL)
-			return (free_tab(data->env), 3);
+			return (put_error(ERR_MALLOC, NULL), 3);
 		i++;
 	}
 	return (0);

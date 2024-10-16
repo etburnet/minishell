@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:41:19 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 16:28:52 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 13:28:07 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,6 @@ char	*remove_quote(char *s, int i, int j)
 				put_string_to_cpy(s, tmp, &i, &j);
 		}
 	}
-	free(s);
+	ft_free(s);
 	return (tmp);
 }

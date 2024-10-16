@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 16:35:56 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/15 16:27:39 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 13:26:26 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,17 @@ int	add_env_var(char *name, char *value, t_data *data)
 	if (env_id == -1)
 	{
 		if (dup_env(data, cat) == 3)
-			return (free(cat), 3);
+			return (ft_free(cat), 3);
 	}
 	else
 	{
 		ret = del_env(data, name);
 		if (ret == 3)
-			return (free(cat), put_error(ERR_MALLOC, NULL), 3);
+			return (ft_free(cat), put_error(ERR_MALLOC, NULL), 3);
 		if (dup_env(data, cat) == 3)
-			return (free(cat), 3);
+			return (ft_free(cat), 3);
 	}
-	free(cat);
+	ft_free(cat);
 	return (0);
 }
 
@@ -117,7 +117,7 @@ int	export_parsing(t_data *data, char *str)
 	}
 	name = malloc(sizeof(char) * (j + 2));
 	if (name == NULL)
-		return (free(name), 3);
+		return (ft_free(name), 3);
 	ft_strlcpy(name, str, j + 2);
 	ft_strlcpy(value, &str[j + 2], len - (j + 1));
 	if (is_var_ok(name) == 0)
@@ -125,20 +125,20 @@ int	export_parsing(t_data *data, char *str)
 		if (add_env_var(name, value, data) == 3)
 		{
 			if (value != NULL)
-				free(value);
-			return (free(name), 3);
+				ft_free(value);
+			return (ft_free(name), 3);
 		}
 	}
 	else
 	{
 		put_error("export: not valid in this context: ", name);
 		if (value != NULL)
-			free(value);
-		return (free(name), 1);
+			ft_free(value);
+		return (ft_free(name), 1);
 	}
 	if (value != NULL)
-		free(value);
-	free(name);
+		ft_free(value);
+	ft_free(name);
 	return (0);
 }
 

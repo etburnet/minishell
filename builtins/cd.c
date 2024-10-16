@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:01:13 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/15 16:32:27 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 13:25:51 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	edit_old_pwd(t_data *data, char *cp_pwd)
 		return (ft_putstr_fd("Unable to find OLDPWD", 2), 1);
 	ft_strlcat(cat, "OLDPWD=", 8);
 	ft_strlcat(cat, cp_pwd, ft_strlen(cp_pwd) + 9);
-	free(data->env[oldpwd]);
+	ft_free(data->env[oldpwd]);
 	data->env[oldpwd] = ft_strdup(cat);
-	free(cat);
+	ft_free(cat);
 	if (data->env[oldpwd] == NULL)
 		return (put_error(ERR_MALLOC, NULL), 3);
 	return (0);
