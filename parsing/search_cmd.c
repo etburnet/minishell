@@ -6,23 +6,11 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:00:07 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 16:31:50 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 13:28:04 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	ft_free_split(char **tab)
-{
-	int	i;
-
-	i = 0;
-	if (!tab)
-		return ;
-	while (tab[i])
-		free(tab[i++]);
-	free(tab);
-}
 
 char	**ft_extract_path(t_data *data)
 {
@@ -40,11 +28,11 @@ char	**ft_extract_path(t_data *data)
 	if (path == NULL)
 		return (NULL);
 	trimmed = ft_strtrim(path, "PATH=");
-	free(path);
+	ft_free(path);
 	if (trimmed == NULL)
 		return (NULL);
 	splited = ft_split(trimmed, ':');
-	free(trimmed);
+	ft_free(trimmed);
 	if (splited == NULL)
 		return (NULL);
 	return (splited);
@@ -60,7 +48,7 @@ char	*ft_cmd_path(char **path, char *full_path, char **cmd_tab)
 		full_path = malloc(sizeof(char) * (ft_strlen(path[i])
 					+ ft_strlen(cmd_tab[0]) + 2));
 		if (full_path == NULL)
-			return (ft_free_split(path), NULL);
+			return (free_tab(path), NULL);
 		full_path[0] = '\0';
 		ft_strlcat(full_path, path[i], ft_strlen(path[i]) + 1);
 		ft_strlcat(full_path, "/", ft_strlen(full_path) + 2);
@@ -68,12 +56,12 @@ char	*ft_cmd_path(char **path, char *full_path, char **cmd_tab)
 			+ ft_strlen(cmd_tab[0]) + 1);
 		if (access(full_path, X_OK) == 0)
 			break ;
-		free(full_path);
+		ft_free(full_path);
 		full_path = NULL;
 		i++;
 	}
 	if (full_path == NULL)
-		ft_free_split(path);
+		free_tab(path);
 	return (full_path);
 }
 
@@ -85,7 +73,7 @@ char	*ft_find_cmd(t_data *data, char **cmd_tab)
 	full_path = NULL;
 	path = NULL;
 	if (cmd_tab[0] == NULL)
-		return (ft_free_split(path), NULL);
+		return (free_tab(path), NULL);
 	if (access(cmd_tab[0], X_OK) == 0)
 	{
 		full_path = malloc(sizeof(char) * ft_strlen(cmd_tab[0]) + 1);
@@ -101,6 +89,6 @@ char	*ft_find_cmd(t_data *data, char **cmd_tab)
 	full_path = ft_cmd_path(path, full_path, cmd_tab);
 	if (full_path == NULL)
 		return (NULL);
-	ft_free_split(path);
+	free_tab(path);
 	return (full_path);
 }

@@ -6,11 +6,19 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 16:34:41 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 13:29:58 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+
+void	ft_free(char *str)
+{
+	if (str != NULL)
+		free(str);
+}
 
 void	free_tab(char **tab)
 {
@@ -19,7 +27,8 @@ void	free_tab(char **tab)
 	i = 0;
 	while (tab[i] != NULL)
 		free(tab[i++]);
-	free(tab);
+	if (tab != NULL)
+		free(tab);
 }
 
 int	get_this_env(char *var, char **env)

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/15 16:27:27 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 13:54:58 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	copy_env(t_data *data)
 	{
 		data->env[i] = ft_strdup(environ[i]);
 		if (data->env[i] == NULL)
-			return (free_tab(data->env), 3);
+			return (3);
 		i++;
 	}
 	return (0);

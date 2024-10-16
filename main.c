@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 12:40:51 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 13:43:14 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	ft_minishell(char *s, t_data *data)
 	ret = identify_token(data);
 	if (ret != 0)
 		return (ret);
+	data->here = 0;
 	ret = identify_command(data);
 	if (ret == 3 && ret != 1)
 		return (ret);
@@ -61,11 +62,12 @@ int	main(void)
 			add_history(data->arg);
 			ret = init_data(data, data->arg);
 			if (ret != 0)
-				return (ret);
+				return (ft_clean(data), ret);
 			ret = ft_minishell(data->source, data);
 			if (ret != 0)
 				return (ft_clean(data), ret);
 		}
+		ft_free(data->arg);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 12:39:32 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 13:28:43 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_data
 	int		source_lenght;
 	int		start;
 	int		status;
+	int		here;
 	int		append_id;
 	char	**env;
 	char	**input;
@@ -108,6 +109,7 @@ void		put_error(char *message, char *var);
 char		**my_realloc(t_token token, size_t size);
 void		ft_clean(t_data *data);
 int			update_shlvl(t_data *data);
+void		ft_free(char *str);
 
 /* Signal */
 void		init_signal_handler(int i);
@@ -151,7 +153,7 @@ int			execution(t_data *data);
 int			open_file(t_data *data, t_token token, int i);
 void		check_first_last(t_data *data);
 int			which_builtin(t_data *data, char **cmd_tab);
-void		ft_close(int fd1, int fd2);
+void		ft_close(t_data *data, int fd1, int fd2);
 int			catch_cmd(t_data *data, int i);
 void		close_all(t_data *data, int fdin, int fdout);
 

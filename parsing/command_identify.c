@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 12:42:04 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 12:47:55 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,37 +56,6 @@ int	set_heredoc(t_data *data)
 	init_signal_handler(3);
 	return (0);
 }
-
-// int    set_heredoc(t_data *data)
-// {
-//     char *buffer; 
-//     int cmd;
-//     int i; 
-//     int new;
-	
-//     i = 0;
-//     init_signal_handler(2);
-//     while(i < data->lenght_token)
-//     {
-//         if(data->token[i].type == here_doc)
-//         {
-// 		    new = dup(0);
-//             cmd = search_cmd(data, i);
-//             data->token[cmd].fdin = open_file(data, data->token[i], 3);
-//             buffer = readline(">");
-//             while(buffer != NULL)
-//                 buffer = check_line(data, buffer, data->token[i + 1]. tab[0], cmd);
-//             if(buffer == NULL && g_sig_recieved == 1)
-//                 interrupt_heredoc(data, new, cmd);
-//             close(data->token[cmd].fdin);
-// 			close(new);
-// 			printf("ici\n");
-//         }
-//         i++;
-//     }
-//     init_signal_handler(3);
-//     return(0);
-// }
 
 int	check_command(t_data *data)
 {

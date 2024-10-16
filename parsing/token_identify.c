@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 12:42:41 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 13:35:50 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ char	*remove_meta_c(char *s)
 	j = 0;
 	len = ft_strlen(s);
 	temp = malloc(len + 1);
+	if(!temp)
+		return(put_error(ERR_MALLOC, NULL), NULL);
 	ft_memset(temp, '\0', len);
 	while (s[i] != '\0')
 	{
@@ -114,7 +116,7 @@ char	*remove_meta_c(char *s)
 		put_string_to_cpy(s, temp, &i, &j);
 	}
 	temp[j] = '\0';
-	free(s);
+	ft_free(s);
 	return (temp);
 }
 
@@ -133,6 +135,8 @@ int	identify_token(t_data *data)
 		if (data->token[i].type == undefine)
 			data->token[i].type = word;
 		data->token[i].tab[0] = remove_meta_c(data->token[i].tab[0]);
+		if(!data->token[i].tab[0])
+			return(3);
 		i++;
 	}
 	return (0);

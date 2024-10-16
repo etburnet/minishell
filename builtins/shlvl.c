@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:28:41 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/15 16:27:50 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 13:26:35 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	increment_shlvl(char **shlvl_cp, char *str)
 	if (*shlvl_cp == NULL)
 		return (3);
 	shlvl_value = ft_atoi(*shlvl_cp) + 1;
-	free(*shlvl_cp);
+	ft_free(*shlvl_cp);
 	*shlvl_cp = ft_itoa(shlvl_value);
 	if (*shlvl_cp == NULL)
 		return (3);
@@ -41,16 +41,16 @@ int	update_shlvl(t_data *data)
 		return (3);
 	cat = malloc(sizeof(char) * ft_strlen(shlvl_cp) + 8);
 	if (cat == NULL)
-		return (free(shlvl_cp), 3);
+		return (ft_free(shlvl_cp), 3);
 	cat[0] = '\0';
 	if (shlvl == -1)
 		return (ft_putstr_fd("Unable to find SHLVL", 2), 1);
 	ft_strlcat(cat, "SHLVL=", 7);
 	ft_strlcat(cat, shlvl_cp, ft_strlen(shlvl_cp) + 7);
-	free(data->env[shlvl]);
+	ft_free(data->env[shlvl]);
 	data->env[shlvl] = ft_strdup(cat);
-	free(cat);
-	free(shlvl_cp);
+	ft_free(cat);
+	ft_free(shlvl_cp);
 	if (data->env[shlvl] == NULL)
 		return (3);
 	return (0);

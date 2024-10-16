@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:19:29 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/16 12:37:32 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 12:52:12 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,14 @@ void	check_first_last(t_data *data)
 	data->token[cmd].last = 1;
 }
 
-void	ft_close(int fd1, int fd2)
+void	ft_close(t_data *data, int fd1, int fd2)
 {
 	if (fd1 > 0 && fd1 != STDIN_FILENO)
 		close(fd1);
 	if (fd2 > 0 && fd2 != STDOUT_FILENO)
 		close(fd2);
-	// if (fd1 == 4)
-	// 	unlink("temp_file_here_doc.txt");
-	// if (fd2 == 4)
-	// 	unlink("temp_file_here_doc.txt");
+	if (data->here == 1)
+		unlink("temp_file_here_doc.txt");
 }
 
 int	open_file(t_data *data, t_token token, int i)
@@ -65,6 +63,7 @@ int	open_file(t_data *data, t_token token, int i)
 		fd = open("temp_file_here_doc.txt", O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
 			return (perror("temp_file_here_doc.txt"), -1);
+		data->here = 1;
 	}
 	else if (i == 4)
 		fd = open("temp_file_here_doc.txt", O_RDONLY);
@@ -112,7 +111,7 @@ int	catch_cmd(t_data *data, int i)
 
 void	close_all(t_data *data, int fdin, int fdout)
 {
-	ft_close(fdin, fdout);
-	ft_close(data->pipe_fd[0], data->pipe_fd[1]);
-	ft_close(data->old_pipe[0], data->old_pipe[1]);
+	ft_close(data, fdin, fdout);
+	ft_close(data, data->pipe_fd[0], data->pipe_fd[1]);
+	ft_close(data, data->old_pipe[0], data->old_pipe[1]);
 }

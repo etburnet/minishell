@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:18:49 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 12:43:06 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 12:44:23 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*check_line(int fdin, char *buffer, char *delimiter, int *del)
 }
 
 int	interrupt_heredoc(t_data *data, int new, int cmd)
-int	interrupt_heredoc(t_data *data, int new, int cmd)
 {
 	if (dup2(new, STDIN_FILENO) == -1)
 		return (perror("dup2"), -1);
@@ -49,38 +48,7 @@ int	interrupt_heredoc(t_data *data, int new, int cmd)
 }
 
 int	check_arg(t_data *data, int i, e_type type)
-int	check_arg(t_data *data, int i, e_type type)
 {
-	int	j;
-	int	cmd;
-
-	j = 1;
-	i++;
-	while (i < data->lenght_token)
-	{
-		if ((data->token[i - 1].type == type || data->token[i - 1].type == arg)
-			&& (data->token[i].type == word || data->token[i].type == string))
-		{
-			if (data->token[i - 1].type == type)
-				cmd = i - 1;
-			data->token[i].type = arg;
-			data->token[cmd].nb_arg += 1;
-			if (data->token[cmd].nb_arg + 1 > data->token[cmd].size)
-			{
-				data->token[cmd].tab = my_realloc(data->token[cmd],
-						data->token[cmd].size);
-				if (data->token[cmd].tab == NULL)
-					return (put_error(ERR_MALLOC, NULL), 3);
-				data->token[cmd].size += 1;
-			}
-			data->token[cmd].tab[j] = ft_strdup(data->token[i].tab[0]);
-			if (data->token[cmd].tab[j] == NULL)
-				return (put_error(ERR_MALLOC, NULL), 3);
-			j++;
-		}
-		i++;
-	}
-	return (0);
 	int	j;
 	int	cmd;
 

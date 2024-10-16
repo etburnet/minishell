@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/16 12:38:31 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 12:54:58 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
 	int		ret;
 
 	ret = 0;
-	printf("fdin %d, fdout %d, append %d\n", fdin, fdout, data->append_id);
+	// printf("fdin %d, fdout %d, append %d\n", fdin, fdout, data->append_id);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
@@ -30,7 +30,7 @@ int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
 		ret = which_builtin(data, cmd_tab);
 		exit(0);
 	}
-	ft_close(fdin, fdout);
+	ft_close(data, fdin, fdout);
 	return (ret);
 }
 
@@ -38,10 +38,10 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 {
 	pid_t	pid;
 
-	printf("fdin %d, fdout %d, append %d\n", fdin, fdout, data->append_id);
+	// printf("fdin %d, fdout %d, append %d\n", fdin, fdout, data->append_id);
 	if (data->token[cmd].full_path == NULL)
-		return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(fdin,
-				fdout), 127);
+		return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(data, 
+				fdin, fdout), 127);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
@@ -57,7 +57,7 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 			put_error(ERR_CMD, data->token[cmd].tab[0]);
 		return (2);
 	}
-	ft_close(fdin, fdout);
+	ft_close(data, fdin, fdout);
 	return (0);
 }
 
@@ -146,7 +146,7 @@ int	prepare_fd(t_data *data)
 		data->old_pipe[1] = data->pipe_fd[1];
 		ret = dispatch_cmd(data, data->token[cmd], cmd);
 		if (ret != 2 && ret != 127 && ret != 0)
-			return (ft_close(data->token[cmd].fdin, data->token[cmd].fdout),
+			return (ft_close(data, data->token[cmd].fdin, data->token[cmd].fdout),
 				data->status = ret % 255, ret);
 		i++;
 	}

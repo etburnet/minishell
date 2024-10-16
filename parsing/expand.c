@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:09:58 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/15 16:34:41 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 13:27:06 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	replace_var(t_data *data, int i, int total_len, char *var_value)
 			str[l++] = data->token[i].tab[0][j++];
 	}
 	str[l] = '\0';
-	free(itoa);
-	free(data->token[i].tab[0]);
+	ft_free(itoa);
+	ft_free(data->token[i].tab[0]);
 	data->token[i].tab[0] = str;
 	return (0);
 }
@@ -82,7 +82,7 @@ int	remove_var(t_data *data, int i, int total_len)
 		j++;
 	}
 	str[k] = '\0';
-	free(data->token[i].tab[0]);
+	ft_free(data->token[i].tab[0]);
 	data->token[i].tab[0] = str;
 	return (0);
 }
@@ -110,15 +110,15 @@ int	expand(t_data *data, int i, int start, int len_var, int full_len)
 		{
 			var_value = ft_strdup(&data->env[pos_var][len_var + 1]);
 			if (var_value == NULL)
-				return (free(var), put_error(ERR_MALLOC, NULL), 3);
+				return (ft_free(var), put_error(ERR_MALLOC, NULL), 3);
 			len_value = ft_strlen(var_value);
 		}
 		ret = replace_var(data, i, ((full_len - len_var) + len_value + 1),
 				var_value);
-		free(var_value);
+		ft_free(var_value);
 	}
 	else
 		ret = remove_var(data, i, (full_len - len_var) + 1);
-	free(var);
+	ft_free(var);
 	return (ret);
 }
