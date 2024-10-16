@@ -1,3 +1,4 @@
 *.o
 *.gch
 *.a
+temp_file_here_doc.txt
