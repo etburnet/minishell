@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 17:46:00 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:23:05 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ int	set_heredoc(t_data *data)
 	int		cmd;
 	int		i;
 	int		new;
-
+	int del;
+	
+	del = 0;
 	i = 0;
 	init_signal_handler(2);
 	while (i < data->lenght_token)
@@ -31,26 +33,60 @@ int	set_heredoc(t_data *data)
 			data->token[cmd].fdin = open_file(data, data->token[i], 3);
 			if (data->token[cmd].fdin == -1)
 				return (-1);
+			printf("fdin %d\n", data->token[cmd].fdin );
 			buffer = readline(">");
-			if (buffer == NULL)
-				return (put_error(ERR_MALLOC, NULL), 3);
+			// if (buffer == NULL)
+			// 	return (put_error(ERR_MALLOC, NULL), 3);
 			while (buffer != NULL)
 			{
-				buffer = check_line(data, buffer, data->token[i
-						+ 1].tab[0], cmd);
-				if (buffer == NULL)
+				buffer = check_line(data->token[cmd].fdin, buffer, data->token[i + 1].tab[0], &del);
+				if (buffer == NULL && del == 0)
 					return (put_error(ERR_MALLOC, NULL), 3);
 			}
 			if (buffer == NULL && g_sig_recieved == 1)
-				close(data->token[cmd].fdin);
-			if (interrupt_heredoc(data, new, cmd) == -1)
+				interrupt_heredoc(data, new, cmd);
+			close(data->token[cmd].fdin);
+			data->token[cmd].fdin = open_file(data, data->token[i], 4);
+			if (data->token[cmd].fdin == -1)
 				return (-1);
+			close(new);
 		}
 		i++;
 	}
 	init_signal_handler(3);
 	return (0);
 }
+
+// int    set_heredoc(t_data *data)
+// {
+//     char *buffer; 
+//     int cmd;
+//     int i; 
+//     int new;
+	
+//     i = 0;
+//     init_signal_handler(2);
+//     while(i < data->lenght_token)
+//     {
+//         if(data->token[i].type == here_doc)
+//         {
+// 		    new = dup(0);
+//             cmd = search_cmd(data, i);
+//             data->token[cmd].fdin = open_file(data, data->token[i], 3);
+//             buffer = readline(">");
+//             while(buffer != NULL)
+//                 buffer = check_line(data, buffer, data->token[i + 1]. tab[0], cmd);
+//             if(buffer == NULL && g_sig_recieved == 1)
+//                 interrupt_heredoc(data, new, cmd);
+//             close(data->token[cmd].fdin);
+// 			close(new);
+// 			printf("ici\n");
+//         }
+//         i++;
+//     }
+//     init_signal_handler(3);
+//     return(0);
+// }
 
 int	check_command(t_data *data)
 {

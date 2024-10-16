@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 16:35:00 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 12:22:54 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ char		*remove_quote(char *s, int i, int j);
 /* Cmd_identify */
 int			identify_command(t_data *data);
 int			search_cmd(t_data *data, int i);
-char		*check_line(t_data *data, char *buffer, char *delimiter, int cmd);
+char		*check_line(int fd, char *buffer, char *delimiter, int *del);
 int			interrupt_heredoc(t_data *data, int new, int cmd);
 int			check_arg(t_data *data, int i, e_type type);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:19:29 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/15 16:34:41 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 12:14:01 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ void	ft_close(int fd1, int fd2)
 		close(fd1);
 	if (fd2 > 0 && fd2 != STDOUT_FILENO)
 		close(fd2);
-	if (fd1 == 3)
-		unlink("temp_file_here_doc.txt");
-	if (fd2 == 3)
-		unlink("temp_file_here_doc.txt");
+	// if (fd1 == 4)
+	// 	unlink("temp_file_here_doc.txt");
+	// if (fd2 == 4)
+	// 	unlink("temp_file_here_doc.txt");
 }
 
 int	open_file(t_data *data, t_token token, int i)

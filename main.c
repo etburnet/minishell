@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 16:29:14 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/16 11:53:01 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_minishell(char *s, t_data *data)
 	if (ret != 0)
 		return (ret);
 	ret = identify_command(data);
-	if (ret != 0 && ret != 1)
+	if (ret == 3 && ret != 1)
 		return (ret);
 	if (ret == 0)
 		execution(data);
