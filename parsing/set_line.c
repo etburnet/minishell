@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 17:39:41 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:42:29 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ char	*set_string(t_data *data, char *s, int len)
 
 	i = 0;
 	j = 0;
-	temp = malloc(sizeof(char) * (len + 1));
+	temp = malloc(sizeof(char) * (len + 2));
 	if (temp == NULL)
 		return (ft_putstr_fd(ERR_MALLOC, 2), NULL);
 	if (len == (int)ft_strlen(data->arg))

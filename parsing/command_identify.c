@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_identify.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 12:23:05 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:42:04 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	check_outfile(t_data *data)
 	while (i < data->lenght_token)
 	{
 		if (data->token[i].type == greater
-			|| data->token[i].type == greatergreater)
+			|| data->token[i].type == append)
 		{
 			if (i + 1 <= data->lenght_token && (data->token[i + 1].type == word
 					|| data->token[i + 1].type == string))
@@ -148,27 +148,6 @@ int	is_built_in(t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < data->lenght_token)
-	{
-		if (ft_strncmp(data->token[i].tab[0], "echo", 5) == 0)
-			data->token[i].type = built_in;
-		else if (ft_strncmp(data->token[i].tab[0], "cd", 3) == 0)
-			data->token[i].type = built_in;
-		else if (ft_strncmp(data->token[i].tab[0], "pwd", 4) == 0)
-			data->token[i].type = built_in;
-		else if (ft_strncmp(data->token[i].tab[0], "export", 7) == 0)
-			data->token[i].type = built_in;
-		else if (ft_strncmp(data->token[i].tab[0], "unset", 6) == 0)
-			data->token[i].type = built_in;
-		else if (ft_strncmp(data->token[i].tab[0], "env", 4) == 0)
-			data->token[i].type = built_in;
-		else if (ft_strncmp(data->token[i].tab[0], "exit", 5) == 0)
-			data->token[i].type = built_in;
-		if (data->token[i].type == built_in)
-			if (check_arg(data, i, built_in) == 3)
-				return (3);
-		i++;
-	}
 	while (i < data->lenght_token)
 	{
 		if (ft_strncmp(data->token[i].tab[0], "echo", 5) == 0)
@@ -256,12 +235,27 @@ int	is_special_char_bis(char *s)
 	return (0);
 }
 
+int	is_chevron(t_data *data, char *s)
+{
+	if (ft_strncmp(s, "<", 2) == 0 && data->token[1].type != infile)
+		return (1);
+	else if (ft_strncmp(s, ">", 2) == 0 && data->token[1].type != outfile)
+		return (1);
+	else if (ft_strncmp(s, "<<", 3) == 0 && data->token[1].type != here_doc)
+		return (1);
+	else if (ft_strncmp(s, ">>", 3) == 0 && data->token[1].type != outfile)
+		return (1);
+	return (0);
+}
+
 int	check_first_token(t_data *data)
 {
 	if (data->nb_token == 0)
 		return (0);
 	if (is_symbolic(data->token[0].tab[0]) == 1)
 		return (1);
+	if (is_chevron(data, data->token[0].tab[0]) == 1)
+		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
 	if (is_special_char(data->token[0].tab[0]) == 1)
 		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
 	if (is_special_char_bis(data->token[0].tab[0]) == 1)
@@ -279,10 +273,10 @@ int	identify_command(t_data *data)
 	check_outfile(data);
 	if (check_command(data) == 3)
 		return (3);
+	if (check_first_token(data) == 1)
+		return (1);
 	ret = set_heredoc(data);
 	if (ret != 0)
 		return (ret);
-	if (check_first_token(data) == 1)
-		return (1);
 	return (0);
 }

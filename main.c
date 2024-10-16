@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 11:53:01 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:39:13 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	ft_minishell(char *s, t_data *data)
 int	ft_minishell(char *s, t_data *data)
 {
 	int	ret;
@@ -19,7 +20,11 @@ int	ft_minishell(char *s, t_data *data)
 	ret = search_token(s, data);
 	if (ret != 0)
 		return (ret);
+	if (ret != 0)
+		return (ret);
 	ret = identify_token(data);
+	if (ret != 0)
+		return (ret);
 	if (ret != 0)
 		return (ret);
 	ret = identify_command(data);
@@ -29,10 +34,13 @@ int	ft_minishell(char *s, t_data *data)
 		execution(data);
 	free_data_token(data);
 	return (0);
+	return (0);
 }
 
 int	main(void)
 {
+	t_data	*data;
+	int		ret;
 	t_data	*data;
 	int		ret;
 

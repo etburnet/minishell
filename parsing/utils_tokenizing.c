@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/23 16:39:54 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 16:28:57 by eburnet          ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/10/16 12:43:21 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -76,4 +77,21 @@ int	ft_strchr_edit(const char *s, char c)
 		i++;
 	}
 	return (res);
+}
+
+int	ft_isdigit_edit(char *c)
+{
+	int	i;
+
+	i = 0;
+	if (c[i] == '-' || c[i] == '+')
+		return (1);
+	while (c[i] != '\0')
+	{
+		if (c[i] >= '0' && c[i] <= '9')
+			i++;
+		else
+			return (1);
+	}
+	return (0);
 }
