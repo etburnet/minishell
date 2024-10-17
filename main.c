@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/17 10:58:13 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 11:14:33 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ int	main(int argc, char *argv[], char **env)
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
-	if (copy_env(data, env) != 0)
-		ft_exit(data, NULL, 3);
+	ret = copy_env(data, env);
+	if (ret != 0)
+		ft_exit(data, NULL, ret);
 	if (update_shlvl(data) == 3)
 		ft_exit(data, NULL, 3);
 	while (1)
@@ -67,6 +68,7 @@ int	main(int argc, char *argv[], char **env)
 				if (ret != 0)
 					return (ft_clean(data), ret);
 			}
+			printf("env %s\n", env[0]);
 		}
 		ft_free(data->arg);
 	}

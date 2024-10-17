@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/17 11:00:30 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 11:01:25 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,8 @@ void	is_operator(char *s, char *temp, int *i, int *j)
 			put_string_to_cpy(s, temp, i, j);
 			add_space(temp, j);
 		}
-		}
-		put_string_to_cpy(s, temp, i, j);
 	}
+	put_string_to_cpy(s, temp, i, j);
 }
 
 char	*check_to_remove_quote_edit(char *s, char *tmp, int *j, int *i)

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/17 10:58:31 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 11:11:50 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,9 @@ int			unset(t_data *data, char **tab);
 int			ft_err_exit(t_data *data, char *err_msg, int n);
 long int	ft_atol(const char *nptr);
 int			del_env(t_data *data, char *delete);
+
+char    **ft_rep_env_var(char **env);
+
 
 /* Utils */
 void		free_tab(char **tab);
