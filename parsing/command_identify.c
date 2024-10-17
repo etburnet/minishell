@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_identify.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 17:48:00 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/17 10:54:13 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,25 +136,13 @@ int	is_built_in(t_data *data)
 		if (data->token[i].type == built_in)
 			if (check_arg(data, i, built_in) == 3)
 				return (3);
+/* 		data->token[i].full_path = malloc(sizeof(char) * 2);
+		if (!data->token[i].full_path)
+			return(put_error(ERR_MALLOC, NULL), 3);
+		data->token[i].full_path[0] = '1';
+		data->token[i].full_path[1] = '\0'; */
 		i++;
 	}
-	return (0);
-}
-
-int	is_symbolic(char *s)
-{
-	if (ft_strncmp(s, "~", 2) == 0)
-		return (put_error("is a directory :", s), 1);
-	else if (ft_strncmp(s, "/", 2) == 0)
-		return (put_error("is a directory :", s), 1);
-	else if (ft_strncmp(s, "//", 2) == 0)
-		return (put_error("is a directory :", s), 1);
-	else if (ft_strncmp(s, "./.", 4) == 0)
-		return (put_error("is a directory :", s), 1);
-	else if (ft_strncmp(s, "./", 3) == 0)
-		return (put_error("is a directory :", s), 1);
-	else if (ft_strncmp(s, ".", 2) == 0)
-		return (put_error("filename argument required :", s), 1);
 	return (0);
 }
 
@@ -237,10 +225,13 @@ int		is_chevrons(char *s)
 
 int	check_first_token(t_data *data)
 {
+	DIR			*stream_dir;
+	
 	if (data->nb_token == 0)
 		return (0);
-	if (is_symbolic(data->token[0].tab[0]) == 1)
-		return (1);
+	stream_dir = opendir(data->token[0].tab[0]);
+	if (stream_dir != NULL)
+		return (closedir(stream_dir), put_error("is a directory: ", data->token[0].tab[0]), 1);
 	if (is_special_char(data->token[0].tab[0]) == 1)
 		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
 	if (is_special_char_bis(data->token[0].tab[0]) == 1)
