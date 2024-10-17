@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 13:28:43 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 10:58:31 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,11 @@ typedef struct s_data
 	char	*arg;
 }			t_data;
 
-extern char	**environ;
 extern int	g_sig_recieved;
 
 /* Builtins */
 int			print_env(t_data *data);
-int			copy_env(t_data *data);
+int			copy_env(t_data *data, char **env);
 int			echo(char **tab);
 int			cd(t_data *data, char **tab);
 int			pwd(void);

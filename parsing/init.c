@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:06:50 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 15:40:49 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 11:00:04 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	init_data(t_data *tok, char *s)
 	tok->lenght_token = ft_countword(tok->source, 0);
 	if (tok->lenght_token == -1)
 		tok->lenght_token = 0;
+	
 	return (0);
 }
 

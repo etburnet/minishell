@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/17 10:54:13 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 10:59:56 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,11 +136,6 @@ int	is_built_in(t_data *data)
 		if (data->token[i].type == built_in)
 			if (check_arg(data, i, built_in) == 3)
 				return (3);
-/* 		data->token[i].full_path = malloc(sizeof(char) * 2);
-		if (!data->token[i].full_path)
-			return(put_error(ERR_MALLOC, NULL), 3);
-		data->token[i].full_path[0] = '1';
-		data->token[i].full_path[1] = '\0'; */
 		i++;
 	}
 	return (0);

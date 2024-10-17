@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 16:45:01 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/17 10:58:13 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,23 @@ int	ft_minishell(char *s, t_data *data)
 	return (0);
 }
 
-int	main(void)
+int	main(int argc, char *argv[], char **env)
 {
 	t_data	*data;
 	int		ret;
 
+	(void)argc;
+	(void)argv;
 	ret = 0;
+	if (!isatty(STDIN_FILENO))
+		return (put_error("No infile ./minishell exec", NULL), 1);
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
-	if (copy_env(data) == 3)
+	if (copy_env(data, env) != 0)
 		ft_exit(data, NULL, 3);
 	if (update_shlvl(data) == 3)
 		ft_exit(data, NULL, 3);
-	data->status = 0;
-	// if(isatty(0) == 0)
-	// {
-	// 	put_error("isatty = 0\n", NULL);
-	// 	return(0);
-	// }
 	while (1)
 	{
 		init_signal_handler(1);
@@ -61,11 +59,14 @@ int	main(void)
 		{
 			add_history(data->arg);
 			ret = init_data(data, data->arg);
-			if (ret != 0)
+			if (ret == 3)
 				return (ft_clean(data), ret);
-			ret = ft_minishell(data->source, data);
-			if (ret != 0)
-				return (ft_clean(data), ret);
+			else if(ret == 0)
+			{
+				ret = ft_minishell(data->source, data);
+				if (ret != 0)
+					return (ft_clean(data), ret);
+			}
 		}
 		ft_free(data->arg);
 	}
