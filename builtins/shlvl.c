@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:28:41 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/16 17:20:22 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 12:40:32 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	update_shlvl(t_data *data)
 
 	shlvl_cp = NULL;
 	if (data->env[0] == NULL)
-		return (put_error("Env copy is NULL", NULL), 1);
+		return (put_error("Env not found", NULL), 1);
 	shlvl = get_this_env("SHLVL", data->env);
 	if (shlvl == -1)
 		return (1);

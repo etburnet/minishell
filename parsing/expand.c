@@ -3,122 +3,123 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:09:58 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/16 15:04:03 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:41:45 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	replace_var(t_data *data, int i, int total_len, char *var_value)
+int	replace_var(t_data *data, char *res, char *var, int *i)
 {
-	char	*str;
-	char	*itoa;
-	int		j;
-	int		l;
-	int		k;
-
-	j = 0;
-	l = 0;
-	k = 0;
-	str = malloc(sizeof(char) * total_len);
-	if (str == NULL)
-		return (put_error(ERR_MALLOC, NULL), 3);
-	ft_memset(str, '\0', total_len);
-	while (data->token[i].tab[0][j])
+	printf("replace\n");
+	int		env_id;
+	int		len_value;
+	int		len_var;
+	char	*var_value;
+	
+	len_value = 0;
+	len_var = ft_strlen(var);
+	env_id = get_this_env(var, data->env);
+	if (env_id > 0)
 	{
-		if (data->token[i].tab[0][j] == '$')
+		var_value = ft_strdup(&data->env[env_id][len_var + 1]);
+		if (var_value == NULL)
+			return (ft_free(var), ft_free(res), put_error(ERR_MALLOC, NULL), 3);
+		len_value = ft_strlen(var_value);
+		ft_strlcat(&res[*i], var_value, (len_value + ft_strlen(res) + 1));
+		*i = ft_strlen(res);
+		free(var_value);
+	}
+	return (0);
+}
+
+int	add_status(t_data *data, char *res, int *i)
+{
+	char *itoa;
+	
+	itoa = ft_itoa(data->status);
+	if (itoa == NULL)
+			return (ft_free(res), put_error(ERR_MALLOC, NULL), 3);
+	ft_strlcat(&res[*i], itoa, (ft_strlen(res) + ft_strlen(itoa) + 1));
+	*i = ft_strlen(res);
+	ft_free(itoa);
+	return (0);
+}
+
+int	expand(t_data *data, t_token tok)
+{
+	int		j;
+	int		i;
+	int		k;
+	char	*res;
+	char	*var;
+	char 	*str;
+	int		first;
+	
+	j = 0;
+	i = 0;
+	k = 0;
+	first = 0;
+	if (tok.type != undefine)
+		return (1);
+	res = malloc(sizeof(char) * BUFSIZ);
+	if (!res)
+		return (put_error(ERR_MALLOC, NULL), 3);
+	memset(res, '\0', BUFSIZ);
+	var = malloc(sizeof(char) * BUFSIZ);
+	if (!var)
+		return (ft_free(res), put_error(ERR_MALLOC, NULL), 3);
+	memset(var, '\0', BUFSIZ);
+	str = ft_strdup(tok.tab[0]);
+	while (str[j])
+	{
+		if (str[j] == '$')
+			k = 1;
+		j++;
+	}
+	if (k == 0)
+		return (ft_free(var), ft_free(str), ft_free(res), 1);
+	k = 0;
+	j = 0;
+	while (str[j])
+	{
+		while (str[j] && str[j] != '$')
+			res[i++] = str[j++];
+		if (str[j] == '\0')
+			break ;
+		j++;
+		if (str[j] == '?')
 		{
+			if (add_status(data, res, &i) == 3)
+				return (ft_free(var), ft_free(res), ft_free(str), 3);
 			j++;
-			if (data->token[i].tab[0][j] == '?')
+		}
+		else
+		{
+			while (ft_isalnum(str[j]) || str[j] == '_')
+				var[k++] = str[j++];
+			printf("var:%s\n", var);
+			if (var[0] != '\0')
 			{
-				itoa = ft_itoa(data->status);
-				ft_strlcat(str, itoa, (ft_strlen(str) + ft_strlen(itoa) + 1));
-				ft_free(itoa);
-				l = ft_strlen(str);
-				j++;
+				if (replace_var(data, res, var, &i) == 3)
+					return (ft_free(var), ft_free(res), ft_free(str), 3);
 			}
 			else
 			{
-				while (ft_isalnum(data->token[i].tab[0][j])
-					|| data->token[i].tab[0][j] == '_')
-					j++;
-				while (var_value[k])
-					str[l++] = var_value[k++];
+				j--;
+				while (str[j] == '$' && (str[j + 1] == '$' || str[j + 1] == '\0'))
+					res[i++] = str[j++];
+				printf("str:%c\n", str[j]);
 			}
 		}
-		else
-			str[l++] = data->token[i].tab[0][j++];
 	}
-	str[l] = '\0';
-	ft_free(data->token[i].tab[0]);
-	data->token[i].tab[0] = str;
-	return (0);
-}
-
-int	remove_var(t_data *data, int i, int total_len)
-{
-	char	*str;
-	int		j;
-	int		k;
-
-	j = 0;
-	k = 0;
-	str = malloc(sizeof(char) * total_len);
-	if (str == NULL)
-		return (put_error(ERR_MALLOC, NULL), 3);
-	while (data->token[i].tab[0][j])
-	{
-		if (data->token[i].tab[0][j] == '$')
-		{
-			j++;
-			while (ft_isalnum(data->token[i].tab[0][j])
-				|| data->token[i].tab[0][j] == '_')
-				j++;
-		}
-		str[k++] = data->token[i].tab[0][j];
-		j++;
-	}
-	str[k] = '\0';
-	ft_free(data->token[i].tab[0]);
-	data->token[i].tab[0] = str;
-	return (0);
-}
-
-int	expand(t_data *data, int i, int start, int len_var, int full_len)
-{
-	char	*var;
-	char	*var_value;
-	int		pos_var;
-	int		len_value;
-	int		ret;
-
-	var_value = NULL;
-	len_value = 0;
-	var = malloc(sizeof(char) * (len_var + 1));
-	if (var == NULL)
-		return (put_error(ERR_MALLOC, NULL), 3);
-	ft_strlcpy(var, &data->token[i].tab[0][start], len_var + 1);
-	pos_var = get_this_env(var, data->env);
-	if (pos_var != -1 || var[0] == '?')
-	{
-		if (var[0] == '\0' && full_len == 1)
-			return (-1);
-		if (var[0] != '?')
-		{
-			var_value = ft_strdup(&data->env[pos_var][len_var + 1]);
-			if (var_value == NULL)
-				return (ft_free(var), put_error(ERR_MALLOC, NULL), 3);
-			len_value = ft_strlen(var_value);
-		}
-		ret = replace_var(data, i, ((full_len - len_var) + len_value + 1),
-				var_value);
-		ft_free(var_value);
-	}
-	else
-		ret = remove_var(data, i, (full_len - len_var) + 1);
+	res[i] = '\0';
 	ft_free(var);
-	return (ret);
+	ft_free(str);
+	ft_free(tok.tab[0]);
+	tok.tab[0] = res;
+	return(0);
 }

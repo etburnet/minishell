@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 16:35:56 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/16 13:26:26 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 12:39:15 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	add_env_var(char *name, char *value, t_data *data)
 	int		ret;
 
 	env_id = get_this_env(name, data->env);
+	if (env_id == -2)
+		return (1);
 	cat = malloc(sizeof(char) * (ft_strlen(name) + ft_strlen(value) + 2));
 	if (cat == NULL)
 		return (3);
@@ -94,10 +96,12 @@ int	export_parsing(t_data *data, char *str)
 	int		j;
 	int		len;
 	int		val;
+	int		ret;
 	char	*name;
 	char	*value;
 
 	val = 1;
+	ret = 0;
 	len = ft_strlen(str);
 	j = 0;
 	if (str[0] == '=')
@@ -122,11 +126,12 @@ int	export_parsing(t_data *data, char *str)
 	ft_strlcpy(value, &str[j + 2], len - (j + 1));
 	if (is_var_ok(name) == 0)
 	{
-		if (add_env_var(name, value, data) == 3)
+		ret = add_env_var(name, value, data);
+		if (ret != 0)
 		{
 			if (value != NULL)
 				ft_free(value);
-			return (ft_free(name), 3);
+			return (ft_free(name), ret);
 		}
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:49 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/16 15:23:03 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 10:59:27 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ void	free_data_token(t_data *data)
 			ft_free(data->token[i].tab[j]);
 			j++;
 		}
-		if (data->token[i].full_path)
-			ft_free(data->token[i].full_path);
+		ft_free(data->token[i].full_path);
 		if (data->token[i].tab)
 			free(data->token[i].tab);
 		ft_close(data, data->token[i].fdin, data->token[i].fdout);

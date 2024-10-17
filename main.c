@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 17:36:43 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 12:38:03 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,13 @@ int	main(int argc, char *argv[], char **env)
 		return (put_error("No infile ./minishell exec", NULL), 1);
 	data = malloc(sizeof(t_data));
 	if (!data)
-		return (1);
-	if (copy_env(data, env) != 0)
-		ft_exit(data, NULL, 3);
-	if (update_shlvl(data) == 3)
-		ft_exit(data, NULL, 3);
+		return (put_error(ERR_MALLOC, NULL), 3);
+	ret = copy_env(data, env);
+	if (ret == 3)
+		ft_exit(data, NULL, ret);
+	else if (ret != 1)
+		if (update_shlvl(data) == 3)
+			ft_exit(data, NULL, 3);
 	while (1)
 	{
 		init_signal_handler(1);

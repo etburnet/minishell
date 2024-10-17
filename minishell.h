@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 17:07:25 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 17:13:54 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int			check_quote(const char *s, int i, char c);
 void		free_data_token(t_data *data);
 int			ft_strchr_edit(const char *s, char c);
 char		*ft_find_cmd(t_data *data, char **cmd_tab);
-int			expand(t_data *data, int i, int start, int len_var, int full_len);
+int			expand(t_data *data, t_token tok);
 
 /* Token_identify */
 int			identify_token(t_data *data);

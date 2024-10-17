@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/16 17:41:11 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 11:24:53 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	copy_env(t_data *data, char **environ)
 	i = 0;
 	j = 0;
 	tab_len = 0;
-	if (environ[0] == NULL)
+	if (environ == NULL || environ[0] == NULL)
 		return (put_error("Env not found", NULL), 1);
 	while (environ[tab_len])
 		tab_len++;

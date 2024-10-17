@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:59:33 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/16 16:45:53 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 12:39:13 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ void	ft_clean(t_data *data)
 {
 	clear_history();
 	if (data->arg != NULL)
+	{
 		free_data_token(data);
+		ft_free(data->arg);
+	}
 	if (data->env != NULL)
 		free_tab(data->env);
 	free(data);

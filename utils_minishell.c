@@ -6,13 +6,11 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 13:29:58 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 12:36:44 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 void	ft_free(char *str)
 {
@@ -38,6 +36,8 @@ int	get_this_env(char *var, char **env)
 
 	len = ft_strlen(var);
 	i = 0;
+	if (env == NULL || env[0] == NULL)
+		return (put_error("Env not found", NULL), -2);
 	while (env[i] != NULL)
 	{
 		if (ft_strncmp(env[i], var, len) == 0)

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 15:36:26 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 11:01:25 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,23 @@ int	count_space(char *s, int i, int j)
 		if (check_operator(s[i]) == 1)
 		{
 			if ((s[i] == '<' && s[i + 1] == '<') || (s[i] == '>' && s[i
-					+ 1] == '>'))
+					+ 1] == '>') || (s[i] == '<' && s[i+ 1] == '>'))
 			{
-				if (s[i - 1] != ' ' && i > 0)
+				if ( i > 0 && s[i - 1] != ' ')
 					j++;
 				i++;
-				if (s[i + 1] != ' ')
-					j++;
-				i++;
+				if(s[i + 1] != '\0')
+				{
+					if (s[i + 1] != ' ')
+						j++;
+					i++;
+				}
 			}
 			else
 			{
-				if (s[i - 1] != ' ' && i > 0)
+				if ( i > 0 && s[i - 1] != ' ')
 					j++;
-				if (s[i + 1] != ' ')
+				if (s[i] != '\0' && s[i + 1] != ' ')
 					j++;
 			}
 		}
@@ -65,9 +68,9 @@ void	add_space(char *temp, int *j)
 void	is_operator(char *s, char *temp, int *i, int *j)
 {
 	if ((s[*i] == '<' && s[*i + 1] == '<') || (s[*i] == '>' && s[*i + 1] == '>')
-		|| (s[*i] == '|' && s[*i + 1] == '|'))
+		|| (s[*i] == '|' && s[*i + 1] == '|') || (s[*i] == '<' && s[*i + 1] == '>'))
 	{
-		if (*i > 0 && s[*i - 1] != ' ')
+		if (*i > 0 && s[*i - 1] != ' ' && temp[*j - 1] != ' ')
 			add_space(temp, j);
 		put_string_to_cpy(s, temp, i, j);
 		if (s[*i + 1] != ' ')
@@ -80,21 +83,19 @@ void	is_operator(char *s, char *temp, int *i, int *j)
 	}
 	else
 	{
-		if (s[*i + 1] != ' ' && (*i > 0 && s[*i - 1] != ' '))
+		if (s[*i + 1] != ' ' && (*i > 0 && s[*i - 1] != ' ') && temp[*j - 1] != ' ')
 		{
 			add_space(temp, j);
 			put_string_to_cpy(s, temp, i, j);
 			add_space(temp, j);
 		}
-		else if (*i > 0 && s[*i - 1] != ' ')
-			add_space(temp, j);
 		else if (s[*i + 1] != ' ')
 		{
 			put_string_to_cpy(s, temp, i, j);
 			add_space(temp, j);
 		}
-		put_string_to_cpy(s, temp, i, j);
 	}
+	put_string_to_cpy(s, temp, i, j);
 }
 
 char	*check_to_remove_quote_edit(char *s, char *tmp, int *j, int *i)
@@ -144,12 +145,14 @@ char	*check_to_remove_dquote_edit(char *s, char *tmp, int *j, int *i)
 char	*set_string(t_data *data, char *s, int len)
 {
 	char	*temp;
+	int len_arg;
 	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
-	if (len == (int)ft_strlen(data->arg))
+	len_arg = (int)ft_strlen(data->arg);
+	if (len == len_arg)
 	{
 		temp = ft_strdup(data->arg);
 		return (temp);
@@ -158,15 +161,15 @@ char	*set_string(t_data *data, char *s, int len)
 	if (temp == NULL)
 		return (ft_putstr_fd(ERR_MALLOC, 2), NULL);
 	ft_memset(temp, '\0', len + 1);
-	while (s[i] != '\0')
+	while (i < len_arg)
 	{
 		if ((check_operator(s[i]) != 1) && s[i] != '\'' && s[i] != '\"')
 			put_string_to_cpy(s, temp, &i, &j);
-		if (s[i] == '\"')
+		else if (s[i] == '\"')
 			check_to_remove_dquote_edit(s, temp, &j, &i);
-		if (s[i] == '\'')
+		else if (s[i] == '\'')
 			check_to_remove_quote_edit(s, temp, &j, &i);
-		if (check_operator(s[i]) == 1)
+		else if (check_operator(s[i]) == 1)
 			is_operator(s, temp, &i, &j);
 	}
 	return (temp);
