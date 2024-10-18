@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:09:58 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/18 12:06:28 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 12:18:39 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,11 @@ int	expand(t_data *data, t_token tok)
 		else 
 		{
 			//printf("2char str:%c\n", str[j]);
-			while (ft_isalnum(str[j]) || str[j] == '_')
+			if (ft_isdigit(str[j]))
 				var[k++] = str[j++];
+			else
+				while (ft_isalnum(str[j]) || str[j] == '_')
+					var[k++] = str[j++];
 			//printf("var:%s\n", var);
 			if (var[0] != '\0')
 			{
