@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 13:39:55 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/18 15:42:58 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	wich_operator(t_data *data, int i)
 		if (i > 0 && (ft_isdigit_edit(data->token[i - 1].tab[0]) == 0))
 			data->token[i - 1].type = append_id;
 		data->token[i].type = append;
-		data->token[i + 1].type = append_out;
 	}
 	if (ft_strncmp(data->token[i].tab[0], "|", 2) == 0)
 		data->token[i].type = pipes;
@@ -95,6 +94,8 @@ char	*remove_meta_c(char *s)
 	return (temp);
 }
 
+
+
 int	identify_token(t_data *data)
 {
 	int i;
@@ -116,5 +117,6 @@ int	identify_token(t_data *data)
 			return(3);	
 		i++;
 	}
+	
 	return (0);
 }
