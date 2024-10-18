@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 15:25:07 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 16:25:48 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int			print_env(t_data *data);
 int			copy_env(t_data *data, char **cp_env);
 int			echo(char **tab);
 int			cd(t_data *data, char **tab);
-int			pwd(t_data *data);
+int	pwd(t_data *data);
 int			ft_exit(t_data *data, char **tab, int n);
 int			export(t_data *data, char **tab);
 int			unset(t_data *data, char **tab);
@@ -132,6 +132,8 @@ void		free_data_token(t_data *data);
 int			ft_strchr_edit(const char *s, char c);
 char		*ft_find_cmd(t_data *data, char **cmd_tab);
 int			expand(t_data *data, t_token tok);
+int	check_operator(char c);
+
 
 /* Token_identify */
 int			identify_token(t_data *data);

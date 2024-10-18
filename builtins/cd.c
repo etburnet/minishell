@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:01:13 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/18 15:10:02 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 16:26:42 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,14 @@ int	cd(t_data *data, char **tab)
 			if (cp_pwd == NULL)
 				return (put_error(ERR_MALLOC, NULL), 3);
 			if (open_ch_dir(tab[1]) == 1)
+				return (free(cp_pwd), 1);
+			ret = edit_old_pwd(data, cp_pwd);
+			if (ret != 0)
+				return (ret);
+			ret = edit_pwd(data);
+			if (ret != 0)
+				return (ret);
+			free(cp_pwd);
 				return (free(cp_pwd), 1);
 			ret = edit_old_pwd(data, cp_pwd);
 			if (ret != 0)

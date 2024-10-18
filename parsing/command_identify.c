@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 15:10:02 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 16:28:04 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,25 +77,50 @@ int	check_command(t_data *data)
 	return (0);
 }
 
-void	check_outfile(t_data *data)
+int	check_outfile(t_data *data)
 {
 	int	i;
-
+	int fd;
+	
 	i = 0;
 	while (i < data->lenght_token)
 	{
-		if ((data->token[i].type == greater
-			|| data->token[i].type == append))
+		if (data->token[i].type == greater)
 		{
+			if((i + 1) < data->lenght_token && check_operator(data->token[i + 1].tab[0][0]) == 1)
+				return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]), 1);
 			if ((i + 1) < data->lenght_token && (data->token[i + 1].type == word
-					|| data->token[i + 1].type == string || data->token[i + 1].type == append_out))
+					|| data->token[i + 1].type == string))
+			{
 				data->token[i + 1].type = outfile;
+				fd = open(data->token[i + 1].tab[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				if(fd < 0)
+					return (perror(data->token[i + 1].tab[0]), data->status = 1, -1);
+				else
+					close(fd);
+			}
+		}
+		else if (data->token[i].type == append)
+		{
+			if((i + 1) < data->lenght_token && check_operator(data->token[i + 1].tab[0][0]) == 1)
+				return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]), 1);
+			if ((i + 1) < data->lenght_token && (data->token[i + 1].type == word
+					|| data->token[i + 1].type == string))
+			{
+				data->token[i + 1].type = append_out;
+				fd = open(data->token[i + 1].tab[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
+				if(fd < 0)
+					return (perror(data->token[i + 1].tab[0]), data->status = 1, -1);
+				else
+					close(fd);
+			}
 		}
 		i++;
 	}
+	return(0);
 }
 
-void	check_infile(t_data *data)
+int	check_infile(t_data *data)
 {
 	int	i;
 
@@ -104,12 +129,15 @@ void	check_infile(t_data *data)
 	{
 		if (data->token[i].type == less)
 		{
+			if((i + 1) < data->lenght_token && check_operator(data->token[i + 1].tab[0][0]) == 1)
+				return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]), 1);
 			if (i + 1 < data->lenght_token && (data->token[i + 1].type == word
 					|| data->token[i + 1].type == string))
 				data->token[i + 1].type = infile;
 		}
 		i++;
 	}
+	return(0);
 }
 
 int	is_built_in(t_data *data)
@@ -247,6 +275,31 @@ int	check_first_token(t_data *data)
 	}
 	return (0);
 }
+// const char* gettypeName(enum e_type type) 
+// {
+//    switch (type) 
+//    {
+//       case undefine: return "undefine";
+//       case string: return "string";
+//       case word: return "word";
+//     //   case number: return "number";
+//       case less: return "less";
+//       case greater: return "greater";
+//       case append: return "append";
+//       case append_id: return "append_id";
+//       case append_out: return "append_out";
+//       case delimiter: return "delimiter";
+//       case here_doc: return "here_doc";
+//       case exit_status: return "exit_status";
+//       case pipes: return "pipes";
+//       case infile: return "infile";
+//       case outfile: return "outfile";
+//       case variable: return "variable";
+//       case command: return "command";
+//       case arg: return "arg";
+//       case built_in: return "built_in";
+//    }
+// }
 
 int	identify_command(t_data *data)
 {
@@ -254,8 +307,10 @@ int	identify_command(t_data *data)
 
 	if (is_built_in(data) == 3)
 		return (3);
-	check_infile(data);
-	check_outfile(data);
+	if(check_infile(data) != 0)
+		return(1);
+	if(check_outfile(data) != 0)
+		return(1);
 	if (check_command(data) == 3)
 		return (3);
 	if (check_first_token(data) == 1)
@@ -263,5 +318,12 @@ int	identify_command(t_data *data)
 	ret = set_heredoc(data);
 	if (ret != 0)
 		return (ret);
+	// int i = 0;
+	
+    // while(i <= data->lenght_token)
+    // {
+	// 	printf("token %d type %s = %s\n \n", data->token[i].position, gettypeName(data->token[i].type), data->token[i].tab[0]);
+    //     i++;
+    // }
 	return (0);
 }

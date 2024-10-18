@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 12:10:09 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 16:28:35 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	check_operator(char c)
 		return (1);
 	if (c == '|' || c == '&')
 		return (1);
-	if (c == ';' || c == '&')
+	if (c == ';')
 		return (1);
 	return (0);
 }

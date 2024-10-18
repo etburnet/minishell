@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/14 15:11:45 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/18 15:19:27 by eburnet          ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/10/18 16:16:45 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,25 +105,24 @@ int	bring_command(t_data *data, int *i)
 		if (cmd == -1)
 			while (*i < data->lenght_token && data->token[*i].type != pipes)
 				(*i)++;
-		else
+		if (data->token[*i].type == infile)
+			data->token[cmd].fdin = open_file(data, data->token[*i], 0);
+		else if (data->token[*i].type == outfile)
+			data->token[cmd].fdout = open_file(data, data->token[*i], 1);
+		else if (data->token[*i].type == append_out)
+			data->token[cmd].fdout = open_file(data, data->token[*i], 5);
+		else if (data->token[*i].type == append_id)
+			data->append_id = ft_atoi(data->token[*i].tab[0]);
+		
+		if (data->token[cmd].fdin == -1 || data->token[cmd].fdout == -1)
 		{
-			if (data->token[*i].type == infile)
-				data->token[cmd].fdin = open_file(data, data->token[*i], 0);
-			else if (data->token[*i].type == outfile)
-				data->token[cmd].fdout = open_file(data, data->token[*i], 1);
-			else if (data->token[*i].type == append_out)
-				data->token[cmd].fdout = open_file(data, data->token[*i], 5);
-			else if (data->token[*i].type == append_id)
-				data->append_id = ft_atoi(data->token[*i].tab[0]);
-			if (data->token[cmd].fdin == -1 || data->token[cmd].fdout == -1)
-			{
-				while (*i < data->lenght_token && data->token[*i].type != pipes)
-					(*i)++;
-				if (*i == data->lenght_token)
-					return (-1);
-			}
+			while (*i < data->lenght_token && data->token[*i].type != pipes)
+				(*i)++;
+			if (*i == data->lenght_token)
+				return (-1);
 		}
 		(*i)++;
+		
 	}
 	return (cmd);
 }
