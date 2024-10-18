@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:09:58 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/17 18:41:45 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 11:54:16 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	replace_var(t_data *data, char *res, char *var, int *i)
 {
-	printf("replace\n");
 	int		env_id;
 	int		len_value;
 	int		len_var;
@@ -69,10 +68,9 @@ int	expand(t_data *data, t_token tok)
 	if (!res)
 		return (put_error(ERR_MALLOC, NULL), 3);
 	memset(res, '\0', BUFSIZ);
-	var = malloc(sizeof(char) * BUFSIZ);
+	var = malloc(sizeof(char) * (ft_strlen(tok.tab[0]) + 1));
 	if (!var)
 		return (ft_free(res), put_error(ERR_MALLOC, NULL), 3);
-	memset(var, '\0', BUFSIZ);
 	str = ft_strdup(tok.tab[0]);
 	while (str[j])
 	{
@@ -82,10 +80,12 @@ int	expand(t_data *data, t_token tok)
 	}
 	if (k == 0)
 		return (ft_free(var), ft_free(str), ft_free(res), 1);
-	k = 0;
 	j = 0;
 	while (str[j])
 	{
+		k = 0;
+		memset(var, '\0', (ft_strlen(tok.tab[0]) + 1));
+		//printf("char str:%c\n", str[j]);
 		while (str[j] && str[j] != '$')
 			res[i++] = str[j++];
 		if (str[j] == '\0')
@@ -97,11 +97,12 @@ int	expand(t_data *data, t_token tok)
 				return (ft_free(var), ft_free(res), ft_free(str), 3);
 			j++;
 		}
-		else
+		else 
 		{
+			//printf("2char str:%c\n", str[j]);
 			while (ft_isalnum(str[j]) || str[j] == '_')
 				var[k++] = str[j++];
-			printf("var:%s\n", var);
+			//printf("var:%s\n", var);
 			if (var[0] != '\0')
 			{
 				if (replace_var(data, res, var, &i) == 3)
@@ -109,12 +110,15 @@ int	expand(t_data *data, t_token tok)
 			}
 			else
 			{
-				j--;
+				if (str[j-1] == '$')
+					j--;
 				while (str[j] == '$' && (str[j + 1] == '$' || str[j + 1] == '\0'))
 					res[i++] = str[j++];
-				printf("str:%c\n", str[j]);
+				if (str[j] == '$' && !ft_isalnum(str[j + 1]) && str[j +1] != '_')
+					res[i++] = str[j++];
 			}
 		}
+		//printf("res:%s\n", res);
 	}
 	res[i] = '\0';
 	ft_free(var);
