@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 16:28:04 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 19:19:15 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	set_heredoc(t_data *data)
 	
 	del = 0;
 	i = 0;
-	init_signal_handler(2);
+	init_signal_handler(data, 2);
 	while (i < data->lenght_token)
 	{
 		if (data->token[i].type == here_doc)
@@ -33,18 +33,20 @@ int	set_heredoc(t_data *data)
 			data->token[cmd].fdin = open_file(data, data->token[i], 3);
 			if (data->token[cmd].fdin == -1)
 				return (-1);
-			//printf("fdin %d\n", data->token[cmd].fdin );
 			buffer = readline(">");
-			// if (buffer == NULL)
-			// 	return (put_error(ERR_MALLOC, NULL), 3);
+			if (buffer == NULL && g_sig_recieved == 0)
+				return (put_error(ERR_MALLOC, NULL), 3);
 			while (buffer != NULL)
 			{
 				buffer = check_line(data->token[cmd].fdin, buffer, data->token[i + 1].tab[0], &del);
-				if (buffer == NULL && del == 0)
+				if (buffer == NULL && del == 0 && g_sig_recieved == 0)
 					return (put_error(ERR_MALLOC, NULL), 3);
 			}
 			if (buffer == NULL && g_sig_recieved == 1)
+			{	
 				interrupt_heredoc(data, new, cmd);
+				return(1);
+			}
 			close(data->token[cmd].fdin);
 			data->token[cmd].fdin = open_file(data, data->token[i], 4);
 			if (data->token[cmd].fdin == -1)
@@ -53,7 +55,7 @@ int	set_heredoc(t_data *data)
 		}
 		i++;
 	}
-	init_signal_handler(3);
+	init_signal_handler(data, 3);
 	return (0);
 }
 
@@ -252,13 +254,8 @@ int		is_chevrons(char *s)
 
 int	check_first_token(t_data *data)
 {
-	DIR			*stream_dir;
-	
 	if (data->nb_token == 0)
 		return (0);
-	stream_dir = opendir(data->token[0].tab[0]);
-	if (stream_dir != NULL)
-		return (closedir(stream_dir), put_error("is a directory: ", data->token[0].tab[0]), 1);
 	if (is_special_char(data->token[0].tab[0]) == 1)
 		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
 	if (is_special_char_bis(data->token[0].tab[0]) == 1)
@@ -275,31 +272,7 @@ int	check_first_token(t_data *data)
 	}
 	return (0);
 }
-// const char* gettypeName(enum e_type type) 
-// {
-//    switch (type) 
-//    {
-//       case undefine: return "undefine";
-//       case string: return "string";
-//       case word: return "word";
-//     //   case number: return "number";
-//       case less: return "less";
-//       case greater: return "greater";
-//       case append: return "append";
-//       case append_id: return "append_id";
-//       case append_out: return "append_out";
-//       case delimiter: return "delimiter";
-//       case here_doc: return "here_doc";
-//       case exit_status: return "exit_status";
-//       case pipes: return "pipes";
-//       case infile: return "infile";
-//       case outfile: return "outfile";
-//       case variable: return "variable";
-//       case command: return "command";
-//       case arg: return "arg";
-//       case built_in: return "built_in";
-//    }
-// }
+
 
 int	identify_command(t_data *data)
 {
@@ -318,12 +291,5 @@ int	identify_command(t_data *data)
 	ret = set_heredoc(data);
 	if (ret != 0)
 		return (ret);
-	// int i = 0;
-	
-    // while(i <= data->lenght_token)
-    // {
-	// 	printf("token %d type %s = %s\n \n", data->token[i].position, gettypeName(data->token[i].type), data->token[i].tab[0]);
-    //     i++;
-    // }
 	return (0);
 }

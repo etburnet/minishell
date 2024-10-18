@@ -6,16 +6,14 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:34:11 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/18 16:27:23 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 16:29:31 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 int	pwd(t_data *data)
-int	pwd(t_data *data)
 {
-	int	id_env;
 	int	id_env;
 
 	id_env = get_this_env("PWD", data->cp_env);

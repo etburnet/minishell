@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 16:28:44 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 19:02:22 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ char	*remove_meta_c(char *s)
 	j = 0;
 	len = ft_strlen(s);
 	temp = malloc(len + 1);
-	// printf("len %d\n", len);
 	if(!temp)
 		return(put_error(ERR_MALLOC, NULL), NULL);
 	ft_memset(temp, '\0', len + 1);
@@ -88,8 +87,6 @@ char	*remove_meta_c(char *s)
 			i++;
 		put_string_to_cpy(s, temp, &i, &j);
 	}
-	// printf("j = %d\n", j);
-	// temp[j] = '\0';
 	ft_free(s);
 	return (temp);
 }

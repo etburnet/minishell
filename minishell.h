@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 16:25:48 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 18:16:28 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,10 @@ int			update_shlvl(t_data *data);
 void		ft_free(char *str);
 
 /* Signal */
-void		init_signal_handler(int i);
+void		init_signal_handler(t_data *data, int i);
 void		handle_signal(int signum);
 void		handle_sig_heredoc(int signum);
+void	handle_slash(int signum);
 
 /* Init */
 int			init_data(t_data *tok, char *s);

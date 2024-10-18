@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 16:28:35 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 19:02:45 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,12 @@ int	check_operator(char c)
 		return (1);
 	return (0);
 }
-// int	is_double_op(char *s, int i)
-// {
-// 	if((s[i] == s[i + 1] || (s[i] == '<' && s[i+ 1] == '>'))
-// }
+
 
 int	count_space(char *s, int i, int j)
 {
 	while (s[i] != '\0')
 	{
-		// printf("i = %d, j = %d\n", i, j);
 		i = check_quote(s, i, '\'');
 		if (i == -1)
 			return (put_error(ERR_SYNTAX, "\'"), 0);
@@ -64,7 +60,6 @@ int	count_space(char *s, int i, int j)
 		}
 		else if(s[i] != '\0')
 			i++;
-		// printf("i = %d, j = %d\n", i, j);
 	}
 	return (j + i);
 }

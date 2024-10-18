@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/18 16:16:45 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 19:00:40 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
 	int		ret;
 
 	ret = 0;
-	// printf("cmd %s, arg %s\n", cmd_tab[0], cmd_tab[1]);
-	// printf("fdin %d, fdout %d, append %d\n", fdin, fdout, data->append_id);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
@@ -40,8 +38,6 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 	pid_t	pid;
 	DIR *stream_dir;
 
-	// printf("fdin %d, fdout %d, append %d\n", fdin, fdout, data->append_id);
-	
 	stream_dir = opendir(data->token[cmd].tab[0]);
 	if (stream_dir != NULL)
 		return (closedir(stream_dir), put_error("is a directory: ", data->token[cmd].tab[0]), ft_close(data, fdin, fdout), 126);
@@ -51,12 +47,13 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 	if (pid == -1)
 		return (perror("fork"), 1);
 	if (pid > 0)
-		init_signal_handler(4);
+		init_signal_handler(data, 4);
 	else if (pid == 0)
 	{	
 		if (dup2(fdin, 0) == -1 || dup2(fdout, data->append_id) == -1)
 			return (perror("dup2"), 1);
 		close_all(data, fdin, fdout);
+		init_signal_handler(data, 5);
 		if (execve(data->token[cmd].full_path, data->token[cmd].tab, data->cp_env) ==
 			-1)
 			put_error(ERR_CMD, data->token[cmd].tab[0]);
@@ -113,7 +110,6 @@ int	bring_command(t_data *data, int *i)
 			data->token[cmd].fdout = open_file(data, data->token[*i], 5);
 		else if (data->token[*i].type == append_id)
 			data->append_id = ft_atoi(data->token[*i].tab[0]);
-		
 		if (data->token[cmd].fdin == -1 || data->token[cmd].fdout == -1)
 		{
 			while (*i < data->lenght_token && data->token[*i].type != pipes)
@@ -121,8 +117,7 @@ int	bring_command(t_data *data, int *i)
 			if (*i == data->lenght_token)
 				return (-1);
 		}
-		(*i)++;
-		
+		(*i)++;	
 	}
 	return (cmd);
 }
@@ -158,7 +153,7 @@ int	prepare_fd(t_data *data)
 			ft_close(data, data->token[cmd].fdin, data->token[cmd].fdout);
 		i++;
 	}
-	return (0);
+	return (ret);
 }
 
 int	execution(t_data *data)
@@ -172,7 +167,7 @@ int	execution(t_data *data)
 	check_first_last(data);
 	ret = prepare_fd(data);
 	if (ret != 0)
-		return (ret);
+		return (data->status = ret % 255, ret);
 	while (pid != -1)
 	{
 		pid = waitpid(-1, &status, 0);

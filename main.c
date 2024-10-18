@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 16:25:37 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 18:47:19 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,19 @@ int	main(int argc, char *argv[], char **env)
 	else if (ret != 1)
 		if (update_shlvl(data) == 3)
 			ft_exit(data, NULL, 3);
+	data->status = 0;
 	while (1)
 	{
-		init_signal_handler(1);
+		init_signal_handler(data, 1);
 		data->arg = readline("minishell$ ");
+		if(g_sig_recieved == 1)
+			data->status = 130;
+		else if(g_sig_recieved == 2)
+			data->status = 131;
+		if (g_sig_recieved != 0)
+			g_sig_recieved = 0;
 		if (data->arg == NULL)
-			ft_exit(data, NULL, 1);
+			ft_exit(data, NULL, 0);
 		if (*data->arg)
 		{
 			add_history(data->arg);

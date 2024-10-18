@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 16:35:56 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/18 16:26:57 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 17:26:14 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,10 @@ int	export_parsing(t_data *data, char *str)
 {
 	int		j;
 	int		len;
-	int		val;
 	int		ret;
 	char	*name;
 	char	*value;
 
-	val = 1;
 	ret = 0;
 	len = ft_strlen(str);
 	j = 0;
@@ -109,7 +107,11 @@ int	export_parsing(t_data *data, char *str)
 	while (str[j] != '=' && str[j])
 		j++;
 	if (j == len && str[j] != '=')
+	{
+		if (is_var_ok(str) == 1)
+			put_error("export: not a valid identifier: ", str);
 		return (1);
+	}
 	else if (j == len && str[j] == '=')
 		j--;
 	else
