@@ -3,14 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:01:13 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/18 12:04:15 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 14:09:02 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	edit_pwd(t_data *data)
+{
+	char 	buf[PATH_MAX];
+	int		id_pwd;
+	
+	id_pwd = get_this_env("PWD", data->env);
+	if (id_pwd == -1)
+		return (ft_putstr_fd("Unable to find PWD", 2), 1);
+	if (getcwd(buf, PATH_MAX))
+	{
+		free(data->env[id_pwd]);
+		printf("%s\n", buf);
+		data->env[id_pwd] = ft_strdup(buf);
+		if (!data->env[id_pwd])
+			return (put_error(ERR_MALLOC, NULL), 3);
+	}
+	else
+		return (1);
+	return (0);
+}
 
 int	edit_old_pwd(t_data *data, char *cp_pwd)
 {
@@ -62,19 +83,32 @@ int	open_ch_dir(char *dir)
 
 int	cd(t_data *data, char **tab)
 {
-	char	cp_pwd[PATH_MAX];
+	char	*cp_pwd;
+	int		id_env;
+	int		ret;
 
+	ret = 0;
 	if (tab[1] == NULL)
 		return (0);
 	if (tab[2] != NULL && tab[1] != NULL)
 		return (ft_putstr_fd("cd: too many arguments\n", 2), 1);
 	else
 	{
-		if (getcwd(cp_pwd, PATH_MAX))
+		id_env = get_this_env("PWD", data->env);
+		if (id_env > 0)
 		{
+			cp_pwd = ft_strdup(&data->env[id_env][4]);
+			if (cp_pwd == NULL)
+				return (put_error(ERR_MALLOC, NULL), 3);
 			if (open_ch_dir(tab[1]) == 1)
-				return (1);
-			edit_old_pwd(data, cp_pwd);
+				return (free(cp_pwd), 1);
+			ret = edit_old_pwd(data, cp_pwd);
+			if (ret != 0)
+				return (ret);
+			ret = edit_pwd(data);
+			if (ret != 0)
+				return (ret);
+			free(cp_pwd);
 		}
 		else
 			return (1);

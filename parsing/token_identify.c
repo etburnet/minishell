@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_identify.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 12:07:57 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 13:39:55 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	identify_token(t_data *data)
 		if(!data->token[i].tab[0])
 			return(3);
 		if(!data->token[i].tab[0])
-			return(3);
+			return(3);	
 		i++;
 	}
 	return (0);

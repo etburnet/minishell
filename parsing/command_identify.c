@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_identify.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 12:06:10 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 13:40:05 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,10 @@ int	is_built_in(t_data *data)
 	i = 0;
 	while (i < data->lenght_token)
 	{
+		while( i < data->lenght_token && data->token[i].type != string && data->token[i].type != word)
+			i++;
+		if(i == data->lenght_token)
+			break;
 		if (ft_strncmp(data->token[i].tab[0], "echo", 5) == 0)
 			data->token[i].type = built_in;
 		else if (ft_strncmp(data->token[i].tab[0], "cd", 3) == 0)

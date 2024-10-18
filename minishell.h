@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 12:03:56 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 13:47:15 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int			print_env(t_data *data);
 int			copy_env(t_data *data, char **env);
 int			echo(char **tab);
 int			cd(t_data *data, char **tab);
-int			pwd(void);
+int	pwd(t_data *data);
 int			ft_exit(t_data *data, char **tab, int n);
 int			export(t_data *data, char **tab);
 int			unset(t_data *data, char **tab);
@@ -101,7 +101,6 @@ int			ft_err_exit(t_data *data, char *err_msg, int n);
 long int	ft_atol(const char *nptr);
 int			del_env(t_data *data, char *delete);
 
-char    **ft_rep_env_var(char **env);
 
 
 /* Utils */
