@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/17 12:26:46 by eburnet          ###   ########.fr       */
+/*   Created: 2024/10/14 15:11:45 by eburnet           #+#    #+#             */
+/*   Updated: 2024/10/18 15:19:27 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
 	int		ret;
 
 	ret = 0;
+	// printf("cmd %s, arg %s\n", cmd_tab[0], cmd_tab[1]);
 	// printf("fdin %d, fdout %d, append %d\n", fdin, fdout, data->append_id);
 	pid = fork();
 	if (pid == -1)
@@ -28,7 +29,7 @@ int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
 			return (perror("dup2"), 1);
 		close_all(data, fdin, fdout);
 		ret = which_builtin(data, cmd_tab);
-		exit(0);
+		exit(ret);
 	}
 	ft_close(data, fdin, fdout);
 	return (ret);
@@ -37,22 +38,26 @@ int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
 int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 {
 	pid_t	pid;
+	DIR *stream_dir;
 
 	// printf("fdin %d, fdout %d, append %d\n", fdin, fdout, data->append_id);
-	if (data->token[cmd].full_path == NULL)
-		return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(data, 
-				fdin, fdout), 127);
+	
+	stream_dir = opendir(data->token[cmd].tab[0]);
+	if (stream_dir != NULL)
+		return (closedir(stream_dir), put_error("is a directory: ", data->token[cmd].tab[0]), ft_close(data, fdin, fdout), 126);
+	if (data->token[cmd].full_path == NULL || data->token[cmd].tab[0][0] == '\0')
+		return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(data, fdin, fdout), 127);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
 	if (pid > 0)
 		init_signal_handler(4);
 	else if (pid == 0)
-	{
+	{	
 		if (dup2(fdin, 0) == -1 || dup2(fdout, data->append_id) == -1)
 			return (perror("dup2"), 1);
 		close_all(data, fdin, fdout);
-		if (execve(data->token[cmd].full_path, data->token[cmd].tab, NULL) ==
+		if (execve(data->token[cmd].full_path, data->token[cmd].tab, data->cp_env) ==
 			-1)
 			put_error(ERR_CMD, data->token[cmd].tab[0]);
 		return (2);
@@ -145,9 +150,13 @@ int	prepare_fd(t_data *data)
 			data->token[cmd].fdout = data->pipe_fd[1];
 		data->old_pipe[1] = data->pipe_fd[1];
 		ret = dispatch_cmd(data, data->token[cmd], cmd);
-		if (ret != 2 && ret != 127 && ret != 0)
+		if (ret != 2 && ret != 127 && ret != 126 && ret != 0)
+		{
 			return (ft_close(data, data->token[cmd].fdin, data->token[cmd].fdout),
 				data->status = ret % 255, ret);
+		}
+		else
+			ft_close(data, data->token[cmd].fdin, data->token[cmd].fdout);
 		i++;
 	}
 	return (0);

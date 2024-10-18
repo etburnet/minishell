@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   cp_env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/17 11:24:53 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 12:04:31 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ int	print_env(t_data *data)
 	int	i;
 
 	i = 0;
-	if (data->env == NULL)
+	if (data->cp_env == NULL)
 		return (1);
-	while (data->env[i])
-		printf("%s\n", data->env[i++]);
+	while (data->cp_env[i])
+		printf("%s\n", data->cp_env[i++]);
 	return (0);
 }
 
-int	copy_env(t_data *data, char **environ)
+int	copy_env(t_data *data, char **env)
 {
 	int	tab_len;
 	int	i;
@@ -33,20 +33,20 @@ int	copy_env(t_data *data, char **environ)
 	i = 0;
 	j = 0;
 	tab_len = 0;
-	if (environ == NULL || environ[0] == NULL)
+	if (env == NULL || env[0] == NULL)
 		return (put_error("Env not found", NULL), 1);
-	while (environ[tab_len])
+	while (env[tab_len])
 		tab_len++;
-	data->env = malloc(sizeof(char *) * (tab_len + 1));
-	if (data->env == NULL)
+	data->cp_env = malloc(sizeof(char *) * (tab_len + 1));
+	if (data->cp_env == NULL)
 		return (3);
 	while (j <= tab_len)
-		data->env[j++] = NULL;
+		data->cp_env[j++] = NULL;
 	while (i < tab_len)
 	{
-		data->env[i] = ft_strdup(environ[i]);
-		if (data->env[i] == NULL)
-			return (put_error(ERR_MALLOC, NULL), 3);
+		data->cp_env[i] = ft_strdup(env[i]);
+		if (data->cp_env[i] == NULL)
+			return (free_tab(data->cp_env), put_error(ERR_MALLOC, NULL), 3);
 		i++;
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_identify.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/17 17:17:58 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 13:39:55 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int	check_string(t_data *data, int i)
 	return (0);
 }
 
-int	is_metacharcter(char c)
+int	is_metacharcter(char *s, int i)
 {
-	if (c == '\\' || c == '\n' || c == '\t')
+	if (s[i] == '\\' || s[i] == '\n' || s[i] == '\t')
 		return (1);
 	return (0);
 }
@@ -71,22 +71,26 @@ char	*remove_meta_c(char *s)
 	j = 0;
 	len = ft_strlen(s);
 	temp = malloc(len + 1);
+	// printf("len %d\n", len);
 	if(!temp)
 		return(put_error(ERR_MALLOC, NULL), NULL);
-	ft_memset(temp, '\0', len);
+	ft_memset(temp, '\0', len + 1);
 	if(s == NULL)
 		return(NULL);
-	while (s[i] != '\0')
+	while (i <= len)
 	{
+		if (is_metacharcter(s, i) == 1 && len == 1)
+			break;
 		if (s[i] == '\"')
 			check_to_remove_dquote_edit(s, temp, &j, &i);
 		else if (s[i] == '\'')
 			check_to_remove_quote_edit(s, temp, &j, &i);
-		else if (is_metacharcter(s[i]) == 1)
+		else if (is_metacharcter(s, i) == 1)
 			i++;
 		put_string_to_cpy(s, temp, &i, &j);
 	}
-	temp[j] = '\0';
+	// printf("j = %d\n", j);
+	// temp[j] = '\0';
 	ft_free(s);
 	return (temp);
 }
@@ -108,6 +112,8 @@ int	identify_token(t_data *data)
 		data->token[i].tab[0] = remove_meta_c(data->token[i].tab[0]);
 		if(!data->token[i].tab[0])
 			return(3);
+		if(!data->token[i].tab[0])
+			return(3);	
 		i++;
 	}
 	return (0);

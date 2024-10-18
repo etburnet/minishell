@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 16:35:56 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/17 12:39:15 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 15:10:02 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,22 @@ int	dup_env(t_data *data, char *new)
 
 	i = 0;
 	tab_len = 0;
-	while (data->env[tab_len] != 0)
+	while (data->cp_env[tab_len] != 0)
 		tab_len++;
 	dup_env = malloc(sizeof(char *) * (tab_len + 2));
 	if (dup_env == NULL)
 		return (3);
 	dup_env[tab_len + 1] = NULL;
-	while (data->env[i] != NULL)
+	while (data->cp_env[i] != NULL)
 	{
-		dup_env[i] = ft_strdup(data->env[i]);
+		dup_env[i] = ft_strdup(data->cp_env[i]);
 		if (dup_env[i] == NULL)
 			return (free_tab(dup_env), 3);
 		i++;
 	}
 	dup_env[tab_len] = ft_strdup(new);
-	free_tab(data->env);
-	data->env = dup_env;
+	free_tab(data->cp_env);
+	data->cp_env = dup_env;
 	return (0);
 }
 
@@ -61,7 +61,7 @@ int	add_env_var(char *name, char *value, t_data *data)
 	int		env_id;
 	int		ret;
 
-	env_id = get_this_env(name, data->env);
+	env_id = get_this_env(name, data->cp_env);
 	if (env_id == -2)
 		return (1);
 	cat = malloc(sizeof(char) * (ft_strlen(name) + ft_strlen(value) + 2));

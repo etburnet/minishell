@@ -6,19 +6,19 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 12:34:11 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/15 16:32:13 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 15:10:02 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	pwd(void)
+int	pwd(t_data *data)
 {
-	char buf[PATH_MAX];
+	int	id_env;
 
-	if (getcwd(buf, PATH_MAX))
-		printf("%s\n", buf);
-	else
+	id_env = get_this_env("PWD", data->cp_env);
+	if (id_env < 0)
 		return (1);
+	printf("%s\n", &data->cp_env[id_env][4]);
 	return (0);
 }

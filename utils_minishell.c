@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/17 12:36:44 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 15:10:02 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,22 @@ void	free_tab(char **tab)
 		free(tab);
 }
 
-int	get_this_env(char *var, char **env)
+int	get_this_env(char *var, char **cp_env)
 {
 	int	i;
 	int	len;
 
 	len = ft_strlen(var);
 	i = 0;
-	if (env == NULL || env[0] == NULL)
+	if (cp_env == NULL || cp_env[0] == NULL)
 		return (put_error("Env not found", NULL), -2);
-	while (env[i] != NULL)
+	while (cp_env[i] != NULL)
 	{
-		if (ft_strncmp(env[i], var, len) == 0)
+		if (ft_strncmp(cp_env[i], var, len) == 0)
 			break ;
 		i++;
 	}
-	if (env[i] == NULL)
+	if (cp_env[i] == NULL)
 		return (-1);
 	return (i);
 }

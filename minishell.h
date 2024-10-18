@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/17 17:13:54 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 15:25:07 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef struct s_data
 	int		status;
 	int		here;
 	int		append_id;
-	char	**env;
+	char	**cp_env;
 	char	**input;
 	char	*arg;
 }			t_data;
@@ -90,10 +90,10 @@ extern int	g_sig_recieved;
 
 /* Builtins */
 int			print_env(t_data *data);
-int			copy_env(t_data *data, char **env);
+int			copy_env(t_data *data, char **cp_env);
 int			echo(char **tab);
 int			cd(t_data *data, char **tab);
-int			pwd(void);
+int			pwd(t_data *data);
 int			ft_exit(t_data *data, char **tab, int n);
 int			export(t_data *data, char **tab);
 int			unset(t_data *data, char **tab);
@@ -101,9 +101,11 @@ int			ft_err_exit(t_data *data, char *err_msg, int n);
 long int	ft_atol(const char *nptr);
 int			del_env(t_data *data, char *delete);
 
+
+
 /* Utils */
 void		free_tab(char **tab);
-int			get_this_env(char *var, char **env);
+int			get_this_env(char *var, char **cp_env);
 void		put_error(char *message, char *var);
 char		**my_realloc(t_token token, size_t size);
 void		ft_clean(t_data *data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:11:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/15 16:29:42 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 13:04:12 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	init_signal_handler(int i)
 		ft_memset(&sa, 0, sizeof(sa));
 		sa.sa_handler = &handle_sig_heredoc;
 		sigaction(SIGINT, &sa, NULL);
+		signal(SIGQUIT, SIG_IGN);
 	}
 	else if (i == 3)
 	{

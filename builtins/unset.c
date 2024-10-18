@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:29:16 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/17 12:39:17 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 15:10:02 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ int	del_env(t_data *data, char *delete)
 	tab_len = 0;
 	i = 0;
 	j = 0;
-	var_i = get_this_env(delete, data->env);
+	var_i = get_this_env(delete, data->cp_env);
 	if (var_i < 0)
 		return (0);
-	while (data->env[tab_len] != NULL)
+	while (data->cp_env[tab_len] != NULL)
 		tab_len++;
 	dup_env = malloc(sizeof(char *) * (tab_len));
 	if (dup_env == NULL)
@@ -35,11 +35,11 @@ int	del_env(t_data *data, char *delete)
 	while (i < tab_len)
 	{
 		if (i != var_i)
-			dup_env[j++] = ft_strdup(data->env[i]);
+			dup_env[j++] = ft_strdup(data->cp_env[i]);
 		i++;
 	}
-	free_tab(data->env);
-	data->env = dup_env;
+	free_tab(data->cp_env);
+	data->cp_env = dup_env;
 	return (0);
 }
 
