@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/17 11:05:00 by eburnet          ###   ########.fr       */
+/*   Created: 2024/10/14 15:11:45 by eburnet           #+#    #+#             */
+/*   Updated: 2024/10/18 12:03:20 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 {
 	pid_t	pid;
 
-	 printf("fdin %d, fdout %d, append %d\n", fdin, fdout, data->append_id);
+	// printf("fdin %d, fdout %d, append %d\n", fdin, fdout, data->append_id);
 	if (data->token[cmd].full_path == NULL)
 		return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(data, 
 				fdin, fdout), 127);

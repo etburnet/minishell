@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:06:50 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/17 11:00:04 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/18 12:06:43 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	init_data(t_data *tok, char *s)
 	tok->pipe_fd[0] = -1;
 	tok->pipe_fd[1] = -1;
 	tok->append_id = 1;
+	tok->status = 0;
 	tok->here = 0;
 	tok->source = set_string(tok, s, tok->source_lenght);
 	if (tok->source == NULL)

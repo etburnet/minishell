@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:29:16 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/15 16:27:56 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 12:39:17 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	del_env(t_data *data, char *delete)
 	i = 0;
 	j = 0;
 	var_i = get_this_env(delete, data->env);
-	if (var_i == -1)
+	if (var_i < 0)
 		return (0);
 	while (data->env[tab_len] != NULL)
 		tab_len++;

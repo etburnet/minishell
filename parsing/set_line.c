@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/17 17:34:12 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:07:31 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,15 @@ int	count_space(char *s, int i, int j)
 			if (s[i] == s[i + 1])
 			{
 				if ( i > 0 && s[i - 1] != ' ')
+				if ( i > 0 && s[i - 1] != ' ')
 					j++;
 				i++;
+				if(s[i + 1] != '\0')
+				{
+					if (s[i + 1] != ' ')
+						j++;
+					i++;
+				}
 				if(s[i + 1] != '\0')
 				{
 					if (s[i + 1] != ' ')
@@ -55,7 +62,9 @@ int	count_space(char *s, int i, int j)
 			else
 			{
 				if ( i > 0 && s[i - 1] != ' ')
+				if ( i > 0 && s[i - 1] != ' ')
 					j++;
+				if (s[i] != '\0' && s[i + 1] != ' ')
 				if (s[i] != '\0' && s[i + 1] != ' ')
 					j++;
 				i++;
@@ -80,6 +89,7 @@ void	is_operator(char *s, char *temp, int *i, int *j)
 	if (s[*i] == s[*i + 1])
 	{
 		if (*i > 0 && s[*i - 1] != ' ' && temp[*j - 1] != ' ')
+		if (*i > 0 && s[*i - 1] != ' ' && temp[*j - 1] != ' ')
 			add_space(temp, j);
 		put_string_to_cpy(s, temp, i, j);
 		if (s[*i + 1] != ' ')
@@ -92,6 +102,8 @@ void	is_operator(char *s, char *temp, int *i, int *j)
 	}
 	else
 	{
+		if (s[*i + 1] != ' ' && (*i > 0 && s[*i - 1] != ' ') && temp[*j - 1] != ' ')
+		{
 		if (s[*i + 1] != ' ' && (*i > 0 && s[*i - 1] != ' ') && temp[*j - 1] != ' ')
 		{
 			add_space(temp, j);
