@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_identify.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/17 10:59:56 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 18:01:08 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	check_outfile(t_data *data)
 			|| data->token[i].type == append))
 		{
 			if ((i + 1) < data->lenght_token && (data->token[i + 1].type == word
-					|| data->token[i + 1].type == string))
+					|| data->token[i + 1].type == string || data->token[i + 1].type == append_out))
 				data->token[i + 1].type = outfile;
 		}
 		i++;
@@ -161,6 +161,8 @@ int	is_special_char(char *s)
 		return (1);
 	else if (ft_strncmp(s, ";", 2) == 0)
 		return (1);
+	else if (ft_strncmp(s, "|", 2) == 0)
+		return (1);
 	return (0);
 }
 
@@ -178,9 +180,9 @@ int	is_special_char_bis(char *s)
 		return (1);
 	else if (ft_strncmp(s, "()", 3) == 0)
 		return (1);
-	else if (ft_strncmp(s, "(", 2) == 0)
+	else if (ft_strncmp(s, "(", 1) == 0)
 		return (1);
-	else if (ft_strncmp(s, ")", 2) == 0)
+	else if (ft_strncmp(s, ")", 1) == 0)
 		return (1);
 	else if (ft_strncmp(s, "||", 3) == 0)
 		return (1);
@@ -208,8 +210,6 @@ int		is_chevrons(char *s)
 	if (ft_strncmp(s, "<", 2) == 0)
 		return (1);
 	else if (ft_strncmp(s, ">", 2) == 0)
-		return (1);
-	else if (ft_strncmp(s, "|", 2) == 0)
 		return (1);
 	else if (ft_strncmp(s, "<<", 3) == 0)
 		return (1);

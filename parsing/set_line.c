@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/17 11:01:25 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 17:34:12 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,22 @@ int	check_operator(char c)
 {
 	if (c == '>' || c == '<')
 		return (1);
-	if (c == '|')
+	if (c == '|' || c == '&')
+		return (1);
+	if (c == ';' || c == '&')
 		return (1);
 	return (0);
 }
+// int	is_double_op(char *s, int i)
+// {
+// 	if((s[i] == s[i + 1] || (s[i] == '<' && s[i+ 1] == '>'))
+// }
 
 int	count_space(char *s, int i, int j)
 {
 	while (s[i] != '\0')
 	{
+		// printf("i = %d, j = %d\n", i, j);
 		i = check_quote(s, i, '\'');
 		if (i == -1)
 			return (put_error(ERR_SYNTAX, "\'"), 0);
@@ -33,8 +40,7 @@ int	count_space(char *s, int i, int j)
 			return (put_error(ERR_SYNTAX, "\""), 0);
 		if (check_operator(s[i]) == 1)
 		{
-			if ((s[i] == '<' && s[i + 1] == '<') || (s[i] == '>' && s[i
-					+ 1] == '>') || (s[i] == '<' && s[i+ 1] == '>'))
+			if (s[i] == s[i + 1])
 			{
 				if ( i > 0 && s[i - 1] != ' ')
 					j++;
@@ -52,9 +58,13 @@ int	count_space(char *s, int i, int j)
 					j++;
 				if (s[i] != '\0' && s[i + 1] != ' ')
 					j++;
+				i++;
+				
 			}
 		}
-		i++;
+		else if(s[i] != '\0')
+			i++;
+		// printf("i = %d, j = %d\n", i, j);
 	}
 	return (j + i);
 }
@@ -67,8 +77,7 @@ void	add_space(char *temp, int *j)
 
 void	is_operator(char *s, char *temp, int *i, int *j)
 {
-	if ((s[*i] == '<' && s[*i + 1] == '<') || (s[*i] == '>' && s[*i + 1] == '>')
-		|| (s[*i] == '|' && s[*i + 1] == '|') || (s[*i] == '<' && s[*i + 1] == '>'))
+	if (s[*i] == s[*i + 1])
 	{
 		if (*i > 0 && s[*i - 1] != ' ' && temp[*j - 1] != ' ')
 			add_space(temp, j);
@@ -93,6 +102,11 @@ void	is_operator(char *s, char *temp, int *i, int *j)
 		{
 			put_string_to_cpy(s, temp, i, j);
 			add_space(temp, j);
+		}
+		else if (*i > 0 && s[*i - 1] != ' ')
+		{
+			add_space(temp, j);
+			put_string_to_cpy(s, temp, i, j);
 		}
 	}
 	put_string_to_cpy(s, temp, i, j);
