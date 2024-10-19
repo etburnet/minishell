@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 19:19:15 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/19 20:33:35 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	check_outfile(t_data *data)
 		if (data->token[i].type == greater)
 		{
 			if((i + 1) < data->lenght_token && check_operator(data->token[i + 1].tab[0][0]) == 1)
-				return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]), 1);
+				return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]), data->status = 1, 1);
 			if ((i + 1) < data->lenght_token && (data->token[i + 1].type == word
 					|| data->token[i + 1].type == string))
 			{
@@ -105,7 +105,7 @@ int	check_outfile(t_data *data)
 		else if (data->token[i].type == append)
 		{
 			if((i + 1) < data->lenght_token && check_operator(data->token[i + 1].tab[0][0]) == 1)
-				return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]), 1);
+				return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]), data->status = 1, 1);
 			if ((i + 1) < data->lenght_token && (data->token[i + 1].type == word
 					|| data->token[i + 1].type == string))
 			{
@@ -163,7 +163,7 @@ int	is_built_in(t_data *data)
 			data->token[i].type = built_in;
 		else if (ft_strncmp(data->token[i].tab[0], "unset", 6) == 0)
 			data->token[i].type = built_in;
-		else if (ft_strncmp(data->token[i].tab[0], "cp_env", 4) == 0)
+		else if (ft_strncmp(data->token[i].tab[0], "env", 4) == 0)
 			data->token[i].type = built_in;
 		else if (ft_strncmp(data->token[i].tab[0], "exit", 5) == 0)
 			data->token[i].type = built_in;
@@ -233,8 +233,8 @@ int	first_is_chevron(t_data *data, char *s)
 		return (1);
 	else if (ft_strncmp(s, ">", 2) == 0 && data->token[1].type != outfile)
 		return (1);
-	else if (ft_strncmp(s, "<<", 3) == 0 && data->token[1].type != here_doc)
-		return (1);
+/* 	else if (ft_strncmp(s, "<<", 3) == 0 && data->token[1].type != here_doc)
+		return (1); */
 	else if (ft_strncmp(s, ">>", 3) == 0 && data->token[1].type != outfile)
 		return (1);
 	return (0);
@@ -257,19 +257,17 @@ int	check_first_token(t_data *data)
 	if (data->nb_token == 0)
 		return (0);
 	if (is_special_char(data->token[0].tab[0]) == 1)
-		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
+		return (1);
 	if (is_special_char_bis(data->token[0].tab[0]) == 1)
-		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
+		return (1);
 	if(data->nb_token >= 2)
 	{
 		if (first_is_chevron(data, data->token[0].tab[0]) == 1)
-			return (put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
+			return (1);
 	}
 	else if(data->nb_token == 1)	
-	{
 		if(is_chevrons(data->token[0].tab[0]) == 1)
-			return(put_error(ERR_SYNTAX, data->token[0].tab[0]), 1);
-	}
+			return(1);
 	return (0);
 }
 
@@ -281,13 +279,13 @@ int	identify_command(t_data *data)
 	if (is_built_in(data) == 3)
 		return (3);
 	if(check_infile(data) != 0)
-		return(1);
+		return(data->status = 1, 1);
 	if(check_outfile(data) != 0)
 		return(1);
 	if (check_command(data) == 3)
 		return (3);
 	if (check_first_token(data) == 1)
-		return (1);
+		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), data->status = 1, 1);
 	ret = set_heredoc(data);
 	if (ret != 0)
 		return (ret);

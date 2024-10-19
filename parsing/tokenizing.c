@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 19:02:04 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/19 19:20:23 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ int	split_token(t_data *data, char *s, int *i, int tok)
 			data->cur++;
 		data->cur = check_quote(s, data->cur, '\'');
 		if (data->cur == -1)
-			return (put_error(ERR_SYNTAX, "\'"), -1);
+			return (put_error(ERR_SYNTAX, "\'"), data->status = 1, -1);
 		data->cur = check_quote(s, data->cur, '\"');
 		if (data->cur == -1)
-			return (put_error(ERR_SYNTAX, "\""), -1);
+			return (put_error(ERR_SYNTAX, "\""), data->status = 1, -1);
 		while (s[data->cur] != '\"' && s[data->cur] != '\''
 			&& s[data->cur] != ' ' && s[data->cur] != '\0')
 			data->cur++;

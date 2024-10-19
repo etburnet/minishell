@@ -33,13 +33,11 @@ int	copy_env(t_data *data, char **env)
 	i = 0;
 	j = 0;
 	tab_len = 0;
-	if (env == NULL || env[0] == NULL)
-		return (put_error("Env not found", NULL), 1);
 	while (env[tab_len])
 		tab_len++;
 	data->cp_env = malloc(sizeof(char *) * (tab_len + 1));
 	if (data->cp_env == NULL)
-		return (3);
+		return (put_error(ERR_MALLOC, NULL), 3);
 	while (j <= tab_len)
 		data->cp_env[j++] = NULL;
 	while (i < tab_len)
@@ -49,5 +47,7 @@ int	copy_env(t_data *data, char **env)
 			return (free_tab(data->cp_env), put_error(ERR_MALLOC, NULL), 3);
 		i++;
 	}
+	if (tab_len == 0)
+		return (1);
 	return (0);
 }

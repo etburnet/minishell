@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:19:29 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/18 19:01:02 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/19 17:32:23 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	which_builtin(t_data *data, char **cmd_tab)
 		ret = export(data, cmd_tab);
 	else if (strncmp(cmd_tab[0], "unset", 6) == 0)
 		ret = unset(data, cmd_tab);
-	else if (strncmp(cmd_tab[0], "cp_env", 4) == 0)
+	else if (strncmp(cmd_tab[0], "env", 4) == 0)
 		ret = print_env(data);
 	else if (strncmp(cmd_tab[0], "exit", 5) == 0)
 		ret = ft_exit(data, cmd_tab, 0);

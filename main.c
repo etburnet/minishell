@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 18:47:19 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/19 18:28:56 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,18 @@ int	main(int argc, char *argv[], char **env)
 	(void)argc;
 	(void)argv;
 	ret = 0;
-	if (!isatty(STDIN_FILENO))
-		return (put_error("No infile ./minishell exec", NULL), 1);
+	/* if (!isatty(STDIN_FILENO))
+		return (put_error("No infile ./minishell exec", NULL), 1); */
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (put_error(ERR_MALLOC, NULL), 3);
 	ret = copy_env(data, env);
 	if (ret == 3)
 		ft_exit(data, NULL, ret);
-	else if (ret != 1)
-		if (update_shlvl(data) == 3)
-			ft_exit(data, NULL, 3);
+	else if (ret == 1)
+		edit_pwd(data);
+	if (update_shlvl(data) == 3)
+		ft_exit(data, NULL, 3);
 	data->status = 0;
 	while (1)
 	{

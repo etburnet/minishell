@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:06:50 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 18:23:25 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/19 19:21:32 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	init_data(t_data *tok, char *s)
 {
 	tok->nb_token = 0;
 	tok->cur = 0;
-	tok->source_lenght = count_space(s, 0, 0);
+	tok->source_lenght = count_space(tok, s, 0, 0);
 	if (tok->source_lenght < 0)
 		return(put_error("len = -1\n", NULL), -1);
 	else if(tok->source_lenght == 0)

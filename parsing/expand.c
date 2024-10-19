@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:09:58 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/18 16:28:14 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/19 11:44:16 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,10 @@ int	expand(t_data *data, t_token tok)
 	char	*res;
 	char	*var;
 	char 	*str;
-	int		first;
 	
 	j = 0;
 	i = 0;
 	k = 0;
-	first = 0;
 	if (tok.type != undefine)
 		return (1);
 	res = malloc(sizeof(char) * BUFSIZ);
@@ -72,6 +70,8 @@ int	expand(t_data *data, t_token tok)
 	if (!var)
 		return (ft_free(res), put_error(ERR_MALLOC, NULL), 3);
 	str = ft_strdup(tok.tab[0]);
+	if (str == NULL)
+		return (ft_free(res), ft_free(var), put_error(ERR_MALLOC, NULL), 3);
 	while (str[j])
 	{
 		if (str[j] == '$')

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 18:16:28 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/19 19:21:51 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ int			unset(t_data *data, char **tab);
 int			ft_err_exit(t_data *data, char *err_msg, int n);
 long int	ft_atol(const char *nptr);
 int			del_env(t_data *data, char *delete);
-
-
+int	edit_pwd(t_data *data);
+int	dup_env(t_data *data, char *new);
 
 /* Utils */
 void		free_tab(char **tab);
@@ -123,7 +123,7 @@ int			init_data(t_data *tok, char *s);
 int			init_token(t_token *token);
 
 /* Parsing */
-int			count_space(char *s, int i, int j);
+int			count_space(t_data *data, char *s, int i, int j);
 char		*set_string(t_data *data, char *s, int len);
 int			ft_isdigit_edit(char *c);
 size_t		ft_countword(const char *s, int i);

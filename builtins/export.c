@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 16:35:56 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/18 17:26:14 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/19 18:23:08 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	dup_env(t_data *data, char *new)
 
 	i = 0;
 	tab_len = 0;
+	//printf("cat %s\n", new);
 	while (data->cp_env[tab_len] != 0)
 		tab_len++;
 	dup_env = malloc(sizeof(char *) * (tab_len + 2));

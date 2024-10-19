@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:01:13 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/18 16:26:42 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/19 19:03:04 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int	edit_pwd(t_data *data)
 	char	*cat;
 	
 	id_pwd = get_this_env("PWD", data->cp_env);
-	if (id_pwd == -1)
-		return (ft_putstr_fd("Unable to find PWD", 2), 1);
 	if (getcwd(buf, PATH_MAX))
 	{
 		cat = malloc(sizeof(char) * ft_strlen(buf) + 5);
@@ -29,10 +27,20 @@ int	edit_pwd(t_data *data)
 		cat[0] = '\0';
 		ft_strlcat(cat, "PWD=", 5);
 		ft_strlcat(cat, buf, ft_strlen(buf) + 6);
-		free(data->cp_env[id_pwd]);
-		data->cp_env[id_pwd] = cat;
-		if (!data->cp_env[id_pwd])
-			return (put_error(ERR_MALLOC, NULL), 3);
+		//printf("cat %s\n", cat);
+		if (id_pwd >= 0)
+		{
+			ft_free(data->cp_env[id_pwd]);
+			data->cp_env[id_pwd] = cat;
+			if (!data->cp_env[id_pwd])
+				return (put_error(ERR_MALLOC, NULL), 3);
+		}
+		else
+		{
+			if (dup_env(data, cat) == 3)
+				return (ft_free(cat), put_error(ERR_MALLOC, NULL), 3);
+			ft_free(cat);
+		}
 	}
 	else
 		return (1);
@@ -51,15 +59,22 @@ int	edit_old_pwd(t_data *data, char *cp_pwd)
 	if (data->cp_env == NULL || data->cp_env[0] == NULL)
 		return (put_error("Env not found", NULL), 1);
 	oldpwd = get_this_env("OLDPWD", data->cp_env);
-	if (oldpwd == -1)
-		return (ft_putstr_fd("Unable to find OLDPWD", 2), 1);
 	ft_strlcat(cat, "OLDPWD=", 8);
 	ft_strlcat(cat, cp_pwd, ft_strlen(cp_pwd) + 9);
-	ft_free(data->cp_env[oldpwd]);
-	data->cp_env[oldpwd] = ft_strdup(cat);
-	ft_free(cat);
-	if (data->cp_env[oldpwd] == NULL)
-		return (put_error(ERR_MALLOC, NULL), 3);
+	if (oldpwd != -1)
+	{
+		ft_free(data->cp_env[oldpwd]);
+		data->cp_env[oldpwd] = ft_strdup(cat);
+		ft_free(cat);
+		if (data->cp_env[oldpwd] == NULL)
+			return (put_error(ERR_MALLOC, NULL), 3);
+	}
+	else
+	{
+		if (dup_env(data, cat) == 3)
+			return (ft_free(cat), put_error(ERR_MALLOC, NULL), 3);
+		ft_free(cat);
+	}
 	return (0);
 }
 
@@ -101,7 +116,7 @@ int	cd(t_data *data, char **tab)
 	else
 	{
 		id_env = get_this_env("PWD", data->cp_env);
-		if (id_env > 0)
+		if (id_env >= 0)
 		{
 			cp_pwd = ft_strdup(&data->cp_env[id_env][4]);
 			if (cp_pwd == NULL)
@@ -110,18 +125,10 @@ int	cd(t_data *data, char **tab)
 				return (free(cp_pwd), 1);
 			ret = edit_old_pwd(data, cp_pwd);
 			if (ret != 0)
-				return (ret);
+				return (free(cp_pwd), ret);
 			ret = edit_pwd(data);
 			if (ret != 0)
-				return (ret);
-			free(cp_pwd);
-				return (free(cp_pwd), 1);
-			ret = edit_old_pwd(data, cp_pwd);
-			if (ret != 0)
-				return (ret);
-			ret = edit_pwd(data);
-			if (ret != 0)
-				return (ret);
+				return (free(cp_pwd), ret);
 			free(cp_pwd);
 		}
 		else

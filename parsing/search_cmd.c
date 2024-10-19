@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:00:07 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 16:28:22 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/19 11:31:16 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ char	**ft_extract_path(t_data *data)
 	char	*path;
 	char	*trimmed;
 	char	**splited;
-	int		i;
 	int		path_id;
 
-	i = 0;
 	if (data->cp_env == NULL || data->cp_env[0] == NULL)
 		return (put_error("Env not found", NULL), NULL);
 	path_id = get_this_env("PATH=", data->cp_env);
