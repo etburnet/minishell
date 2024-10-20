@@ -6,11 +6,11 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:19:29 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/19 17:32:23 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/20 13:46:06 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	check_first_last(t_data *data)
 {
@@ -39,16 +39,6 @@ void	check_first_last(t_data *data)
 	data->token[cmd].last = 1;
 }
 
-void	ft_close(t_data *data, int fd1, int fd2)
-{
-	if (fd1 > 0 && fd1 != STDIN_FILENO)
-		close(fd1);
-	if (fd2 > 0 && fd2 != STDOUT_FILENO)
-		close(fd2);
-	if (data->here == 1)
-		unlink("temp_file_here_doc.txt");
-}
-
 int	open_file(t_data *data, t_token token, int i)
 {
 	int	fd;
@@ -74,30 +64,6 @@ int	open_file(t_data *data, t_token token, int i)
 	return (fd);
 }
 
-int	which_builtin(t_data *data, char **cmd_tab)
-{
-	int	ret;
-
-	ret = 0;
-	if (strncmp(cmd_tab[0], "echo", 5) == 0)
-		ret = echo(cmd_tab);
-	else if (strncmp(cmd_tab[0], "cd", 3) == 0)
-		ret = cd(data, cmd_tab);
-	else if (strncmp(cmd_tab[0], "pwd", 4) == 0)
-		ret = pwd(data);
-	else if (strncmp(cmd_tab[0], "export", 7) == 0)
-		ret = export(data, cmd_tab);
-	else if (strncmp(cmd_tab[0], "unset", 6) == 0)
-		ret = unset(data, cmd_tab);
-	else if (strncmp(cmd_tab[0], "env", 4) == 0)
-		ret = print_env(data);
-	else if (strncmp(cmd_tab[0], "exit", 5) == 0)
-		ret = ft_exit(data, cmd_tab, 0);
-	else
-		return (put_error(ERR_CMD, cmd_tab[0]), 2);
-	return (ret);
-}
-
 int	catch_cmd(t_data *data, int i)
 {
 	while (i < data->lenght_token && data->token[i].type != pipes)
@@ -114,4 +80,14 @@ void	close_all(t_data *data, int fdin, int fdout)
 	ft_close(data, fdin, fdout);
 	ft_close(data, data->pipe_fd[0], data->pipe_fd[1]);
 	ft_close(data, data->old_pipe[0], data->old_pipe[1]);
+}
+
+void	ft_close(t_data *data, int fd1, int fd2)
+{
+	if (fd1 > 0 && fd1 != STDIN_FILENO)
+		close(fd1);
+	if (fd2 > 0 && fd2 != STDOUT_FILENO)
+		close(fd2);
+	if (data->here == 1)
+		unlink("temp_file_here_doc.txt");
 }

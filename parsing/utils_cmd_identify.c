@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:18:49 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 19:15:55 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/20 10:59:58 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	interrupt_heredoc(t_data *data, int new, int cmd)
 	return (0);
 }
 
-int	check_arg(t_data *data, int i, e_type type)
+int	check_arg(t_data *data, int i, t_type type)
 {
 	int	j;
 	int	cmd;

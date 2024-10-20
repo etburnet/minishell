@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/19 19:20:23 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/20 10:47:30 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	tokenise(t_data *data, int *i)
 {
 	if (init_token(&data->token[*i]) != 0)
 		return (3);
-	data->token[*i].tab[0] = ft_substr(data->source, data->start,
-			(data->cur - data->start));
+	data->token[*i].tab[0] = ft_substr(data->source, data->start, (data->cur
+				- data->start));
 	if (data->token[*i].tab[0] == NULL)
 		return (put_error(ERR_MALLOC, NULL), 3);
 	data->nb_token += 1;
@@ -50,8 +50,8 @@ int	split_token(t_data *data, char *s, int *i, int tok)
 
 int	search_token(char *s, t_data *data)
 {
-	int i;
-	int tok;
+	int	i;
+	int	tok;
 
 	tok = 0;
 	i = 0;

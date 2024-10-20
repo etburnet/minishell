@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:11:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 19:23:32 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:48:45 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,44 +21,10 @@ void	handle_signal_fork(int signum)
 		printf("\n");
 		g_sig_recieved = 1;
 	}
-	if(signum == SIGQUIT)
+	if (signum == SIGQUIT)
 	{
 		printf("Quit (core dumped)\n");
 		g_sig_recieved = 2;
-	}
-}
-
-
-void	init_signal_handler(t_data *data, int i)
-{
-	struct sigaction	sa;
-	struct sigaction	action;
-	(void)data;
-	
-	if (i == 1 || i == 3)
-	{
-		ft_memset(&action, 0, sizeof(action));
-		action.sa_handler = &handle_signal;
-		sigaction(SIGINT, &action, NULL);
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else if (i == 2)
-	{
-		ft_memset(&sa, 0, sizeof(sa));
-		sa.sa_handler = &handle_sig_heredoc;
-		sigaction(SIGINT, &sa, NULL);
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else if (i == 4)
-	{
-		ft_memset(&action, 0, sizeof(action));
-		action.sa_handler = &handle_signal_fork;
-		sigaction(SIGINT, &action, NULL);
-		sigaction(SIGQUIT, &action, NULL);
-	}
-	else if (i == 5)
-	{
-		signal(SIGQUIT, SIG_DFL);
 	}
 }
 
@@ -73,6 +39,7 @@ void	handle_signal(int signum)
 		rl_redisplay();
 	}
 }
+
 void	handle_sig_heredoc(int signum)
 {
 	if (signum == SIGINT)
@@ -81,4 +48,41 @@ void	handle_sig_heredoc(int signum)
 		close(0);
 		printf("\n");
 	}
+}
+
+void	ft_signal2(void)
+{
+	struct sigaction	sa;
+
+	ft_memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = &handle_sig_heredoc;
+	sigaction(SIGINT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	init_signal_handler(t_data *data, int i)
+{
+	struct sigaction	action;
+
+	(void)data;
+	if (i == 1 || i == 3)
+	{
+		ft_memset(&action, 0, sizeof(action));
+		action.sa_handler = &handle_signal;
+		sigaction(SIGINT, &action, NULL);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (i == 2)
+	{
+		ft_signal2();
+	}
+	else if (i == 4)
+	{
+		ft_memset(&action, 0, sizeof(action));
+		action.sa_handler = &handle_signal_fork;
+		sigaction(SIGINT, &action, NULL);
+		sigaction(SIGQUIT, &action, NULL);
+	}
+	else if (i == 5)
+		signal(SIGQUIT, SIG_DFL);
 }

@@ -6,16 +6,17 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:28:41 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/19 17:48:57 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:53:44 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 int	increment_shlvl(char **shlvl_cp, char *str)
 {
 	int	shlvl_value;
 
+	*shlvl_cp = NULL;
 	*shlvl_cp = ft_strdup(str);
 	if (*shlvl_cp == NULL)
 		return (3);
@@ -33,17 +34,13 @@ int	update_shlvl(t_data *data)
 	int		shlvl;
 	char	*shlvl_cp;
 
-	shlvl_cp = NULL;
-	if (data->cp_env == NULL)
-		return (put_error("SH Env not found", NULL), 1);
 	shlvl = get_this_env("SHLVL", data->cp_env);
 	if (shlvl == -1)
 	{
 		if (dup_env(data, "SHLVL=1") == 3)
 			return (3);
-		else
-			return (0);
-	}		
+		return (0);
+	}
 	if (increment_shlvl(&shlvl_cp, &data->cp_env[shlvl][6]) == 3)
 		return (3);
 	cat = malloc(sizeof(char) * ft_strlen(shlvl_cp) + 8);
@@ -54,9 +51,7 @@ int	update_shlvl(t_data *data)
 	ft_strlcat(cat, shlvl_cp, ft_strlen(shlvl_cp) + 7);
 	ft_free(data->cp_env[shlvl]);
 	data->cp_env[shlvl] = ft_strdup(cat);
-	ft_free(cat);
-	ft_free(shlvl_cp);
 	if (data->cp_env[shlvl] == NULL)
-		return (3);
-	return (0);
+		return (ft_free(cat), ft_free(shlvl_cp), 3);
+	return (ft_free(cat), ft_free(shlvl_cp), 0);
 }

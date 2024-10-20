@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:14:53 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/17 12:46:56 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/20 10:48:40 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	echo(char **tab)
 			ft_putchar(tab[i][j++]);
 		i++;
 		j = 0;
-		if (tab[i] != NULL && tab[i-1][0] != '\0')
+		if (tab[i] != NULL && tab[i - 1][0] != '\0')
 			ft_putchar(' ');
 	}
 	if (last == 1)

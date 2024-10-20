@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:29:16 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/18 15:10:02 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/20 16:24:29 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,15 @@
 
 int	del_env(t_data *data, char *delete)
 {
-	int		i;
-	int		j;
-	int		var_i;
+	int		i[3];
 	int		tab_len;
 	char	**dup_env;
 
 	tab_len = 0;
-	i = 0;
-	j = 0;
-	var_i = get_this_env(delete, data->cp_env);
-	if (var_i < 0)
+	i[0] = 0;
+	i[1] = 0;
+	i[2] = get_this_env(delete, data->cp_env);
+	if (i[2] < 0)
 		return (0);
 	while (data->cp_env[tab_len] != NULL)
 		tab_len++;
@@ -32,11 +30,11 @@ int	del_env(t_data *data, char *delete)
 	if (dup_env == NULL)
 		return (3);
 	dup_env[tab_len - 1] = NULL;
-	while (i < tab_len)
+	while (i[0] < tab_len)
 	{
-		if (i != var_i)
-			dup_env[j++] = ft_strdup(data->cp_env[i]);
-		i++;
+		if (i[0] != i[2])
+			dup_env[i[1]++] = ft_strdup(data->cp_env[i[0]]);
+		i[0]++;
 	}
 	free_tab(data->cp_env);
 	data->cp_env = dup_env;
@@ -52,7 +50,7 @@ int	unset(t_data *data, char **tab)
 	while (tab[i] != NULL)
 	{
 		if (ft_strchr(tab[i], '='))
-			i++;
+			return (0);
 		ret = del_env(data, tab[i]);
 		if (ret == 3)
 			return (put_error(ERR_MALLOC, NULL), 3);

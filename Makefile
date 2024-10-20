@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/10/14 13:25:44 by opdi-bia         ###   ########.fr        #
+#    Updated: 2024/10/20 15:18:03 by eburnet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,29 +14,36 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3
 SRC=main.c\
+	utils_minishell.c\
+	signal.c\
+	shlvl.c\
 	parsing/init.c\
 	parsing/tokenizing.c\
 	parsing/utils_tokenizing.c\
-	utils_minishell.c\
-	signal.c\
 	parsing/set_line.c\
 	parsing/token_identify.c\
 	parsing/utils_token_identify.c\
 	parsing/command_identify.c\
+	parsing/command_utils.c\
 	parsing/utils_cmd_identify.c\
 	parsing/expand.c\
+	parsing/expand_utils.c\
+	parsing/in_out_check.c\
 	parsing/search_cmd.c\
+	parsing/set_line_utils.c\
 	builtins/env.c\
 	builtins/pwd.c\
 	builtins/echo.c\
 	builtins/cd.c\
 	builtins/exit.c\
 	builtins/export.c\
-	builtins/shlvl.c\
-	execution.c\
-	execution_utils.c\
 	builtins/unset.c\
-	builtins/utils_exit.c\
+	builtins/utils_builtins.c\
+	execution/execution_utils2.c\
+	execution/execution.c\
+	execution/execution_utils.c\
+	execution/execution_builtins.c\
+	execution/here_doc.c\
 	
 OBJS = $(SRC:.c=.o)
 HEADERS = minishell.h
