@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/20 10:47:30 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/21 14:18:47 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,34 @@ int	split_token(t_data *data, char *s, int *i, int tok)
 		while (s[data->cur] != '\"' && s[data->cur] != '\''
 			&& s[data->cur] != ' ' && s[data->cur] != '\0')
 			data->cur++;
-		data->cur = check_quote(s, data->cur, '\'');
-		if (data->cur == -1)
-			return (put_error(ERR_SYNTAX, "\'"), data->status = 1, -1);
-		data->cur = check_quote(s, data->cur, '\"');
-		if (data->cur == -1)
-			return (put_error(ERR_SYNTAX, "\""), data->status = 1, -1);
+		if(s[data->cur] == '\'')
+		{
+			data->cur = check_quote(s, data->cur, '\'');
+			if (data->cur == -1)
+				return (put_error(ERR_SYNTAX, "\'"), data->status = 1, -1);
+		}
+		if(s[data->cur] == '\"')
+		{
+			data->cur = check_quote(s, data->cur, '\"');
+			if (data->cur == -1)
+				return (put_error(ERR_SYNTAX, "\""), data->status = 1, -1);
+		}
 		while (s[data->cur] != '\"' && s[data->cur] != '\''
 			&& s[data->cur] != ' ' && s[data->cur] != '\0')
 			data->cur++;
-		if (s[data->cur] == ' ' || s[data->cur] == '\0')
+		if (s[data->cur] == '\0' || s[data->cur] == ' ')
 			tok = tokenise(data, i);
 	}
 	return (tok);
+}
+
+void 	search_start(char *s, int *cur, int *start)
+{
+	while (s[*cur] == ' ' && s[*cur] != '\0')
+	{
+		(*cur)++;
+		*start = *cur;
+	}
 }
 
 int	search_token(char *s, t_data *data)
@@ -61,11 +76,7 @@ int	search_token(char *s, t_data *data)
 		return (put_error(ERR_MALLOC, NULL), 3);
 	while (s[data->cur] != '\0')
 	{
-		while (s[data->cur] == ' ' && s[data->cur] != '\0')
-		{
-			data->cur++;
-			data->start = data->cur;
-		}
+		search_start(s, &data->cur, &data->start);
 		if (tok == 1)
 		{
 			data->start = data->cur;

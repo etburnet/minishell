@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shlvl.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:28:41 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/20 14:53:44 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/21 12:33:21 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	update_shlvl(t_data *data)
 	shlvl = get_this_env("SHLVL", data->cp_env);
 	if (shlvl == -1)
 	{
-		if (dup_env(data, "SHLVL=1") == 3)
+		if (dup_env(data, "SHLVL=2") == 3)
 			return (3);
 		return (0);
 	}

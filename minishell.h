@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/20 15:17:45 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/21 13:01:52 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_data
 	char	**cp_env;
 	char	**input;
 	char	*arg;
+	int 	len_arg;
 }			t_data;
 
 typedef struct s_expand
@@ -135,7 +136,7 @@ int			init_token(t_token *token);
 
 /* Parsing */
 int			count_space(t_data *data, char *s, int i, int j);
-char		*set_string(t_data *data, char *s, int len);
+char		*set_string(t_data *data, char *s, int len, int len_arg);
 int			ft_isdigit_edit(char *c);
 size_t		ft_countword(const char *s, int i);
 int			search_token(char *s, t_data *data);

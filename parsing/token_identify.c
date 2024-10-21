@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_identify.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/20 11:19:32 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/21 14:09:56 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,11 @@ int	is_metacharcter(char *s, int i)
 	return (0);
 }
 
-char	*remove_meta_c(char *s)
+char	*remove_meta_c(char *s, int i, int j)
 {
 	char	*temp;
-	int		i;
-	int		j;
 	int		len;
 
-	i = 0;
-	j = 0;
 	len = ft_strlen(s);
 	temp = malloc(len + 1);
 	if (!temp)
@@ -104,7 +100,7 @@ int	identify_token(t_data *data)
 			return (3);
 		if (data->token[i].type == undefine)
 			data->token[i].type = word;
-		data->token[i].tab[0] = remove_meta_c(data->token[i].tab[0]);
+		data->token[i].tab[0] = remove_meta_c(data->token[i].tab[0], 0, 0);
 		if (!data->token[i].tab[0])
 			return (3);
 		if (!data->token[i].tab[0])
