@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_exit.c                                       :+:      :+:    :+:   */
+/*   utils_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:49 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/17 10:59:27 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/21 15:19:39 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,20 @@ void	free_data_token(t_data *data)
 
 	j = 0;
 	i = 0;
-	if(data->source_lenght < 0 || !data->token || !data->source)
+	if (data->source_lenght < 0 || !data->token || !data->source)
 		return ;
 	while (i < data->lenght_token)
 	{
+		j = 0;
 		if (!data->token[i].tab)
 			return ;
 		while (j <= data->token[i].nb_arg)
-		{
-			ft_free(data->token[i].tab[j]);
-			j++;
-		}
+			ft_free(data->token[i].tab[j++]);
 		ft_free(data->token[i].full_path);
 		if (data->token[i].tab)
 			free(data->token[i].tab);
 		ft_close(data, data->token[i].fdin, data->token[i].fdout);
 		i++;
-		j = 0;
 	}
 	ft_close(data, data->pipe_fd[0], data->pipe_fd[1]);
 	ft_close(data, data->old_pipe[0], data->old_pipe[1]);
@@ -81,4 +78,28 @@ long int	ft_atol(const char *nptr)
 		i++;
 	}
 	return (result * isnegative);
+}
+
+int	open_ch_dir(char *dir)
+{
+	DIR			*stream_dir;
+	struct stat	path_stat;
+
+	if (dir[0] == '\0')
+		return (1);
+	if (stat(dir, &path_stat) != 0)
+		return (perror(dir), 1);
+	if (S_ISREG(path_stat.st_mode))
+		return (put_error("Not a directory: ", dir), 1);
+	else if (S_ISDIR(path_stat.st_mode))
+	{
+		stream_dir = opendir(dir);
+		if (stream_dir == NULL)
+			return (put_error("No such file or directory: ", dir), 1);
+		closedir(stream_dir);
+		if (chdir(dir) == -1)
+			return (1);
+		return (0);
+	}
+	return (1);
 }

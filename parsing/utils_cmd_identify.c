@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:18:49 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 12:44:23 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/20 10:59:58 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,11 @@ int	interrupt_heredoc(t_data *data, int new, int cmd)
 	if (dup2(new, STDIN_FILENO) == -1)
 		return (perror("dup2"), -1);
 	close(data->token[cmd].fdin);
-	unlink("temp_file_gere_doc.txt");
-	g_sig_recieved = 0;
+	unlink("temp_file_here_doc.txt");
 	return (0);
 }
 
-int	check_arg(t_data *data, int i, e_type type)
+int	check_arg(t_data *data, int i, t_type type)
 {
 	int	j;
 	int	cmd;

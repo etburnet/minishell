@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:59:33 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/18 12:04:39 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/20 10:48:34 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,15 @@ void	ft_clean(t_data *data)
 		free_data_token(data);
 		ft_free(data->arg);
 	}
-	if (data->env != NULL)
-		free_tab(data->env);
+	if (data->cp_env != NULL)
+		free_tab(data->cp_env);
 	free(data);
 }
 
 int	ft_check_str(char *str)
 {
 	int	i;
-	int	isnegative;
 
-	isnegative = 1;
 	i = 0;
 	if (str[i] == '-' || str[i] == '+')
 		i++;

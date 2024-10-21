@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 12:04:10 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/20 16:35:50 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,39 @@ void	free_tab(char **tab)
 	int	i;
 
 	i = 0;
+	if (tab == NULL)
+		return ;
 	while (tab[i] != NULL)
-		free(tab[i++]);
+		ft_free(tab[i++]);
 	if (tab != NULL)
 		free(tab);
 }
 
-int	get_this_env(char *var, char **env)
+int	get_this_env(char *var, char **cp_env)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
+	char	*var_eq;
 
 	len = ft_strlen(var);
 	i = 0;
-	if (env == NULL || env[0] == NULL)
-		return (put_error("Env not found", NULL), -2);
-	while (env[i] != NULL)
+	if (cp_env == NULL)
+		return (-1);
+	var_eq = malloc(sizeof(char) * (len + 2));
+	if (!var_eq)
+		return (put_error(ERR_MALLOC, NULL), -1);
+	memset(var_eq, '\0', len + 2);
+	ft_strlcpy(var_eq, var, len + 1);
+	var_eq[len] = '=';
+	while (cp_env[i] != NULL)
 	{
-		if (ft_strncmp(env[i], var, len) == 0)
+		if (ft_strncmp(cp_env[i], var_eq, len + 1) == 0)
 			break ;
 		i++;
 	}
-	if (env[i] == NULL)
-		return (-1);
-	return (i);
+	if (cp_env[i] == NULL)
+		return (free(var_eq), -1);
+	return (free(var_eq), i);
 }
 
 void	put_error(char *message, char *var)

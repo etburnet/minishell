@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 15:31:55 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/21 17:07:38 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,15 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
+# include <errno.h>
 # define ERR_MALLOC "Malloc failed!"
 # define ERR_CMD "Command not found: "
 # define ERR_SYNTAX "Syntax error near unexpected token: "
+# define ERR_IDE "export: not a valid identifier: "
 
-typedef enum e_type
+extern int	g_sig_recieved;
+
+typedef enum t_type
 {
 	undefine,
 	string,
@@ -50,11 +54,11 @@ typedef enum e_type
 	built_in,
 	append_out,
 	append_id,
-}			e_type;
+}			t_type;
 
 typedef struct s_token
 {
-	e_type	type;
+	t_type	type;
 	char	**tab;
 	char	*full_path;
 	double	value;
@@ -81,31 +85,41 @@ typedef struct s_data
 	int		status;
 	int		here;
 	int		append_id;
-	char	**env;
+	char	**cp_env;
 	char	**input;
 	char	*arg;
 }			t_data;
 
-extern int	g_sig_recieved;
+typedef struct s_expand
+{
+	char	*res;
+	char	*var;
+	char	*tok_dup;
+	int		i;
+	int		j;
+	int		k;
+	int		dq;
+}			t_expand;
 
 /* Builtins */
 int			print_env(t_data *data);
-int			copy_env(t_data *data, char **env);
+int			copy_env(t_data *data, char **cp_env);
 int			echo(char **tab);
 int			cd(t_data *data, char **tab);
-int	pwd(t_data *data);
+int			pwd(t_data *data);
 int			ft_exit(t_data *data, char **tab, int n);
 int			export(t_data *data, char **tab);
 int			unset(t_data *data, char **tab);
 int			ft_err_exit(t_data *data, char *err_msg, int n);
 long int	ft_atol(const char *nptr);
 int			del_env(t_data *data, char *delete);
-
-
+int			edit_pwd(t_data *data);
+int			dup_env(t_data *data, char *new);
+int			open_ch_dir(char *dir);
 
 /* Utils */
 void		free_tab(char **tab);
-int			get_this_env(char *var, char **env);
+int			get_this_env(char *var, char **cp_env);
 void		put_error(char *message, char *var);
 char		**my_realloc(t_token token, size_t size);
 void		ft_clean(t_data *data);
@@ -113,16 +127,17 @@ int			update_shlvl(t_data *data);
 void		ft_free(char *str);
 
 /* Signal */
-void		init_signal_handler(int i);
+void		init_signal_handler(t_data *data, int i);
 void		handle_signal(int signum);
 void		handle_sig_heredoc(int signum);
+void		handle_slash(int signum);
 
 /* Init */
 int			init_data(t_data *tok, char *s);
 int			init_token(t_token *token);
 
 /* Parsing */
-int			count_space(char *s, int i, int j);
+int			count_space(t_data *data, char *s, int i, int j);
 char		*set_string(t_data *data, char *s, int len);
 int			ft_isdigit_edit(char *c);
 size_t		ft_countword(const char *s, int i);
@@ -131,9 +146,12 @@ int			check_quote(const char *s, int i, char c);
 void		free_data_token(t_data *data);
 int			ft_strchr_edit(const char *s, char c);
 char		*ft_find_cmd(t_data *data, char **cmd_tab);
-int			expand(t_data *data, t_token tok);
-int	check_operator(char c);
+int			check_operator(char c);
 
+/* expand */
+int			replace_var(t_data *data, char *res, char *var, int *i);
+int			expand(t_data *data, t_token tok);
+int			expand_init(t_token tok, char **res, char **var, char **tok_dup);
 
 /* Token_identify */
 int			identify_token(t_data *data);
@@ -143,21 +161,38 @@ char		*check_to_remove_dquote_edit(char *s, char *tmp, int *j, int *i);
 char		*check_to_remove_quote(char *s, char *tmp, int *j, int *i);
 char		*check_to_remove_quote_edit(char *s, char *tmp, int *j, int *i);
 char		*remove_quote(char *s, int i, int j);
+int			count_space(t_data *data, char *s, int i, int j);
+void		add_space(char *temp, int *j);
+int			check_operator(char c);
 
 /* Cmd_identify */
 int			identify_command(t_data *data);
 int			search_cmd(t_data *data, int i);
 char		*check_line(int fd, char *buffer, char *delimiter, int *del);
 int			interrupt_heredoc(t_data *data, int new, int cmd);
-int			check_arg(t_data *data, int i, e_type type);
+int			check_arg(t_data *data, int i, t_type type);
+int			is_chevrons(char *s);
+int			first_is_chevron(t_data *data, char *s);
+int			is_special_char_bis(char *s);
+int			is_special_char(char *s);
+int			check_outfile(t_data *data);
+int			check_infile(t_data *data);
 
 /* Exec */
 int			execution(t_data *data);
 int			open_file(t_data *data, t_token token, int i);
-void		check_first_last(t_data *data);
 int			which_builtin(t_data *data, char **cmd_tab);
+int			exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout);
+int			set_heredoc(t_data *data);
+
+/* Exec Utils */
+int			ft_child(t_data *data, t_token tok, int fdin, int fdout);
 void		ft_close(t_data *data, int fd1, int fd2);
 int			catch_cmd(t_data *data, int i);
 void		close_all(t_data *data, int fdin, int fdout);
+void		check_first_last(t_data *data);
+int			command_return(t_data *data, t_token tok, int ret);
+int			manage_pipe(t_data *data, t_token *tok);
+void		manage_files(t_data *data, t_token tok_i, t_token *tok_cmd);
 
 #endif

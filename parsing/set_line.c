@@ -3,77 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   set_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/18 15:31:34 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/20 11:22:23 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	check_operator(char c)
-{
-	if (c == '>' || c == '<')
-		return (1);
-	if (c == '|' || c == '&')
-		return (1);
-	if (c == ';')
-		return (1);
-	return (0);
-}
-// int	is_double_op(char *s, int i)
-// {
-// 	if((s[i] == s[i + 1] || (s[i] == '<' && s[i+ 1] == '>'))
-// }
-
-int	count_space(char *s, int i, int j)
-{
-	while (s[i] != '\0')
-	{
-		// printf("i = %d, j = %d\n", i, j);
-		i = check_quote(s, i, '\'');
-		if (i == -1)
-			return (put_error(ERR_SYNTAX, "\'"), 0);
-		i = check_quote(s, i, '\"');
-		if (i == -1)
-			return (put_error(ERR_SYNTAX, "\""), 0);
-		if (check_operator(s[i]) == 1)
-		{
-			if (s[i] == s[i + 1])
-			{
-				if ( i > 0 && s[i - 1] != ' ')
-					j++;
-				i++;
-				if(s[i + 1] != '\0')
-				{
-					if (s[i + 1] != ' ')
-						j++;
-					i++;
-				}
-			}
-			else
-			{
-				if ( i > 0 && s[i - 1] != ' ')
-					j++;
-				if (s[i] != '\0' && s[i + 1] != ' ')
-					j++;
-				i++;
-				
-			}
-		}
-		else if(s[i] != '\0')
-			i++;
-		// printf("i = %d, j = %d\n", i, j);
-	}
-	return (j + i);
-}
-
-void	add_space(char *temp, int *j)
-{
-	temp[*j] = ' ';
-	(*j)++;
-}
 
 void	is_operator(char *s, char *temp, int *i, int *j)
 {
@@ -92,7 +29,8 @@ void	is_operator(char *s, char *temp, int *i, int *j)
 	}
 	else
 	{
-		if (s[*i + 1] != ' ' && (*i > 0 && s[*i - 1] != ' ') && temp[*j - 1] != ' ')
+		if (s[*i + 1] != ' ' && (*i > 0 && s[*i - 1] != ' ') && temp[*j
+				- 1] != ' ')
 		{
 			add_space(temp, j);
 			put_string_to_cpy(s, temp, i, j);
@@ -159,7 +97,7 @@ char	*check_to_remove_dquote_edit(char *s, char *tmp, int *j, int *i)
 char	*set_string(t_data *data, char *s, int len)
 {
 	char	*temp;
-	int len_arg;
+	int		len_arg;
 	int		i;
 	int		j;
 
