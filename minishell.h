@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/21 13:01:52 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/21 17:04:06 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ typedef enum t_type
 	append_out,
 	append_id,
 }			t_type;
+
+// typedef struct s_function
+// {
+// 	void			(*handle_function);
+// }					t_function;
 
 typedef struct s_token
 {

@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:54:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/21 11:24:24 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:41:26 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,16 @@ int	execution(t_data *data)
 		data->status = status % 255;
 		if (WEXITSTATUS(status) != 0)
 			return (1);
+		// else if (WIFSIGNALED(status))
+        // {
+		// 	if(atoi(&data->cp_env[get_this_env("SHLVL", data->cp_env)][6]) <= 2)
+        //     {
+		// 		if (WTERMSIG(status) == SIGINT)
+        //        		printf("sigint recu\n", WTERMSIG(status));
+        //     	if (WTERMSIG(status) == SIGQUIT)
+        //         	printf("Quit (core dumped)\n", WTERMSIG(status));}
+        // }
 	}
+	// init_signal_handler(data, 1);
 	return (0);
 }
