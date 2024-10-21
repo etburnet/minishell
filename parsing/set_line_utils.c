@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:21:17 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/21 17:39:10 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:33:23 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	process_operator(char *s, int *i, int *j)
 		(*i)++;
 	}
 }
+
 int	there_is_quote(const char *s, int i, char c)
 {
 	int	quote;
@@ -66,13 +67,13 @@ int	there_is_quote(const char *s, int i, char c)
 		if (s[i] == c)
 		{
 			quote = 0;
-			return(i);
+			return (i);
 		}
 		if (s[i] == '\0' && quote == 1)
 			return (-1);
 	}
 	return (i);
-} 
+}
 
 int	count_space(t_data *data, char *s, int i, int j)
 {

@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/21 17:39:58 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:24:54 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ int	split_token(t_data *data, char *s, int *i, int tok)
 		while (s[data->cur] != '\"' && s[data->cur] != '\''
 			&& s[data->cur] != ' ' && s[data->cur] != '\0')
 			data->cur++;
-		if(s[data->cur] == '\'')
+		if (s[data->cur] == '\'')
 		{
 			data->cur = check_quote(s, data->cur, '\'');
 			if (data->cur == -1)
 				return (put_error(ERR_SYNTAX, "\'"), data->status = 1, -1);
 		}
-		if(s[data->cur] == '\"')
+		if (s[data->cur] == '\"')
 		{
 			data->cur = check_quote(s, data->cur, '\"');
 			if (data->cur == -1)
@@ -54,7 +54,7 @@ int	split_token(t_data *data, char *s, int *i, int tok)
 	return (tok);
 }
 
-void 	search_start(char *s, int *cur, int *start)
+void	search_start(char *s, int *cur, int *start)
 {
 	while (s[*cur] == ' ' && s[*cur] != '\0')
 	{

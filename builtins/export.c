@@ -6,27 +6,11 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 16:35:56 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/21 17:35:11 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:24:00 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	is_var_ok(char *name)
-{
-	int	i;
-
-	i = 0;
-	if (ft_isdigit(name[0]))
-		return (1);
-	while (name[i] != '\0')
-	{
-		if (!ft_isalnum(name[i]) && name[i] != '_')
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 int	dup_env(t_data *data, char *new)
 {
@@ -58,12 +42,7 @@ int	dup_env(t_data *data, char *new)
 int	add_env_var(char *name, char *value, t_data *data)
 {
 	char	*cat;
-	int		env_id;
-	int		ret;
 
-	env_id = get_this_env(name, data->cp_env);
-	if (env_id == -2)
-		return (1);
 	cat = malloc(sizeof(char) * (ft_strlen(name) + ft_strlen(value) + 2));
 	if (cat == NULL)
 		return (3);
@@ -74,53 +53,48 @@ int	add_env_var(char *name, char *value, t_data *data)
 		ft_strlcat(cat, "=", ft_strlen(name) + 2);
 		ft_strlcat(cat, value, ft_strlen(name) + ft_strlen(value) + 2);
 	}
-	if (env_id == -1)
-	{
-		if (dup_env(data, cat) == 3)
-			return (ft_free(cat), 3);
-	}
-	else
-	{
-		ret = del_env(data, name);
-		if (ret == 3)
-			return (ft_free(cat), put_error(ERR_MALLOC, NULL), 3);
-		if (dup_env(data, cat) == 3)
-			return (ft_free(cat), 3);
-	}
+	if (add_or_update(data, name, &cat) == 3)
+		return (3);
 	ft_free(cat);
 	return (0);
 }
 
-int	export_parsing(t_data *data, char *str)
+int	init_export(char *str, int *j, int len, char **value)
 {
-	int		j;
-	int		len;
+	if (str[0] == '=')
+		return (put_error(ERR_IDE, str), 1);
+	while (str[*j] != '=' && str[*j])
+		(*j)++;
+	if (*j == len && str[*j] != '=')
+	{
+		if (is_var_ok(str) == 1)
+			return (put_error(ERR_IDE, str), 1);
+		return (-1);
+	}
+	else if (*j == len && str[*j] == '=')
+		(*j)--;
+	else
+	{
+		(*j)--;
+		*value = malloc(sizeof(char) * (len - *j + 1));
+		if (*value == NULL)
+			return (3);
+	}
+	return (0);
+}
+
+int	export_parsing(t_data *data, char *str, int len, int j)
+{
 	int		ret;
 	char	*name;
 	char	*value;
 
 	ret = 0;
-	len = ft_strlen(str);
-	j = 0;
-	if (str[0] == '=')
-		return (put_error(ERR_IDE, str), 1);
-	while (str[j] != '=' && str[j])
-		j++;
-	if (j == len && str[j] != '=')
-	{
-		if (is_var_ok(str) == 1)
-			return (put_error(ERR_IDE, str), 1);
+	ret = init_export(str, &j, len, &value);
+	if (ret == -1)
 		return (0);
-	}
-	else if (j == len && str[j] == '=')
-		j--;
-	else
-	{
-		j--;
-		value = malloc(sizeof(char) * (len - j + 1));
-		if (value == NULL)
-			return (3);
-	}
+	if (ret != 0)
+		return (ret);
 	name = malloc(sizeof(char) * (j + 2));
 	if (name == NULL)
 		return (ft_free(name), 3);
@@ -133,10 +107,7 @@ int	export_parsing(t_data *data, char *str)
 			return (ft_free(value), ft_free(name), ret);
 	}
 	else
-	{
-		put_error("export: not valid in this context: ", name);
-		return (ft_free(value), ft_free(name), 1);
-	}
+		return (put_error(ERR_CONT, name), ft_free(value), ft_free(name), 1);
 	return (ft_free(value), ft_free(name), 0);
 }
 
@@ -144,11 +115,13 @@ int	export(t_data *data, char **tab)
 {
 	int	i;
 	int	ret;
+	int	len;
 
 	i = 1;
 	while (tab[i] != NULL)
 	{
-		ret = export_parsing(data, tab[i]);
+		len = ft_strlen(tab[i]);
+		ret = export_parsing(data, tab[i], len, 0);
 		if (ret == 3)
 			return (put_error(ERR_MALLOC, NULL), 3);
 		else if (ret != 0)

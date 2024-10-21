@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/21 17:37:48 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:54:50 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,23 @@ int	check_command(t_data *data)
 	{
 		if (data->token[i].type == word || data->token[i].type == string)
 		{
-			data->token[i].type = command;
-			data->token[i].full_path = ft_find_cmd(data, data->token[i].tab);
-			if (check_arg(data, i, command) == 3)
-				return (3);
+			if (data->token[i].tab[0][0] == '\0')
+				data->token[i].type = word;
+			else
+			{
+				data->token[i].type = command;
+				data->token[i].full_path = ft_find_cmd(data,
+						data->token[i].tab);
+				if (check_arg(data, i, command) == 3)
+					return (3);
+			}
 		}
 		i++;
 	}
 	return (0);
 }
 
-void 	comp_built_in(t_data *data, int i)
+void	comp_built_in(t_data *data, int i)
 {
 	if (ft_strncmp(data->token[i].tab[0], "echo", 5) == 0)
 		data->token[i].type = built_in;
@@ -51,7 +57,7 @@ void 	comp_built_in(t_data *data, int i)
 
 int	is_built_in(t_data *data)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (i < data->lenght_token)
@@ -104,7 +110,7 @@ int	identify_command(t_data *data)
 	if (check_first_token(data) == 1)
 		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), data->status = 1,
 			1);
-	ret = set_heredoc(data);
+	ret = set_heredoc(data, 0);
 	if (ret != 0)
 		return (ret);
 	return (0);

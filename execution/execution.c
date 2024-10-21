@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:54:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/21 17:37:13 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:49:29 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ int	ft_execute(t_data *data, t_token tok, int fdin, int fdout)
 {
 	pid_t	pid;
 	int		fd;
-	
+
 	fd = open(tok.tab[0], O_WRONLY);
 	if (errno == EISDIR)
-		return (close(fd), ft_close(data, fdin, fdout), put_error("is a directory: ",
-				tok.tab[0]), 126);
-	if (!tok.full_path || tok.tab[0][0] == '\0')
+		return (close(fd), ft_close(data, fdin, fdout),
+			put_error("is a directory: ", tok.tab[0]), 126);
+	if (!tok.full_path)
 		return (put_error(ERR_CMD, tok.tab[0]), ft_close(data, fdin, fdout),
 			127);
 	pid = fork();

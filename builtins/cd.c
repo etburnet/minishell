@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:01:13 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/20 15:17:00 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/21 18:23:17 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,8 @@ int	edit_old_pwd(t_data *data, char *cp_pwd)
 		if (data->cp_env[oldpwd] == NULL)
 			return (ft_free(cat), put_error(ERR_MALLOC, NULL), 3);
 	}
-	else
-		if (dup_env(data, cat) == 3)
-			return (ft_free(cat), put_error(ERR_MALLOC, NULL), 3);
+	else if (dup_env(data, cat) == 3)
+		return (ft_free(cat), put_error(ERR_MALLOC, NULL), 3);
 	ft_free(cat);
 	return (0);
 }
@@ -106,8 +105,8 @@ int	ft_cd_traitement(t_data *data, int id_env, char *tab)
 
 int	cd(t_data *data, char **tab)
 {
-	int		id_env;
-	int		ret;
+	int	id_env;
+	int	ret;
 
 	ret = 0;
 	if (tab[1] == NULL)

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/21 17:40:12 by opdi-bia         ###   ########.fr       */
+/*   Created: 2024/10/21 18:34:13 by opdi-bia          #+#    #+#             */
+/*   Updated: 2024/10/21 18:34:16 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	check_quote(const char *s, int i, char c)
 		{
 			quote = 0;
 			i++;
-			return(i);
+			return (i);
 		}
 		if (s[i] == '\0' && quote == 1)
 			return (-1);

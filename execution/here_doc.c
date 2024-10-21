@@ -6,19 +6,17 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:13:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/21 17:37:23 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:30:34 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-int		process_here_doc(t_data *data, int new, int cmd, int i)
+int	process_here_doc(t_data *data, int new, int cmd, int i)
 {
 	int		del;
-	
 	char	*buffer;
-		
+
 	del = 0;
 	data->token[cmd].fdin = open_file(data, data->token[i], 3);
 	if (data->token[cmd].fdin == -1)
@@ -34,29 +32,29 @@ int		process_here_doc(t_data *data, int new, int cmd, int i)
 			return (put_error(ERR_MALLOC, NULL), 3);
 	}
 	if (buffer == NULL && g_sig_recieved == 1)
-			return (interrupt_heredoc(data, new, cmd), 1);
+		return (interrupt_heredoc(data, new, cmd), 1);
 	close(data->token[cmd].fdin);
-	return(0);
+	return (0);
 }
 
-int	set_heredoc(t_data *data)
+int	set_heredoc(t_data *data, int i)
 {
-	int		cmd;
-	int		i;
-	int		new;
-	int 	ret;
+	int	cmd;
+	int	new;
+	int	ret;
 
-	i = 0;
 	init_signal_handler(data, 2);
 	while (i < data->lenght_token)
 	{
 		if (data->token[i].type == here_doc)
 		{
-			if ((new = dup(0) )== -1)
+			new = dup(0);
+			if (new == -1)
 				return (perror("OUT dup"), -1);
 			cmd = search_cmd(data, i);
-			if((ret = process_here_doc(data, new, cmd, i)) != 0)
-				return(ret);
+			ret = process_here_doc(data, new, cmd, i);
+			if (ret != 0)
+				return (ret);
 			data->token[cmd].fdin = open_file(data, data->token[i], 4);
 			if (data->token[cmd].fdin == -1)
 				return (-1);
