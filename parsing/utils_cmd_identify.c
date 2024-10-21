@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_cmd_identify.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:18:49 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/20 10:59:58 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/21 17:40:07 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,25 @@
 
 int	search_cmd(t_data *data, int i)
 {
+	int index;
+
+	index = i;
 	i--;
 	while (i >= 0)
 	{
 		if (data->token[i].type == command || data->token[i].type == built_in)
 			return (i);
 		i--;
+	}
+	if(i == -1)
+	{
+		index = i;
+		while (i < data->lenght_token && data->token[i].type != pipes)
+		{
+			if (data->token[i].type == command || data->token[i].type == built_in)
+				return (i);
+			i++;
+		}
 	}
 	return (i);
 }
@@ -45,6 +58,22 @@ int	interrupt_heredoc(t_data *data, int new, int cmd)
 	unlink("temp_file_here_doc.txt");
 	return (0);
 }
+int		set_arg(t_data *data, int i, int cmd, int j)
+{
+	data->token[cmd].nb_arg += 1;
+	if (data->token[cmd].nb_arg + 1 > data->token[cmd].size)
+	{
+		data->token[cmd].tab = my_realloc(data->token[cmd],
+				data->token[cmd].size);
+		if (data->token[cmd].tab == NULL)
+			return (put_error(ERR_MALLOC, NULL), 3);
+		data->token[cmd].size += 1;
+	}
+	data->token[cmd].tab[j] = ft_strdup(data->token[i].tab[0]);
+	if (data->token[cmd].tab[j] == NULL)
+		return (put_error(ERR_MALLOC, NULL), 3);
+	return(0);
+}
 
 int	check_arg(t_data *data, int i, t_type type)
 {
@@ -61,18 +90,8 @@ int	check_arg(t_data *data, int i, t_type type)
 			if (data->token[i - 1].type == type)
 				cmd = i - 1;
 			data->token[i].type = arg;
-			data->token[cmd].nb_arg += 1;
-			if (data->token[cmd].nb_arg + 1 > data->token[cmd].size)
-			{
-				data->token[cmd].tab = my_realloc(data->token[cmd],
-						data->token[cmd].size);
-				if (data->token[cmd].tab == NULL)
-					return (put_error(ERR_MALLOC, NULL), 3);
-				data->token[cmd].size += 1;
-			}
-			data->token[cmd].tab[j] = ft_strdup(data->token[i].tab[0]);
-			if (data->token[cmd].tab[j] == NULL)
-				return (put_error(ERR_MALLOC, NULL), 3);
+			if(set_arg(data, i, cmd, j) != 0)
+				return(3);
 			j++;
 		}
 		i++;

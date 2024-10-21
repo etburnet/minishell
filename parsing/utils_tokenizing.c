@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_tokenizing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/20 11:04:45 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/20 11:19:01 by eburnet          ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/10/21 17:40:12 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	check_quote(const char *s, int i, char c)
 		{
 			quote = 0;
 			i++;
+			return(i);
 		}
 		if (s[i] == '\0' && quote == 1)
 			return (-1);

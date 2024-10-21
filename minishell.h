@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/21 17:07:38 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/21 17:34:10 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # define ERR_CMD "Command not found: "
 # define ERR_SYNTAX "Syntax error near unexpected token: "
 # define ERR_IDE "export: not a valid identifier: "
+
+extern int	g_sig_recieved;
 
 extern int	g_sig_recieved;
 
@@ -86,8 +88,10 @@ typedef struct s_data
 	int		here;
 	int		append_id;
 	char	**cp_env;
+	char	**cp_env;
 	char	**input;
 	char	*arg;
+	int 	len_arg;
 }			t_data;
 
 typedef struct s_expand
@@ -138,7 +142,7 @@ int			init_token(t_token *token);
 
 /* Parsing */
 int			count_space(t_data *data, char *s, int i, int j);
-char		*set_string(t_data *data, char *s, int len);
+char		*set_string(t_data *data, char *s, int len, int len_arg);
 int			ft_isdigit_edit(char *c);
 size_t		ft_countword(const char *s, int i);
 int			search_token(char *s, t_data *data);
@@ -191,8 +195,8 @@ void		ft_close(t_data *data, int fd1, int fd2);
 int			catch_cmd(t_data *data, int i);
 void		close_all(t_data *data, int fdin, int fdout);
 void		check_first_last(t_data *data);
-int			command_return(t_data *data, t_token tok, int ret);
-int			manage_pipe(t_data *data, t_token *tok);
+int			handle_command_return(t_data *data, t_token tok, int ret);
+int			handle_pipe_and_fd(t_data *data, t_token *tok);
 void		manage_files(t_data *data, t_token tok_i, t_token *tok_cmd);
 
 #endif

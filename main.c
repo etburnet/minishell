@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/21 16:25:26 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/21 17:32:49 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ int	ft_init_main(t_data *data, char **env)
 	int	ret;
 
 	ret = 0;
-/* 	if (!isatty(STDIN_FILENO))
-		return (put_error("No infile ./minishell exec", NULL), free(data), 1); */
+	if (!isatty(STDIN_FILENO))
+		return (put_error("No infile ./minishell exec", NULL), free(data), 1);
 	ret = copy_env(data, env);
 	if (ret == 3)
 		ft_exit(data, NULL, ret);
