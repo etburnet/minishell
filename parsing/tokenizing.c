@@ -3,70 +3,90 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:01:11 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/01 13:33:35 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/21 18:24:54 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	tokenise(t_data *data, int i)
+int	tokenise(t_data *data, int *i)
 {
-	init_token(&data->token[i]);
-	data->token[i].litteral[0] = ft_substr(data->source, data->start, (data->cur - data->start));
+	if (init_token(&data->token[*i]) != 0)
+		return (3);
+	data->token[*i].tab[0] = ft_substr(data->source, data->start, (data->cur
+				- data->start));
+	if (data->token[*i].tab[0] == NULL)
+		return (put_error(ERR_MALLOC, NULL), 3);
 	data->nb_token += 1;
-	data->token[i].position = data->nb_token;
-	i++;
-	return(i);
+	data->token[*i].position = data->nb_token;
+	(*i)++;
+	return (1);
 }
-int		split_token(t_data *data, char *s, int i)
+
+int	split_token(t_data *data, char *s, int *i, int tok)
 {
-	 while(s[data->cur] == ' ')
-		data->cur++;
-	data->start = data->cur;
 	if (s[data->cur] != ' ' && s[data->cur] != '\0')
 	{
-		while (s[data->cur] != '\"' && s[data->cur] != '\'' && s[data->cur] != ' ' && s[data->cur] != '\0')
-			data->cur++;;
-		data->cur = check_quote(s, data->cur, '\'');
-		if(data->cur == -1)
-			return(put_error("error invalid command", NULL), -1);
-		data->cur = check_quote(s, data->cur, '\"');
-		if(data->cur == -1)
-			return(put_error("error invalid command", NULL), -1);
-		while (s[data->cur] != '\"' && s[data->cur] != '\'' && s[data->cur] != ' ' && s[data->cur] != '\0')
-			data->cur++;;
-		if(s[data->cur] == ' ' || s[data->cur] == '\0')
-			i = tokenise(data, i);
+		while (s[data->cur] != '\"' && s[data->cur] != '\''
+			&& s[data->cur] != ' ' && s[data->cur] != '\0')
+			data->cur++;
+		if (s[data->cur] == '\'')
+		{
+			data->cur = check_quote(s, data->cur, '\'');
+			if (data->cur == -1)
+				return (put_error(ERR_SYNTAX, "\'"), data->status = 1, -1);
+		}
+		if (s[data->cur] == '\"')
+		{
+			data->cur = check_quote(s, data->cur, '\"');
+			if (data->cur == -1)
+				return (put_error(ERR_SYNTAX, "\""), data->status = 1, -1);
+		}
+		while (s[data->cur] != '\"' && s[data->cur] != '\''
+			&& s[data->cur] != ' ' && s[data->cur] != '\0')
+			data->cur++;
+		if (s[data->cur] == '\0' || s[data->cur] == ' ')
+			tok = tokenise(data, i);
 	}
-	return(i);
+	return (tok);
 }
 
-int		search_token(char *s, t_data *data)
+void	search_start(char *s, int *cur, int *start)
 {
-	int i;
-	
-	i = 0;
-	data->token = malloc(sizeof(t_token) * data->lenght_token);
-	while (s[data->cur] != '\0')
-    {
-       i = split_token(data, s, i);
-    }
-	identify_token(data);
-	identify_command(data);
-	free_data_token(data);
-	return(0);
+	while (s[*cur] == ' ' && s[*cur] != '\0')
+	{
+		(*cur)++;
+		*start = *cur;
+	}
 }
-// 	return(0);
-// }
 
-// 	i = 0;
-// 	while(i < data->lenght_token)
-// 	{
-// 		printf("token %d pos %d = %s\n", i, data->token[i].position, data->token[i].litteral);
-// 		i++;
-// 	}
-// 	return(0);
-// }
+int	search_token(char *s, t_data *data)
+{
+	int	i;
+	int	tok;
+
+	tok = 0;
+	i = 0;
+	data->start = data->cur;
+	data->token = malloc(sizeof(t_token) * (data->lenght_token + 1));
+	if (data->token == NULL)
+		return (put_error(ERR_MALLOC, NULL), 3);
+	while (s[data->cur] != '\0')
+	{
+		search_start(s, &data->cur, &data->start);
+		if (tok == 1)
+		{
+			data->start = data->cur;
+			tok = 0;
+		}
+		tok = split_token(data, s, &i, tok);
+		if (tok == -1)
+			break ;
+		if (tok == 3)
+			return (tok);
+	}
+	return (0);
+}

@@ -6,77 +6,106 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/09/27 18:06:31 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 11:17:20 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int   check_nb(t_data *data, int i)
+int	wich_operator(t_data *data, int i)
 {
-    if(data->token[i].type != undefine)
-        return(0);
-    if(ft_isdigit_edit(data->token[i].litteral[0]) != 0)
-    {
-        data->token[i].value = ft_atoi(data->token[i].litteral[0]);
-        data->token[i].type = number;
-    }
-    return(0);
+	if (data->token[i].type != undefine)
+		return (0);
+	if (ft_strncmp(data->token[i].tab[0], "<", 2) == 0)
+		data->token[i].type = less;
+	if (ft_strncmp(data->token[i].tab[0], ">", 2) == 0)
+		data->token[i].type = greater;
+	if (ft_strncmp(data->token[i].tab[0], "<<", 3) == 0)
+	{
+		data->token[i].type = here_doc;
+		data->token[i + 1].type = delimiter;
+	}
+	if (ft_strncmp(data->token[i].tab[0], ">>", 3) == 0)
+	{
+		if (i > 0 && (ft_isdigit_edit(data->token[i - 1].tab[0]) == 0))
+			data->token[i - 1].type = append_id;
+		data->token[i].type = append;
+	}
+	if (ft_strncmp(data->token[i].tab[0], "|", 2) == 0)
+		data->token[i].type = pipes;
+	return (0);
 }
 
-int    check_operator(t_data *data, int i)
+int	check_string(t_data *data, int i)
 {
-    if(data->token[i].type != undefine)
-        return(0);
-    if(ft_strncmp(data->token[i].litteral[0], "<", 2) == 0)
-        data->token[i].type = less;
-    if(ft_strncmp(data->token[i].litteral[0], ">", 2) == 0)
-        data->token[i].type = greater;
-    if(ft_strncmp(data->token[i].litteral[0], "<<", 3) == 0)
-        data->token[i].type = here_doc;
-    if(ft_strncmp(data->token[i].litteral[0], ">>", 3) == 0)
-        data->token[i].type = greatergreater;
-    if(ft_strncmp(data->token[i].litteral[0], "|", 2) == 0)
-        data->token[i].type = pipes;   
-    if(ft_strncmp(data->token[i].litteral[0], "$?", 3) == 0)
-        data->token[i].type = exit_status;  
-    return(0);
+	if (data->token[i].type != undefine)
+		return (0);
+	if (ft_strchr(data->token[i].tab[0], '\'') != 0
+		|| ft_strchr(data->token[i].tab[0], '\"') != 0)
+	{
+		data->token[i].type = string;
+		data->token[i].tab[0] = remove_quote(data->token[i].tab[0], 0, 0);
+		if (data->token[i].tab[0] == NULL)
+			return (put_error(ERR_MALLOC, data->token[i].tab[0]), 3);
+	}
+	return (0);
 }
 
-int    check_var(t_data *data, int i)
+int	is_metacharcter(char *s, int i)
 {
-    if(data->token[i].type != undefine)
-        return(0);
-    if(ft_strncmp(data->token[i].litteral[0], "$", 1) == 0)
-        data->token[i].type = var;
-    return(0);
+	if (s[i] == '\\' || s[i] == '\n' || s[i] == '\t')
+		return (1);
+	return (0);
 }
 
-int     check_string(t_data *data , int i)
+char	*remove_meta_c(char *s, int i, int j)
 {
-    if(data->token[i].type != undefine)
-        return(0);
-    if(ft_strchr(data->token[i].litteral[0], '\'') != 0 || ft_strchr(data->token[i].litteral[0], '\'') != 0)
-       data->token[i].type = string;
-    return(0);
+	char	*temp;
+	int		len;
+
+	len = ft_strlen(s);
+	temp = malloc(len + 1);
+	if (!temp)
+		return (put_error(ERR_MALLOC, NULL), NULL);
+	ft_memset(temp, '\0', len + 1);
+	if (s == NULL)
+		return (NULL);
+	while (i <= len)
+	{
+		if (is_metacharcter(s, i) == 1 && len == 1)
+			break ;
+		if (s[i] == '\"')
+			check_to_remove_dquote_edit(s, temp, &j, &i);
+		else if (s[i] == '\'')
+			check_to_remove_quote_edit(s, temp, &j, &i);
+		else if (is_metacharcter(s, i) == 1)
+			i++;
+		put_string_to_cpy(s, temp, &i, &j);
+	}
+	ft_free(s);
+	return (temp);
 }
 
-int    identify_token(t_data *data)
+int	identify_token(t_data *data)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(i < data->lenght_token)
-    {
-        if(check_error(data, i) != 0)
-            return(-1);
-        check_nb(data, i);
-        check_operator(data, i);
-        check_var(data, i);
-        check_string(data, i);
-        if(data->token[i].type == undefine)
-            data->token[i].type = word;
-        i++;
-    }
-	return(0);
+	i = 0;
+	while (i < data->lenght_token)
+	{
+		wich_operator(data, i);
+		if (expand(data, data->token[i]) == 3)
+			return (3);
+		if (check_string(data, i) == 3)
+			return (3);
+		if (data->token[i].type == undefine)
+			data->token[i].type = word;
+		data->token[i].tab[0] = remove_meta_c(data->token[i].tab[0], 0, 0);
+		if (!data->token[i].tab[0])
+			return (3);
+		if (!data->token[i].tab[0])
+			return (3);
+		i++;
+	}
+	return (0);
 }

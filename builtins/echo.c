@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:14:53 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/30 17:31:56 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 11:47:09 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 int	check_n(char *str)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	i = 0;
 	len = ft_strlen(str);
-	if (str[i] == '-')
+	if (str[i] && str[i] == '-')
 	{
-		i++;
+		if (str[i + 1] == 'n')
+			i++;
 		while (str[i] == 'n')
 			i++;
 		if (i == len)
@@ -32,6 +33,22 @@ int	check_n(char *str)
 	return (1);
 }
 
+int	echo_loop(int *i, char **tab)
+{
+	int	j;
+
+	j = 0;
+	while (tab[(*i)][j])
+		if (write(1, &tab[(*i)][j++], 1) != 1)
+			return (perror("echo: write error"), 1);
+	(*i)++;
+	j = 0;
+	if (tab[(*i)] != NULL && tab[(*i) - 1][0] != '\0')
+		if (write(1, " ", 1) != 1)
+			return (perror("echo: write error"), 1);
+	return (0);
+}
+
 int	echo(char **tab)
 {
 	int	i;
@@ -39,15 +56,21 @@ int	echo(char **tab)
 
 	i = 1;
 	last = 1;
-	if (!check_n(tab[1]))
+	if (tab[1] == NULL)
+	{
+		if (write(1, "\n", 1) != 1)
+			return (perror("echo: write error"), 1);
+		return (0);
+	}
+	if (check_n(tab[1]) == 0)
 		last = 0;
-	if (tab[2] == NULL)
-		return (printf("\n"), 0);
-	while (tab[i] != NULL && !check_n(tab[i]))
+	while (check_n(tab[i]) == 0)
 		i++;
 	while (tab[i] != NULL)
-		printf("%s", tab[i++]);
+		if (echo_loop(&i, tab) == 1)
+			return (1);
 	if (last == 1)
-		printf("\n");
-	return (0);	
+		if (write(1, "\n", 1) != 1)
+			return (perror("echo: write error"), 1);
+	return (0);
 }

@@ -3,45 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/25 12:30:50 by eburnet           #+#    #+#             */
-/*   Updated: 2024/09/30 17:31:50 by eburnet          ###   ########.fr       */
+/*   Created: 2024/10/21 18:27:46 by opdi-bia          #+#    #+#             */
+/*   Updated: 2024/10/21 18:27:48 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_env(t_data *data)
+int	print_env(t_data *data)
 {
-	int i;
+	int	i;
+	int	len;
 
 	i = 0;
-	while (data->env[i])
-		printf("%s\n", data->env[i++]);
+	if (data->cp_env == NULL)
+		return (1);
+	while (data->cp_env[i])
+	{
+		len = ft_strlen(data->cp_env[i]);
+		if (write(1, data->cp_env[i++], len) != len)
+			return (perror("pwd: write error"), 1);
+		if (write(1, "\n", 1) != 1)
+			return (perror("pwd: write error"), 1);
+	}
+	return (0);
 }
 
-int	copy_env(t_data *data)
+int	copy_env(t_data *data, char **env)
 {
 	int	tab_len;
 	int	i;
+	int	j;
 
 	i = 0;
+	j = 0;
 	tab_len = 0;
-	if (environ == NULL || environ[i] == NULL)
-		return (3);
-	while (environ[tab_len])
+	while (env[tab_len])
 		tab_len++;
-	data->env = malloc(sizeof(char *) * (tab_len + 1));
-	if (data->env == NULL)
-		return (3);
-	data->env[tab_len] = NULL;
+	data->cp_env = malloc(sizeof(char *) * (tab_len + 1));
+	if (data->cp_env == NULL)
+		return (put_error(ERR_MALLOC, NULL), 3);
+	while (j <= tab_len)
+		data->cp_env[j++] = NULL;
 	while (i < tab_len)
 	{
-		data->env[i] = ft_strdup(environ[i]);
-		if (data->env[i] == NULL)
-			return(free_tab(data->env), 3);
+		data->cp_env[i] = ft_strdup(env[i]);
+		if (data->cp_env[i] == NULL)
+			return (free_tab(data->cp_env), put_error(ERR_MALLOC, NULL), 3);
 		i++;
 	}
-	return(0);
+	if (tab_len == 0)
+		return (1);
+	return (0);
 }

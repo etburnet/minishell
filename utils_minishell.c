@@ -6,38 +6,56 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/01 13:49:01 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/20 16:35:50 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_free(char *str)
+{
+	if (str != NULL)
+		free(str);
+}
 
 void	free_tab(char **tab)
 {
 	int	i;
 
 	i = 0;
+	if (tab == NULL)
+		return ;
 	while (tab[i] != NULL)
-		free(tab[i++]);
-	free(tab);
+		ft_free(tab[i++]);
+	if (tab != NULL)
+		free(tab);
 }
 
-int	get_this_env(char *var, char **env)
+int	get_this_env(char *var, char **cp_env)
 {
 	int		i;
 	int		len;
+	char	*var_eq;
 
 	len = ft_strlen(var);
 	i = 0;
-	while (env[i] != NULL)
+	if (cp_env == NULL)
+		return (-1);
+	var_eq = malloc(sizeof(char) * (len + 2));
+	if (!var_eq)
+		return (put_error(ERR_MALLOC, NULL), -1);
+	memset(var_eq, '\0', len + 2);
+	ft_strlcpy(var_eq, var, len + 1);
+	var_eq[len] = '=';
+	while (cp_env[i] != NULL)
 	{
-		if (ft_strncmp(env[i], var, len) == 0)
+		if (ft_strncmp(cp_env[i], var_eq, len + 1) == 0)
 			break ;
 		i++;
 	}
-	if (env[i] == NULL)
-		return (-1);
-	return (i);
+	if (cp_env[i] == NULL)
+		return (free(var_eq), -1);
+	return (free(var_eq), i);
 }
 
 void	put_error(char *message, char *var)
@@ -46,23 +64,27 @@ void	put_error(char *message, char *var)
 	if (var != NULL)
 		ft_putstr_fd(var, 2);
 	ft_putstr_fd("\n", 2);
-	rl_on_new_line();
 	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
-int	ft_isdigit_edit(char *c)
+char	**my_realloc(t_token token, size_t size)
 {
-	int	i;
+	char	**temp;
+	int		i;
 
 	i = 0;
-	if (c[i] == '-' || c[i] == '+')
-		i++;
-	while (c[i] != '\0')
+	temp = malloc(sizeof(char *) * (size + 2));
+	if (temp == NULL)
+		return (put_error(ERR_MALLOC, NULL), NULL);
+	temp[size + 1] = NULL;
+	while (token.tab[i] != NULL)
 	{
-		if (c[i] >= '0' && c[i] <= '9')
-			i++;
-		else
-			return (0);
+		temp[i] = ft_strdup(token.tab[i]);
+		if (temp[i] == NULL)
+			return (put_error(ERR_MALLOC, NULL), NULL);
+		i++;
 	}
-	return (!0);
+	free_tab(token.tab);
+	return (temp);
 }

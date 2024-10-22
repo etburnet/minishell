@@ -6,49 +6,100 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/01 13:48:08 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 11:21:12 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+int	ft_minishell(char *s, t_data *data)
 {
-	struct sigaction	action;
-	t_data				*data;
-	t_data				tok;
+	int	ret;
 
-	data = malloc(sizeof(t_data));
-	if (!data)
-		return (1);
-	action.sa_handler = &handle_signal;
-	signal(SIGQUIT, SIG_IGN);
-	sigaction(SIGINT, &action, NULL);
-	if (copy_env(data) == 3)
-		ft_exit(data, NULL, 3);
+	ret = search_token(s, data);
+	if (ret != 0)
+		return (ret);
+	ret = identify_token(data);
+	if (ret != 0)
+		return (ret);
+	data->here = 0;
+	ret = identify_command(data);
+	if (ret == 3 && ret != 1)
+		return (ret);
+	if (ret == 0)
+		execution(data);
+	free_data_token(data);
+	return (0);
+}
+
+int	ft_main_loop(t_data *data)
+{
+	int	ret;
+
+	ret = 0;
+	if (g_sig_recieved == 1)
+		data->status = 130;
+	else if (g_sig_recieved == 2)
+		data->status = 131;
+	if (g_sig_recieved != 0)
+		g_sig_recieved = 0;
+	if (*data->arg)
+	{
+		add_history(data->arg);
+		ret = init_data(data, data->arg);
+		if (ret == 3)
+			return (ft_clean(data), ret);
+		else if (ret == 0)
+		{
+			ret = ft_minishell(data->source, data);
+			if (ret != 0)
+				return (ft_clean(data), ret);
+		}
+	}
+	ft_free(data->arg);
+	return (0);
+}
+
+int	ft_init_main(t_data *data, char **env)
+{
+	int	ret;
+
+	ret = 0;
+	if (!isatty(STDIN_FILENO))
+		return (put_error("No infile ./minishell exec", NULL), free(data), 1);
+	ret = copy_env(data, env);
+	if (ret == 3)
+		ft_exit(data, NULL, ret);
+	else if (ret == 1)
+		edit_pwd(data);
 	if (update_shlvl(data) == 3)
 		ft_exit(data, NULL, 3);
-	char *tab[2];
-	tab[0] = "export";
-	tab[1] = "894894";
-	//ft_exit(data, tab, 0);
+	return (0);
+}
+
+int	main(int argc, char *argv[], char **env)
+{
+	t_data	*data;
+	int		ret;
+
+	(void)argc;
+	(void)argv;
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (put_error(ERR_MALLOC, NULL), 3);
+	ret = ft_init_main(data, env);
+	if (ret != 0)
+		return (ret);
+	data->status = 0;
 	while (1)
 	{
+		init_signal_handler(data, 1);
 		data->arg = readline("minishell$ ");
-		if (data->arg == NULL || ft_strncmp(data->arg, "exit", 5) == 0)
+		if (data->arg == NULL)
 			ft_exit(data, NULL, 0);
-		if (ft_strncmp(data->arg, "pwd", 4) == 0)
-			pwd();
-		if (ft_strncmp(data->arg, "env", 4) == 0)
-			print_env(data);
-		if (*data->arg)
-		{
-			add_history(data->arg);
-			init_data(&tok, data->arg);
-			search_token(tok.source, &tok);
-			// check_arg(data->arg);
-			free(data->arg);
-		}
+		ret = ft_main_loop(data);
+		if (ret != 0)
+			return (ret);
 	}
 	return (0);
 }

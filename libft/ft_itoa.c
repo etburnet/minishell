@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 15:35:40 by eburnet           #+#    #+#             */
-/*   Updated: 2023/11/09 18:02:43 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/17 17:45:43 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*ft_itoa(int n)
 	size = ft_count_digits(n);
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648"));
-	str = (char *)malloc(sizeof(char) * (size + 1));
+	str = malloc(sizeof(char) * (size + 1));
 	if (!str)
 		return (NULL);
 	str[size] = '\0';
