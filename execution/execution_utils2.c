@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:40:34 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/21 18:24:16 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/22 12:54:28 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	manage_files(t_data *data, t_token tok_i, t_token *tok_cmd)
 		tok_cmd->fdout = open_file(data, tok_i, 5);
 	else if (tok_i.type == append_id)
 		data->append_id = ft_atoi(tok_i.tab[0]);
+	else if(tok_i.type == here_doc)
+		tok_cmd->fdin = open_file(data, tok_i, 4);
 	else
 		return ;
 }

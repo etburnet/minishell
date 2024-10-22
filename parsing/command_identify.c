@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/21 18:54:50 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/22 12:57:22 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,12 @@ int	identify_command(t_data *data)
 {
 	int	ret;
 
-	if (is_built_in(data) == 3)
-		return (3);
 	if (check_infile(data) != 0)
 		return (data->status = 1, 1);
 	if (check_outfile(data) != 0)
 		return (1);
+	if (is_built_in(data) == 3)
+		return (3);
 	if (check_command(data) == 3)
 		return (3);
 	if (check_first_token(data) == 1)

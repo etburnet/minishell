@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/21 18:30:50 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/22 12:30:04 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_data
 	int		start;
 	int		status;
 	int		here;
+	char 	*del;
 	int		append_id;
 	char	**cp_env;
 	char	**input;
@@ -120,6 +121,7 @@ int			dup_env(t_data *data, char *new);
 int			open_ch_dir(char *dir);
 int			is_var_ok(char *name);
 int			add_or_update(t_data *data, char *name, char **cat);
+int    		cd_home(t_data *data);
 
 /* Utils */
 void		free_tab(char **tab);
@@ -151,6 +153,7 @@ void		free_data_token(t_data *data);
 int			ft_strchr_edit(const char *s, char c);
 char		*ft_find_cmd(t_data *data, char **cmd_tab);
 int			check_operator(char c);
+int			expand_loop(t_data *data, t_expand *exp);
 
 /* expand */
 int			replace_var(t_data *data, char *res, char *var, int *i);
@@ -172,7 +175,7 @@ int			check_operator(char c);
 /* Cmd_identify */
 int			identify_command(t_data *data);
 int			search_cmd(t_data *data, int i);
-char		*check_line(int fd, char *buffer, char *delimiter, int *del);
+char		*check_line(t_data *data, int fdin, char *buffer, int *del);
 int			interrupt_heredoc(t_data *data, int new, int cmd);
 int			check_arg(t_data *data, int i, t_type type);
 int			is_chevrons(char *s);
@@ -181,6 +184,7 @@ int			is_special_char_bis(char *s);
 int			is_special_char(char *s);
 int			check_outfile(t_data *data);
 int			check_infile(t_data *data);
+int			expand_here_doc(t_data *data, char **str);
 
 /* Exec */
 int			execution(t_data *data);
