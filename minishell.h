@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/22 13:03:20 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 19:12:57 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_token
 	int		last;
 	int		fdin;
 	int		fdout;
+	char 	*here_doc;
 }			t_token;
 
 typedef struct s_data
@@ -102,6 +103,7 @@ typedef struct s_expand
 	int		j;
 	int		k;
 	int		dq;
+	int		replaced;
 }			t_expand;
 
 /* Builtins */
@@ -157,7 +159,7 @@ int			expand_loop(t_data *data, t_expand *exp);
 
 /* expand */
 int			replace_var(t_data *data, char *res, char *var, int *i);
-int			expand(t_data *data, t_token tok);
+int			expand(t_data *data, t_token tok, int i);
 int			expand_init(t_token tok, char **res, char **var, char **tok_dup);
 
 /* Token_identify */
@@ -188,19 +190,19 @@ int			expand_here_doc(t_data *data, char **str);
 
 /* Exec */
 int			execution(t_data *data);
-int			open_file(t_data *data, t_token token, int i);
+int			open_file(t_data *data, t_token token, int i, int cmd);
 int			which_builtin(t_data *data, char **cmd_tab);
-int			exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout);
+int			exec_built_in(t_data *data, int cmd, int fdin, int fdout);
 int			set_heredoc(t_data *data, int i);
 
 /* Exec Utils */
-int			ft_child(t_data *data, t_token tok, int fdin, int fdout);
-void		ft_close(t_data *data, int fd1, int fd2);
+int			ft_child(t_data *data, int cmd, int fdin, int fdout);
+void		ft_close(t_data *data, int fd1, int fd2, int cmd);
 int			catch_cmd(t_data *data, int i);
-void		close_all(t_data *data, int fdin, int fdout);
+void		close_all(t_data *data, int fdin, int fdout, int cmd);
 void		check_first_last(t_data *data);
 int			command_return(t_data *data, t_token tok, int ret);
 int			manage_pipe(t_data *data, t_token *tok);
-void		manage_files(t_data *data, t_token tok_i, t_token *tok_cmd);
+void		manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int cmd);
 
 #endif

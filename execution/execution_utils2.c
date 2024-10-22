@@ -3,41 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:40:34 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 13:45:41 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 19:12:15 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_child(t_data *data, t_token tok, int fdin, int fdout)
+int	ft_child(t_data *data, int cmd, int fdin, int fdout)
 {
 	if (dup2(fdin, 0) == -1 || dup2(fdout, data->append_id) == -1)
 		return (perror("dup2"), 1);
-	close_all(data, fdin, fdout);
+	close_all(data, fdin, fdout, cmd);
 	init_signal_handler(data, 5);
 	clear_history();
-	if (execve(tok.full_path, tok.tab, data->cp_env) == -1)
-		put_error(ERR_CMD, tok.tab[0]);
+	if (execve(data->token[cmd].full_path, data->token[cmd].tab, data->cp_env) == -1)
+		put_error(ERR_CMD, data->token[cmd].tab[0]);
 	return (2);
 }
 
-void	manage_files(t_data *data, t_token tok_i, t_token *tok_cmd)
+void	manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int cmd)
 {
 	if (tok_i.type == infile)
-		tok_cmd->fdin = open_file(data, tok_i, 0);
+		tok_cmd->fdin = open_file(data, tok_i, 0, cmd);
 	else if (tok_i.type == outfile)
-		tok_cmd->fdout = open_file(data, tok_i, 1);
+		tok_cmd->fdout = open_file(data, tok_i, 1, cmd);
 	else if (tok_i.type == append_out)
-		tok_cmd->fdout = open_file(data, tok_i, 5);
+		tok_cmd->fdout = open_file(data, tok_i, 5, cmd);
 	else if (tok_i.type == append_id)
 		data->append_id = ft_atoi(tok_i.tab[0]);
 	else if(tok_i.type == here_doc)
-		tok_cmd->fdin = open_file(data, tok_i, 4);
-	else
-		return ;
+		tok_cmd->fdin = open_file(data, tok_i, 4, cmd);
+	if (cmd == -1)
+		ft_close(data, -1, -1, cmd);
 }
 
 int	manage_pipe(t_data *data, t_token *tok)
@@ -61,10 +61,10 @@ int	command_return(t_data *data, t_token tok, int ret)
 {
 	if (ret != 2 && ret != 127 && ret != 126 && ret != 0)
 	{
-		ft_close(data, tok.fdin, tok.fdout);
+		ft_close(data, tok.fdin, tok.fdout, -1);
 		data->status = ret % 255;
 		return (ret);
 	}
-	ft_close(data, tok.fdin, tok.fdout);
+	ft_close(data, tok.fdin, tok.fdout, -1);
 	return (0);
 }

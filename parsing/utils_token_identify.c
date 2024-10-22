@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token_identify.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:41:19 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/16 13:28:07 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 15:58:16 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*remove_quote(char *s, int i, int j)
 
 	tmp = malloc((ft_strlen(s) + 1));
 	if (tmp == NULL)
-		return (put_error(ERR_MALLOC, tmp), NULL);
+		return (NULL);
 	ft_memset(tmp, '\0', ft_strlen(s) + 1);
 	while (s[i] != '\0')
 	{
@@ -81,7 +81,7 @@ char	*remove_quote(char *s, int i, int j)
 				put_string_to_cpy(s, tmp, &i, &j);
 			if (check_to_remove_quote(s, tmp, &j, &i) == NULL
 				|| check_to_remove_dquote(s, tmp, &j, &i) == NULL)
-				return (NULL);
+				return (ft_free(tmp), NULL);
 			while (s[i] != '\"' && s[i] != '\'' && s[i] != ' ' && s[i] != '\0')
 				put_string_to_cpy(s, tmp, &i, &j);
 		}

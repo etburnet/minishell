@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:13:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 13:07:59 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 18:46:26 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	process_here_doc(t_data *data, int new, int cmd, int i)
 
 	del = 0;
 	data->del = data->token[i + 1].tab[0];
-	data->token[cmd].fdin = open_file(data, data->token[i], 3);
+	data->token[cmd].fdin = open_file(data, data->token[i], 3, cmd);
 	if (data->token[cmd].fdin == -1)
 		return (-1);
 	buffer = readline(">");
@@ -87,7 +87,7 @@ int	set_heredoc(t_data *data, int i)
 			ret = process_here_doc(data, new, cmd, i);
 			if (ret != 0)
 				return (ret);
-			data->token[cmd].fdin = open_file(data, data->token[i], 4);
+			data->token[cmd].fdin = open_file(data, data->token[i], 4, cmd);
 			if (data->token[cmd].fdin == -1)
 				return (-1);
 			close(new);

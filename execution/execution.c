@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:54:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 13:36:10 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 19:13:16 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_execute(t_data *data, t_token tok, int fdin, int fdout)
+int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 {
 	pid_t	pid;
 	int		fd;
 
-	fd = open(tok.tab[0], O_WRONLY);
+	fd = open(data->token[cmd].tab[0], O_WRONLY);
 	if (errno == EISDIR)
-		return (ft_close(data, fdin, fdout),
-			put_error("is a directory: ", tok.tab[0]), 126);
-	if (!tok.full_path)
-		return (put_error(ERR_CMD, tok.tab[0]), ft_close(data, fdin, fdout),
+		return (ft_close(data, fdin, fdout, cmd),
+			put_error("is a directory: ", data->token[cmd].tab[0]), 126);
+	if (!data->token[cmd].full_path)
+		return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(data, fdin, fdout, cmd),
 			127);
 	pid = fork();
 	if (pid == -1)
@@ -31,11 +31,11 @@ int	ft_execute(t_data *data, t_token tok, int fdin, int fdout)
 		init_signal_handler(data, 4);
 	else if (pid == 0)
 	{
-		if (ft_child(data, tok, fdin, fdout) == 1)
+		if (ft_child(data, cmd, fdin, fdout) == 1)
 			return (1);
 		return (2);
 	}
-	ft_close(data, fdin, fdout);
+	ft_close(data, fdin, fdout, cmd);
 	return (0);
 }
 
@@ -49,7 +49,7 @@ int	dispatch_cmd(t_data *data, t_token token, int cmd)
 	if (token.last == 1 && token.first == 1)
 		alone = 1;
 	if (token.type == command)
-		ret = ft_execute(data, data->token[cmd], token.fdin, token.fdout);
+		ret = ft_execute(data, cmd, token.fdin, token.fdout);
 	else if (token.type == built_in)
 	{
 		if (ft_strncmp(token.tab[0], "exit", 5) == 0 && alone == 1)
@@ -61,7 +61,7 @@ int	dispatch_cmd(t_data *data, t_token token, int cmd)
 		else if (ft_strncmp(token.tab[0], "export", 5) == 0 && alone == 1)
 			ret = export(data, token.tab);
 		else
-			ret = exec_built_in(data, token.tab, token.fdin, token.fdout);
+			ret = exec_built_in(data, cmd, token.fdin, token.fdout);
 	}
 	return (ret);
 }
@@ -75,24 +75,25 @@ int	bring_command(t_data *data, int *i)
 	{
 		if (cmd == -1)
 			cmd = catch_cmd(data, *i);
-		printf("cmd:%d", cmd);
 		if (cmd == -1)
 			while (*i < data->lenght_token && data->token[*i].type != pipes)
 				(*i)++;
 		if (*i < data->lenght_token)
-			manage_files(data, data->token[*i], &data->token[cmd]);
+			manage_files(data, data->token[*i], &data->token[cmd], cmd);
 		if (cmd >= 0 && *i < data->lenght_token && (data->token[cmd].fdin == -1 || data->token[cmd].fdout == -1))
 		{
 			while (*i < data->lenght_token && data->token[*i].type != pipes)
 				(*i)++;
 			if (*i == data->lenght_token)
-				return (printf("fd == -1, %d\n", *i), -1);
+				return (-1);
 			if(data->token[*i].type == pipes)
 				cmd = -1;
+			// if(data->token[*i].last == 1)
+			// 	close_all(data, -1, -1);
 		}
 		(*i)++;
-	}
-	return (printf("%d\n", cmd), cmd);
+	}	
+	return (cmd);
 }
 
 int	prepare_fd(t_data *data)

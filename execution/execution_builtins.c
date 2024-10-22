@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution_builtins.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:55:05 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 13:35:50 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 19:18:25 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
+int	exec_built_in(t_data *data, int cmd, int fdin, int fdout)
 {
 	pid_t	pid;
 	int		ret;
@@ -25,12 +25,13 @@ int	exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout)
 	{
 		if (dup2(fdin, 0) == -1 || dup2(fdout, data->append_id) == -1)
 			return (perror("dup2"), 1);
-		close_all(data, fdin, fdout);
+		close_all(data, fdin, fdout, cmd);
 		clear_history();
-		ret = which_builtin(data, cmd_tab);
+		ret = which_builtin(data, data->token[cmd].tab);
+		ft_clean(data);
 		exit(ret);
 	}
-	ft_close(data, fdin, fdout);
+	ft_close(data, fdin, fdout, cmd);
 	return (ret);
 }
 

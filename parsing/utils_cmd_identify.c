@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_cmd_identify.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:18:49 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/22 13:10:05 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 15:57:03 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	search_cmd(t_data *data, int i)
 	}
 	if (i == -1)
 	{
-		index = i;
+		i = index;
 		while (i < data->lenght_token && data->token[i].type != pipes)
 		{
 			if (data->token[i].type == command
@@ -92,7 +92,7 @@ int	check_arg(t_data *data, int i, t_type type)
 	i++;
 	while(i < data->lenght_token && data->token[i].type != pipes)
 	{
-		if ((data->token[cmd].type == type) && (data->token[i].type == word || data->token[i].type == string))
+		if ((data->token[cmd].type == type) && (data->token[i].type == word || data->token[i].type == string || data->token[i].type == variable))
 		{
 			data->token[i].type = arg;
 			if (set_arg(data, i, cmd, j) != 0)
