@@ -6,13 +6,13 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:14:53 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 13:06:12 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 13:10:52 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int    check_n(char *str)
+int	check_n(char *str)
 {
 	int	i;
 	int	len;
@@ -31,6 +31,22 @@ int    check_n(char *str)
 			return (1);
 	}
 	return (1);
+}
+
+int	echo_loop(int *i, char **tab)
+{
+	int	j;
+
+	j = 0;
+	while (tab[(*i)][j])
+		if (write(1, &tab[(*i)][j++], 1) != 1)
+			return (perror("echo: write error"), 1);
+	(*i)++;
+	j = 0;
+	if (tab[(*i)] != NULL && tab[(*i) - 1][0] != '\0')
+		if (write(1, " ", 1) != 1)
+			return (perror("echo: write error"), 1);
+	return (0);
 }
 
 int	echo(char **tab)

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:15:08 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 13:09:11 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 13:52:22 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_greater(t_data *data, int i)
 {
-	int	fd;
+	// int	fd;
 
 	if ((i + 1) < data->lenght_token && check_operator(data->token[i
 				+ 1].tab[0][0]) == 1)
@@ -24,19 +24,19 @@ int	is_greater(t_data *data, int i)
 			|| data->token[i + 1].type == string))
 	{
 		data->token[i + 1].type = outfile;
-		fd = open(data->token[i + 1].tab[0], O_WRONLY | O_CREAT | O_TRUNC,
-				0644);
-		if (fd < 0)
-			return (perror(data->token[i + 1].tab[0]), data->status = 1, -1);
-		else
-			close(fd);
+		// fd = open(data->token[i + 1].tab[0], O_WRONLY | O_CREAT | O_TRUNC,
+		// 		0644);
+		// if (fd < 0)
+		// 	return (perror(data->token[i + 1].tab[0]), data->status = 1, -1);
+		// else
+		// 	close(fd);
 	}
 	return (0);
 }
 
 int	is_append(t_data *data, int i)
 {
-	int	fd;
+	// int	fd;
 
 	if ((i + 1) < data->lenght_token && check_operator(data->token[i
 				+ 1].tab[0][0]) == 1)
@@ -46,12 +46,12 @@ int	is_append(t_data *data, int i)
 			|| data->token[i + 1].type == string))
 	{
 		data->token[i + 1].type = append_out;
-		fd = open(data->token[i + 1].tab[0], O_WRONLY | O_CREAT | O_APPEND,
-				0644);
-		if (fd < 0)
-			return (perror(data->token[i + 1].tab[0]), data->status = 1, -1);
-		else
-			close(fd);
+		// fd = open(data->token[i + 1].tab[0], O_WRONLY | O_CREAT | O_APPEND,
+		// 		0644);
+		// if (fd < 0)
+		// 	return (perror(data->token[i + 1].tab[0]), data->status = 1, -1);
+		// else
+		// 	close(fd);
 	}
 	return (0);
 }

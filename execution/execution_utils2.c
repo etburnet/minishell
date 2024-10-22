@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:40:34 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 13:07:17 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 13:45:41 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int	manage_pipe(t_data *data, t_token *tok)
 {
 	if (pipe(data->pipe_fd) == -1)
 		return (perror("pipe"), 1);
-	if (tok->first != 1 && tok->fdin == 0)
+	if (tok->first != 1 && tok->fdin == 0 && data->old_pipe[0] > -1)
 		tok->fdin = data->old_pipe[0];
-	else if (tok->first != 1)
+	else if (tok->first != 1 && data->old_pipe[0] > -1)
 		close(data->old_pipe[0]);
 	data->old_pipe[0] = data->pipe_fd[0];
 	if (tok->last != 1 && tok->fdout == 1)
