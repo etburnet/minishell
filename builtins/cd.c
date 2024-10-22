@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:01:13 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 12:30:15 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:04:54 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,27 @@ int	ft_cd_traitement(t_data *data, int id_env, char *tab)
 
 int    cd(t_data *data, char **tab)
 {
+	int	id_env;
+	int	ret;
+
+	ret = 0;
+	if (tab[1] == NULL) 
+		return (cd_home(data));
+	if (tab[2] != NULL && tab[1] != NULL)
+		return (ft_putstr_fd("cd: too many arguments\n", 2), 1);
+	else
+	{
+		id_env = get_this_env("PWD", data->cp_env);
+		if (id_env >= 0)
+		{
+			ret = ft_cd_traitement(data, id_env, tab[1]);
+			if (ret != 0)
+				return (ret);
+		}
+		else
+			return (1);
+	}
+	return (0);
     int    id_env;
     int    ret;
 

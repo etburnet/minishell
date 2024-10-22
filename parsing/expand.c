@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:09:58 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 12:04:49 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:08:52 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	expand(t_data *data, t_token tok)
 	exp.k = 0;
 	exp.dq = 0;
 	if (tok.type != undefine)
-		return (1);
+		return (0);
 	if (expand_init(tok, &exp.res, &exp.var, &exp.tok_dup) == 3)
 		return (put_error(ERR_MALLOC, NULL), 3);
 	if (expand_loop(data, &exp) == 3)

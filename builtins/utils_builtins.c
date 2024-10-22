@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:49 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 12:29:42 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:06:52 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,30 +103,31 @@ int	open_ch_dir(char *dir)
 	}
 	return (1);
 }
-int    cd_home(t_data *data)
-{
-    DIR            *stream_dir;
-    struct stat    path_stat;
-    char    *dir;
-    int        home_id;
 
-    home_id = get_this_env("HOME", data->cp_env);
-    if (home_id == -1)
-        return (1);
-    dir = ft_strdup(&data->cp_env[home_id][5]);
-    if (dir == NULL)
-        return (put_error(ERR_MALLOC, NULL), 3);
-    if (stat(dir, &path_stat) != 0)
-        return (free(dir), perror(dir), 1);
-    if (S_ISDIR(path_stat.st_mode))
-    {
-        stream_dir = opendir(dir);
-        if (stream_dir == NULL)
-            return (free(dir), put_error("No such file or directory: ", dir), 1);
-        closedir(stream_dir);
-        if (chdir(dir) == -1)
-            return (free(dir), 1);
-        return (free(dir), 0);
-    }
-    return (free(dir), put_error("Not a directory: ", dir), 1);
+int	cd_home(t_data *data)
+{
+	DIR			*stream_dir;
+	struct stat	path_stat;
+	char	*dir;
+	int		home_id;
+
+	home_id = get_this_env("HOME", data->cp_env);
+	if (home_id == -1)
+		return (1);
+	dir = ft_strdup(&data->cp_env[home_id][5]);
+	if (dir == NULL)
+		return (put_error(ERR_MALLOC, NULL), 3);
+	if (stat(dir, &path_stat) != 0)
+		return (free(dir), perror(dir), 1);
+	if (S_ISDIR(path_stat.st_mode))
+	{
+		stream_dir = opendir(dir);
+		if (stream_dir == NULL)
+			return (free(dir), put_error("No such file or directory: ", dir), 1);
+		closedir(stream_dir);
+		if (chdir(dir) == -1)
+			return (free(dir), 1);
+		return (free(dir), 0);
+	}
+	return (free(dir), put_error("Not a directory: ", dir), 1);
 }
