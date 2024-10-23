@@ -6,24 +6,20 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:54:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 12:47:03 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/23 18:52:57 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_execute(t_data *data, t_token tok, int fdin, int fdout)
+int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 {
 	pid_t	pid;
-	int		fd;
-
-	fd = open(tok.tab[0], O_WRONLY);
-	if (errno == EISDIR)
-		return (ft_close(data, fdin, fdout),
-			put_error("is a directory: ", tok.tab[0]), 126);
-	if (!tok.full_path)
-		return (put_error(ERR_CMD, tok.tab[0]), ft_close(data, fdin, fdout),
-			127);
+	int		ret;
+	
+	ret = ft_check_entry(data, cmd, fdin, fdout);
+	if (ret != 0)
+		return (ret);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
@@ -31,11 +27,11 @@ int	ft_execute(t_data *data, t_token tok, int fdin, int fdout)
 		init_signal_handler(data, 4);
 	else if (pid == 0)
 	{
-		if (ft_child(data, tok, fdin, fdout) == 1)
+		if (ft_child(data, cmd, fdin, fdout) == 1)
 			return (1);
 		return (2);
 	}
-	ft_close(data, fdin, fdout);
+	ft_close(data, fdin, fdout, cmd);
 	return (0);
 }
 
@@ -48,20 +44,20 @@ int	dispatch_cmd(t_data *data, t_token token, int cmd)
 	alone = 0;
 	if (token.last == 1 && token.first == 1)
 		alone = 1;
-	if (token.type == command)
-		ret = ft_execute(data, data->token[cmd], token.fdin, token.fdout);
+	if (token.type == command || token.type == variable)
+		ret = ft_execute(data, cmd, token.fdin, token.fdout);
 	else if (token.type == built_in)
 	{
-		if (strncmp(token.tab[0], "exit", 5) == 0 && alone == 1)
+		if (ft_strncmp(token.tab[0], "exit", 5) == 0 && alone == 1)
 			ret = ft_exit(data, token.tab, 0);
-		else if (strncmp(token.tab[0], "cd", 5) == 0 && alone == 1)
+		else if (ft_strncmp(token.tab[0], "cd", 5) == 0 && alone == 1)
 			ret = cd(data, token.tab);
-		else if (strncmp(token.tab[0], "unset", 5) == 0 && alone == 1)
+		else if (ft_strncmp(token.tab[0], "unset", 5) == 0 && alone == 1)
 			ret = unset(data, token.tab);
-		else if (strncmp(token.tab[0], "export", 5) == 0 && alone == 1)
+		else if (ft_strncmp(token.tab[0], "export", 5) == 0 && alone == 1)
 			ret = export(data, token.tab);
 		else
-			ret = exec_built_in(data, token.tab, token.fdin, token.fdout);
+			ret = exec_built_in(data, cmd, token.fdin, token.fdout);
 	}
 	return (ret);
 }
@@ -75,17 +71,27 @@ int	bring_command(t_data *data, int *i)
 	{
 		if (cmd == -1)
 			cmd = catch_cmd(data, *i);
+		if (data->token[cmd].tab[0][0] == '\0')
+		{
+			(*i)++;
+			cmd = catch_cmd(data, *i);
+		}
 		if (cmd == -1)
-			while (*i < data->lenght_token && data->token[*i].type != pipes)
+			while (*i < data->lenght_token - 1 && data->token[*i].type != pipes)
 				(*i)++;
 		if (*i < data->lenght_token)
-			manage_files(data, data->token[*i], &data->token[cmd]);
-		if (*i < data->lenght_token && (data->token[cmd].fdin == -1 || data->token[cmd].fdout == -1))
+			manage_files(data, data->token[*i], &data->token[cmd], cmd);
+		if (cmd >= 0 && *i < data->lenght_token && (data->token[cmd].fdin == -1
+				|| data->token[cmd].fdout == -1))
 		{
 			while (*i < data->lenght_token && data->token[*i].type != pipes)
 				(*i)++;
 			if (*i == data->lenght_token)
 				return (-1);
+			if (data->token[*i].type == pipes)
+				return (cmd);
+			if (data->token[*i].last == 1)
+				close_all(data, -1, -1, cmd);
 		}
 		(*i)++;
 	}
@@ -100,6 +106,7 @@ int	prepare_fd(t_data *data)
 	int		ret;
 
 	i = 0;
+	ret = 0;
 	while (i < data->lenght_token)
 	{
 		cmd = bring_command(data, &i);
@@ -108,7 +115,8 @@ int	prepare_fd(t_data *data)
 		tok = data->token[cmd];
 		if (manage_pipe(data, &tok))
 			return (1);
-		ret = dispatch_cmd(data, tok, cmd);
+		if (tok.fdin >= 0)
+			ret = dispatch_cmd(data, tok, cmd);
 		if (command_return(data, tok, ret))
 			return (command_return(data, tok, ret));
 		i++;

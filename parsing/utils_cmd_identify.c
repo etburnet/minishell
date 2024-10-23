@@ -3,30 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   utils_cmd_identify.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:18:49 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/22 12:31:24 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/23 14:04:19 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	search_cmd(t_data *data, int i)
+int	search_cmd(t_data *data, int i, int index)
 {
-	int	index;
-
-	index = i;
 	i--;
-	while (i >= 0)
+	while (i >= 0 && data->token[i].type != pipes)
 	{
 		if (data->token[i].type == command || data->token[i].type == built_in)
 			return (i);
 		i--;
 	}
+	if (i >= 0 && data->token[i].type == pipes)
+		i = -1;
 	if (i == -1)
 	{
-		index = i;
+		i = index;
 		while (i < data->lenght_token && data->token[i].type != pipes)
 		{
 			if (data->token[i].type == command
@@ -35,6 +34,9 @@ int	search_cmd(t_data *data, int i)
 			i++;
 		}
 	}
+	if ((i == data->lenght_token || data->token[i].type == pipes)
+		&& data->token[i - 1].type == delimiter)
+		i--;
 	return (i);
 }
 
@@ -60,8 +62,10 @@ int	interrupt_heredoc(t_data *data, int new, int cmd)
 {
 	if (dup2(new, STDIN_FILENO) == -1)
 		return (perror("dup2"), -1);
-	close(data->token[cmd].fdin);
-	unlink("temp_file_here_doc.txt");
+	if(data->token[cmd].fdin)
+			close(data->token[cmd].fdin);
+	unlink(data->token[cmd].here_doc);
+	// ft_free(data->token[cmd].here_doc);
 	return (0);
 }
 
@@ -93,7 +97,8 @@ int	check_arg(t_data *data, int i, t_type type)
 	while (i < data->lenght_token && data->token[i].type != pipes)
 	{
 		if ((data->token[cmd].type == type) && (data->token[i].type == word
-				|| data->token[i].type == string))
+				|| data->token[i].type == string
+				|| data->token[i].type == variable))
 		{
 			data->token[i].type = arg;
 			if (set_arg(data, i, cmd, j) != 0)

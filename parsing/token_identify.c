@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_identify.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/22 11:17:20 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 15:50:27 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	check_string(t_data *data, int i)
 		data->token[i].type = string;
 		data->token[i].tab[0] = remove_quote(data->token[i].tab[0], 0, 0);
 		if (data->token[i].tab[0] == NULL)
-			return (put_error(ERR_MALLOC, data->token[i].tab[0]), 3);
+			return (put_error(ERR_MALLOC, NULL), 3);
 	}
 	return (0);
 }
@@ -70,6 +70,7 @@ char	*remove_meta_c(char *s, int i, int j)
 	ft_memset(temp, '\0', len + 1);
 	if (s == NULL)
 		return (NULL);
+	// printf("ici %s\n", s);
 	while (i <= len)
 	{
 		if (is_metacharcter(s, i) == 1 && len == 1)
@@ -94,13 +95,15 @@ int	identify_token(t_data *data)
 	while (i < data->lenght_token)
 	{
 		wich_operator(data, i);
-		if (expand(data, data->token[i]) == 3)
+		if (expand(data, data->token[i], i) == 3)
 			return (3);
 		if (check_string(data, i) == 3)
 			return (3);
 		if (data->token[i].type == undefine)
 			data->token[i].type = word;
-		data->token[i].tab[0] = remove_meta_c(data->token[i].tab[0], 0, 0);
+		// printf("tok %d = %s, type %d\n", i, data->token[i].tab[0], data->token[i].type);
+		if(data->token[i].type != variable)
+			data->token[i].tab[0] = remove_meta_c(data->token[i].tab[0], 0, 0);
 		if (!data->token[i].tab[0])
 			return (3);
 		if (!data->token[i].tab[0])

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:01:13 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 12:20:28 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/22 13:11:35 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	cd(t_data *data, char **tab)
 	int	ret;
 
 	ret = 0;
-	if (tab[1] == NULL || tab[1][0] == '~') 
+	if (tab[1] == NULL)
 		return (cd_home(data));
 	if (tab[2] != NULL && tab[1] != NULL)
 		return (ft_putstr_fd("cd: too many arguments\n", 2), 1);

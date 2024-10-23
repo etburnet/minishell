@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_identify.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/22 11:33:03 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/23 14:55:27 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,18 +100,24 @@ int	identify_command(t_data *data)
 	int	ret;
 
 	if (check_infile(data) != 0)
-		return (data->status = 1, 1);
+		return (data->status = 2, 1);
 	if (check_outfile(data) != 0)
-		return (1);
+		return (data->status = 2, 1);
 	if (is_built_in(data) == 3)
 		return (3);
 	if (check_command(data) == 3)
 		return (3);
 	if (check_first_token(data) == 1)
-		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), data->status = 1,
+		return (put_error(ERR_SYNTAX, data->token[0].tab[0]), data->status = 2,
 			1);
 	ret = set_heredoc(data, 0);
 	if (ret != 0)
 		return (ret);
+	// int i = 0;
+	// while(i < data->lenght_token)
+	// {
+	// 	printf("tok %d = %s, type %d\n", i, data->token[i].tab[0], data->token[i].type);
+	// 	i++;
+	// }
 	return (0);
 }

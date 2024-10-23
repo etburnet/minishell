@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:49 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 12:29:37 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/23 14:01:00 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ void	free_data_token(t_data *data)
 		while (j <= data->token[i].nb_arg)
 			ft_free(data->token[i].tab[j++]);
 		ft_free(data->token[i].full_path);
+		ft_free(data->token[i].here_doc);
 		if (data->token[i].tab)
 			free(data->token[i].tab);
-		ft_close(data, data->token[i].fdin, data->token[i].fdout);
+		ft_close(data, data->token[i].fdin, data->token[i].fdout, -1);
 		i++;
 	}
-	ft_close(data, data->pipe_fd[0], data->pipe_fd[1]);
-	ft_close(data, data->old_pipe[0], data->old_pipe[1]);
+	ft_close(data, data->pipe_fd[0], data->pipe_fd[1], -1);
+	ft_close(data, data->old_pipe[0], data->old_pipe[1], -1);
 	if (data->token)
 		free(data->token);
 	ft_free(data->source);

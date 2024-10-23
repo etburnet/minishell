@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/22 12:33:56 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/23 16:36:11 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_token
 	int		last;
 	int		fdin;
 	int		fdout;
+	char 	*here_doc;
 }			t_token;
 
 typedef struct s_data
@@ -86,8 +87,8 @@ typedef struct s_data
 	int		start;
 	int		status;
 	int		here;
+	char 	*del;
 	int		append_id;
-	char	*del;
 	char	**cp_env;
 	char	**input;
 	char	*arg;
@@ -102,6 +103,7 @@ typedef struct s_expand
 	int		j;
 	int		k;
 	int		dq;
+	int		replaced;
 }			t_expand;
 
 /* Builtins */
@@ -121,7 +123,7 @@ int			dup_env(t_data *data, char *new);
 int			open_ch_dir(char *dir);
 int			is_var_ok(char *name);
 int			add_or_update(t_data *data, char *name, char **cat);
-int			cd_home(t_data *data);
+int    		cd_home(t_data *data);
 
 /* Utils */
 void		free_tab(char **tab);
@@ -153,10 +155,11 @@ void		free_data_token(t_data *data);
 int			ft_strchr_edit(const char *s, char c);
 char		*ft_find_cmd(t_data *data, char **cmd_tab);
 int			check_operator(char c);
+int			expand_loop(t_data *data, t_expand *exp);
 
 /* expand */
 int			replace_var(t_data *data, char *res, char *var, int *i);
-int			expand(t_data *data, t_token tok);
+int			expand(t_data *data, t_token tok, int i);
 int			expand_init(t_token tok, char **res, char **var, char **tok_dup);
 
 /* Token_identify */
@@ -173,7 +176,7 @@ int			check_operator(char c);
 
 /* Cmd_identify */
 int			identify_command(t_data *data);
-int			search_cmd(t_data *data, int i);
+int			search_cmd(t_data *data, int i, int index);
 char		*check_line(t_data *data, int fdin, char *buffer, int *del);
 int			interrupt_heredoc(t_data *data, int new, int cmd);
 int			check_arg(t_data *data, int i, t_type type);
@@ -184,23 +187,23 @@ int			is_special_char(char *s);
 int			check_outfile(t_data *data);
 int			check_infile(t_data *data);
 int			expand_here_doc(t_data *data, char **str);
-int			expand_loop(t_data *data, t_expand *exp);
 
 /* Exec */
 int			execution(t_data *data);
-int			open_file(t_data *data, t_token token, int i);
+int			open_file(t_data *data, t_token token, int i, int cmd);
 int			which_builtin(t_data *data, char **cmd_tab);
-int			exec_built_in(t_data *data, char **cmd_tab, int fdin, int fdout);
+int			exec_built_in(t_data *data, int cmd, int fdin, int fdout);
 int			set_heredoc(t_data *data, int i);
 
 /* Exec Utils */
-int			ft_child(t_data *data, t_token tok, int fdin, int fdout);
-void		ft_close(t_data *data, int fd1, int fd2);
+int			ft_child(t_data *data, int cmd, int fdin, int fdout);
+void		ft_close(t_data *data, int fd1, int fd2, int cmd);
 int			catch_cmd(t_data *data, int i);
-void		close_all(t_data *data, int fdin, int fdout);
+void		close_all(t_data *data, int fdin, int fdout, int cmd);
 void		check_first_last(t_data *data);
 int			command_return(t_data *data, t_token tok, int ret);
 int			manage_pipe(t_data *data, t_token *tok);
-void		manage_files(t_data *data, t_token tok_i, t_token *tok_cmd);
+void		manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int cmd);
+int			ft_check_entry(t_data *data, int cmd, int fdin, int fdout);
 
 #endif

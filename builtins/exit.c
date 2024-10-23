@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:59:33 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/20 10:48:34 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/23 15:08:38 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	ft_exit(t_data *data, char **tab, int n)
 	if ((tab == NULL && n == 0))
 		n = 0;
 	else if (tab != NULL && tab[0] != NULL && tab[1] == NULL)
-		n = 0;
+		n = data->status;
 	else if (tab != NULL)
 	{
 		if (tab[2] != NULL && ft_check_str(tab[1]) == 0)
