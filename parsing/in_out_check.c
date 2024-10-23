@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   in_out_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:15:08 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 13:52:22 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/23 14:56:05 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_greater(t_data *data, int i)
 	if ((i + 1) < data->lenght_token && check_operator(data->token[i
 				+ 1].tab[0][0]) == 1)
 		return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]),
-			data->status = 1, 1);
+			data->status = 2, 1);
 	if ((i + 1) < data->lenght_token && (data->token[i + 1].type == word
 			|| data->token[i + 1].type == string))
 	{
@@ -41,7 +41,7 @@ int	is_append(t_data *data, int i)
 	if ((i + 1) < data->lenght_token && check_operator(data->token[i
 				+ 1].tab[0][0]) == 1)
 		return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]),
-			data->status = 1, 1);
+			data->status = 2, 1);
 	if ((i + 1) < data->lenght_token && (data->token[i + 1].type == word
 			|| data->token[i + 1].type == string))
 	{

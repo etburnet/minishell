@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/22 13:02:33 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/23 15:10:04 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,14 @@ int	ft_minishell(char *s, t_data *data)
 	int	ret;
 
 	ret = search_token(s, data);
-	if (ret != 0)
-		return (ret);
-	ret = identify_token(data);
-	if (ret != 0)
-		return (ret);
-	data->here = 0;
-	ret = identify_command(data);
-	if (ret == 3 && ret != 1)
-		return (ret);
+	if (ret == 0)
+		ret = identify_token(data);
+	if (ret == 0)
+		ret = identify_command(data);
 	if (ret == 0)
 		execution(data);
 	free_data_token(data);
-	return (0);
+	return (ret);
 }
 
 int	ft_main_loop(t_data *data)
@@ -97,9 +92,9 @@ int	main(int argc, char *argv[], char **env)
 		data->arg = readline("minishell$ ");
 		if (data->arg == NULL)
 			ft_exit(data, NULL, 0);
-		ret = ft_main_loop(data);
-		if (ret != 0)
-			return (ret);
+		ft_main_loop(data);
+		// if (ret != 0)
+		// 	return (ret);
 	}
 	return (0);
 }

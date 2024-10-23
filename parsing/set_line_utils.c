@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:21:17 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/21 18:33:23 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 14:56:27 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ int	count_space(t_data *data, char *s, int i, int j)
 	{
 		i = there_is_quote(s, i, '\'');
 		if (i == -1)
-			return (put_error(ERR_SYNTAX, "\'"), data->status = 1, 0);
+			return (put_error(ERR_SYNTAX, "\'"), data->status = 2, 0);
 		i = there_is_quote(s, i, '\"');
 		if (i == -1)
-			return (put_error(ERR_SYNTAX, "\""), data->status = 1, 0);
+			return (put_error(ERR_SYNTAX, "\""), data->status = 2, 0);
 		if (check_operator(s[i]) == 1)
 			process_operator(s, &i, &j);
 		else if (s[i] != '\0')
