@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:13:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 18:46:26 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:28:05 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	process_here_doc(t_data *data, int new, int cmd, int i)
 			return (ft_free(buffer), close(data->token[cmd].fdin), put_error(ERR_MALLOC, NULL), 3);
 	}
 	if (buffer == NULL && g_sig_recieved == 1)
-		return (ft_free(buffer), interrupt_heredoc(data, new, cmd), 1);
+		return (close(data->token[cmd].fdin), ft_free(buffer), interrupt_heredoc(data, new, cmd), 1);
 	close(data->token[cmd].fdin);
 	return (ft_free(buffer), 0);
 }

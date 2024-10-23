@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 13:14:53 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 17:32:28 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 10:54:59 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	check_n(char *str)
 	int	len;
 
 	i = 0;
+	if (str == NULL)
+		return (1);
 	len = ft_strlen(str);
 	if (str[i] && str[i] == '-')
 	{

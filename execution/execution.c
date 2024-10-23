@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:54:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 19:13:16 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 10:46:47 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	bring_command(t_data *data, int *i)
 			if(data->token[*i].type == pipes)
 				cmd = -1;
 			// if(data->token[*i].last == 1)
-			// 	close_all(data, -1, -1);
+			// 	close_all(data, -1, -1, cmd);
 		}
 		(*i)++;
 	}	
@@ -104,6 +104,7 @@ int	prepare_fd(t_data *data)
 	int		ret;
 
 	i = 0;
+	ret = 0;
 	while (i < data->lenght_token)
 	{
 		cmd = bring_command(data, &i);
