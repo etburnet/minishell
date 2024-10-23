@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/23 19:37:48 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 23:32:49 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_main_loop(t_data *data)
 	int	ret;
 
 	ret = 0;
-	if (g_sig_recieved == 1)
+	if (g_sig_recieved == 1 || g_sig_recieved == -1)
 		data->status = 130;
 	else if (g_sig_recieved == 2)
 		data->status = 131;
@@ -66,11 +66,11 @@ int	ft_init_main(t_data *data, char **env)
 		return (put_error("No infile ./minishell exec", NULL), free(data), 1);
 	ret = copy_env(data, env);
 	if (ret == 3)
-		ft_exit(data, NULL, ret);
+		ft_exit(data, NULL, ret, 0);
 	else if (ret == 1)
 		edit_pwd(data);
 	if (update_shlvl(data) == 3)
-		ft_exit(data, NULL, 3);
+		ft_exit(data, NULL, 3, 0);
 	return (0);
 }
 
@@ -90,10 +90,11 @@ int	main(int argc, char *argv[], char **env)
 	data->status = 0;
 	while (1)
 	{
-		init_signal_handler(data, 1);
+		signal(SIGINT, ft_signal);
+		signal(SIGQUIT, SIG_IGN);
 		data->arg = readline("minishell$ ");
 		if (data->arg == NULL)
-			ft_exit(data, NULL, 0);
+			ft_exit(data, NULL, 0, 0);
 		ft_main_loop(data);
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:54:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/23 17:01:58 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 23:48:50 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,20 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 	if (!data->token[cmd].full_path)
 		return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(data, fdin, fdout, cmd),
 			127);
+	close(fd);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), 1);
-	if (pid > 0)
-		init_signal_handler(data, 4);
+/* 	if (pid > 0)
+		init_signal_handler(data, 4); */
 	else if (pid == 0)
 	{
 		if (ft_child(data, cmd, fdin, fdout) == 1)
 			return (1);
 		return (2);
 	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	ft_close(data, fdin, fdout, cmd);
 	return (0);
 }
@@ -53,7 +56,7 @@ int	dispatch_cmd(t_data *data, t_token token, int cmd)
 	else if (token.type == built_in)
 	{
 		if (ft_strncmp(token.tab[0], "exit", 5) == 0 && alone == 1)
-			ret = ft_exit(data, token.tab, 0);
+			ret = ft_exit(data, token.tab, 0, 0);
 		else if (ft_strncmp(token.tab[0], "cd", 5) == 0 && alone == 1)
 			ret = cd(data, token.tab);
 		else if (ft_strncmp(token.tab[0], "unset", 5) == 0 && alone == 1)

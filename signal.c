@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:11:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/23 19:38:16 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 23:50:36 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,77 +14,33 @@
 
 int		g_sig_recieved = 0;
 
-void	handle_signal_fork(int signum)
+void	ft_child_signal(int signum)
 {
 	if (signum == SIGINT)
 	{
-		printf("\n");
+		ft_putstr_fd("^C\n", 2);
 		g_sig_recieved = 1;
-	}
-	if (signum == SIGQUIT)
-	{
-		printf("Quit (core dumped)\n");
-		g_sig_recieved = 2;
+		exit(g_sig_recieved);
 	}
 }
 
-void	handle_signal(int signum)
+void	ft_here_doc_signal(int signum)
+{
+	if (signum == SIGINT)
+	{
+		close(STDIN_FILENO);
+		g_sig_recieved = -1;
+	}
+}
+
+void	ft_signal(int signum)
 {
 	if (signum == SIGINT)
 	{
 		g_sig_recieved = 1;
-		printf("\n");
+		ft_putstr_fd("\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-	}
-}
-
-void	handle_sig_heredoc(int signum)
-{
-	if (signum == SIGINT)
-	{
-		g_sig_recieved = 1;
-		close(0);
-		printf("\n");
-	}
-}
-
-void	ft_signal(void (*handle_function))
-{
-	struct sigaction	action;
-
-	ft_memset(&action, 0, sizeof(action));
-	action.sa_handler = &(*handle_function);
-	sigaction(SIGINT, &action, NULL);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	init_signal_handler(t_data *data, int i)
-{
-	struct sigaction	sa;
-	
-	(void)data;
-	if(atoi(&data->cp_env[get_this_env("SHLVL", data->cp_env)][6]) > 2)
-	{
-		signal(SIGQUIT, SIG_DFL);
-		signal(SIGINT, SIG_DFL);
-		return;
-	}
-	if (i == 1)
-		ft_signal(handle_signal);
-	else if (i == 2)
-		ft_signal(handle_sig_heredoc);
-	else if (i == 4)
-	{
-		ft_memset(&sa, 0, sizeof(sa));
-		sa.sa_handler = &handle_signal_fork;
-		sigaction(SIGINT, &sa, NULL);
-		sigaction(SIGQUIT, &sa, NULL);
-	}
-	else if (i == 5)
-	{
-		signal(SIGQUIT, SIG_DFL);
-		signal(SIGINT, SIG_DFL);
 	}
 }

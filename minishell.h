@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/23 12:42:36 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 23:36:20 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int			copy_env(t_data *data, char **cp_env);
 int			echo(char **tab);
 int			cd(t_data *data, char **tab);
 int			pwd(t_data *data);
-int			ft_exit(t_data *data, char **tab, int n);
+int			ft_exit(t_data *data, char **tab, int n, int is_pipe);
 int			export(t_data *data, char **tab);
 int			unset(t_data *data, char **tab);
 int			ft_err_exit(t_data *data, char *err_msg, int n);
@@ -135,10 +135,14 @@ int			update_shlvl(t_data *data);
 void		ft_free(char *str);
 
 /* Signal */
-void		init_signal_handler(t_data *data, int i);
+/* void		init_signal_handler(t_data *data, int i);
 void		handle_signal(int signum);
 void		handle_sig_heredoc(int signum);
-void		handle_slash(int signum);
+void		handle_slash(int signum); */
+void	ft_signal(int signum);
+void	ft_here_doc_signal(int signum);
+void	ft_child_signal(int signum);
+
 
 /* Init */
 int			init_data(t_data *tok, char *s);

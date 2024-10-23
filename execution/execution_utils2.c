@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:40:34 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/23 13:53:53 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 23:41:34 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 int	ft_child(t_data *data, int cmd, int fdin, int fdout)
 {
+	signal(SIGINT, ft_child_signal);
+	signal(SIGQUIT, SIG_DFL);
 	if (dup2(fdin, 0) == -1 || dup2(fdout, data->append_id) == -1)
 		return (perror("dup2"), 1);
 	close_all(data, fdin, fdout, cmd);
-	init_signal_handler(data, 5);
+	// init_signal_handler(data, 5);
 	clear_history();
 	if (execve(data->token[cmd].full_path, data->token[cmd].tab, data->cp_env) == -1)
 		put_error(ERR_CMD, data->token[cmd].tab[0]);
