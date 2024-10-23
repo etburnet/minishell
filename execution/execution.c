@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:54:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/23 10:46:47 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/23 13:17:23 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	dispatch_cmd(t_data *data, t_token token, int cmd)
 	alone = 0;
 	if (token.last == 1 && token.first == 1)
 		alone = 1;
-	if (token.type == command)
+	if (token.type == command || token.type == variable)
 		ret = ft_execute(data, cmd, token.fdin, token.fdout);
 	else if (token.type == built_in)
 	{
@@ -76,7 +76,7 @@ int	bring_command(t_data *data, int *i)
 		if (cmd == -1)
 			cmd = catch_cmd(data, *i);
 		if (cmd == -1)
-			while (*i < data->lenght_token && data->token[*i].type != pipes)
+			while (*i < data->lenght_token - 1 && data->token[*i].type != pipes)
 				(*i)++;
 		if (*i < data->lenght_token)
 			manage_files(data, data->token[*i], &data->token[cmd], cmd);
@@ -88,8 +88,8 @@ int	bring_command(t_data *data, int *i)
 				return (-1);
 			if(data->token[*i].type == pipes)
 				cmd = -1;
-			// if(data->token[*i].last == 1)
-			// 	close_all(data, -1, -1, cmd);
+			if(data->token[*i].last == 1)
+				close_all(data, -1, -1, cmd);
 		}
 		(*i)++;
 	}	

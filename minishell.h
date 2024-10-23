@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/22 19:12:57 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 12:42:36 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ int			check_operator(char c);
 
 /* Cmd_identify */
 int			identify_command(t_data *data);
-int			search_cmd(t_data *data, int i);
+int			search_cmd(t_data *data, int i, int index);
 char		*check_line(t_data *data, int fdin, char *buffer, int *del);
 int			interrupt_heredoc(t_data *data, int new, int cmd);
 int			check_arg(t_data *data, int i, t_type type);

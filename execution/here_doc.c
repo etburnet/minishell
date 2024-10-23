@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:13:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/23 11:28:05 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/23 14:03:58 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,17 @@ int	process_here_doc(t_data *data, int new, int cmd, int i)
 	return (ft_free(buffer), 0);
 }
 
+void	cmd_is_del(t_data *data, int cmd)
+{
+	if(data->token[cmd].type == delimiter)
+	{
+		if(data->token[cmd].fdin)
+			close(data->token[cmd].fdin);
+		unlink(data->token[cmd].here_doc);
+		// ft_free(data->token[cmd].here_doc);
+	}
+}
+
 int	set_heredoc(t_data *data, int i)
 {
 	int	cmd;
@@ -80,17 +91,16 @@ int	set_heredoc(t_data *data, int i)
 	{
 		if (data->token[i].type == here_doc)
 		{
+			data->token[i + 1].type = delimiter;
 			new = dup(0);
 			if (new == -1)
 				return (perror("OUT dup"), -1);
-			cmd = search_cmd(data, i);
+			cmd = search_cmd(data, i, i);
 			ret = process_here_doc(data, new, cmd, i);
 			if (ret != 0)
 				return (ret);
-			data->token[cmd].fdin = open_file(data, data->token[i], 4, cmd);
-			if (data->token[cmd].fdin == -1)
-				return (-1);
 			close(new);
+			cmd_is_del(data, cmd);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:40:34 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 19:12:15 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:53:53 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,26 @@ int	ft_child(t_data *data, int cmd, int fdin, int fdout)
 
 void	manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int cmd)
 {
+	int	fd;
+	
+	fd = -1;
+	if (cmd == -1)
+	{
+		if (tok_i.type == infile)
+			fd = open_file(data, tok_i, 0, cmd);
+		else if (tok_i.type == outfile)
+			fd = open_file(data, tok_i, 1, cmd);
+		else if (tok_i.type == append_out)
+			fd = open_file(data, tok_i, 5, cmd);
+		ft_close(data, fd, -1, -1);
+		return ;
+	}
 	if (tok_i.type == infile)
+	{
+		if(tok_cmd->fdin != -1 && tok_cmd->fdin != 0)
+			close(tok_cmd->fdin);
 		tok_cmd->fdin = open_file(data, tok_i, 0, cmd);
+	}
 	else if (tok_i.type == outfile)
 		tok_cmd->fdout = open_file(data, tok_i, 1, cmd);
 	else if (tok_i.type == append_out)
@@ -35,9 +53,11 @@ void	manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int cmd)
 	else if (tok_i.type == append_id)
 		data->append_id = ft_atoi(tok_i.tab[0]);
 	else if(tok_i.type == here_doc)
+	{
+		if(tok_cmd->fdin != -1 && tok_cmd->fdin != 0)
+			close(tok_cmd->fdin);
 		tok_cmd->fdin = open_file(data, tok_i, 4, cmd);
-	if (cmd == -1)
-		ft_close(data, -1, -1, cmd);
+	}
 }
 
 int	manage_pipe(t_data *data, t_token *tok)
