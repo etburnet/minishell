@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/22 15:50:27 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 18:26:14 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ char	*remove_meta_c(char *s, int i, int j)
 	ft_memset(temp, '\0', len + 1);
 	if (s == NULL)
 		return (NULL);
-	// printf("ici %s\n", s);
 	while (i <= len)
 	{
 		if (is_metacharcter(s, i) == 1 && len == 1)
@@ -87,6 +86,33 @@ char	*remove_meta_c(char *s, int i, int j)
 	return (temp);
 }
 
+char *remove_var_quote(char *s, int i, int j)
+{
+	char	*tmp;
+
+	tmp = malloc((ft_strlen(s) + 1));
+	if (tmp == NULL)
+		return (NULL);
+	ft_memset(tmp, '\0', ft_strlen(s) + 1);
+	while (s[i] != '\0')
+	{
+		while (s[i] == ' ')
+			put_string_to_cpy(s, tmp, &i, &j);
+		if (s[i] != ' ' && s[i] != '\0')
+		{
+			while (s[i] != '\"' && s[i] != '\'' && s[i] != ' ' && s[i] != '\0')
+				put_string_to_cpy(s, tmp, &i, &j);
+			if (check_to_remove_quote_edit(s, tmp, &j, &i) == NULL
+				|| check_to_remove_dquote(s, tmp, &j, &i) == NULL)
+				return (ft_free(tmp), NULL);
+			while (s[i] != '\"' && s[i] != '\'' && s[i] != ' ' && s[i] != '\0')
+				put_string_to_cpy(s, tmp, &i, &j);
+		}
+	}
+	ft_free(s);
+	return (tmp);
+}
+
 int	identify_token(t_data *data)
 {
 	int	i;
@@ -101,9 +127,9 @@ int	identify_token(t_data *data)
 			return (3);
 		if (data->token[i].type == undefine)
 			data->token[i].type = word;
-		// printf("tok %d = %s, type %d\n", i, data->token[i].tab[0], data->token[i].type);
-		if(data->token[i].type != variable)
-			data->token[i].tab[0] = remove_meta_c(data->token[i].tab[0], 0, 0);
+		data->token[i].tab[0] = remove_meta_c(data->token[i].tab[0], 0, 0);
+		if(data->token[i].type == variable)
+			data->token[i].tab[0] = remove_var_quote(data->token[i].tab[0], 0, 0);
 		if (!data->token[i].tab[0])
 			return (3);
 		if (!data->token[i].tab[0])

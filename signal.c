@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:11:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/21 18:27:15 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 19:38:16 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,15 @@ void	ft_signal(void (*handle_function))
 void	init_signal_handler(t_data *data, int i)
 {
 	struct sigaction	sa;
-
+	
 	(void)data;
-	if (atoi(&data->cp_env[get_this_env("SHLVL", data->cp_env)][6]) > 2)
+	if(atoi(&data->cp_env[get_this_env("SHLVL", data->cp_env)][6]) > 2)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
-		return ;
+		return;
 	}
-	if (i == 1 || i == 3)
+	if (i == 1)
 		ft_signal(handle_signal);
 	else if (i == 2)
 		ft_signal(handle_sig_heredoc);

@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/21 18:33:04 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 17:47:43 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ void	is_operator(char *s, char *temp, int *i, int *j)
 			add_space(temp, j);
 			put_string_to_cpy(s, temp, i, j);
 		}
+		else
+			put_string_to_cpy(s, temp, i, j);
 	}
-	put_string_to_cpy(s, temp, i, j);
 }
 
 char	*check_to_remove_quote_edit(char *s, char *tmp, int *j, int *i)

@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:18:49 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/23 14:04:19 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 19:35:27 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ int	interrupt_heredoc(t_data *data, int new, int cmd)
 {
 	if (dup2(new, STDIN_FILENO) == -1)
 		return (perror("dup2"), -1);
+	close(new);
 	if(data->token[cmd].fdin)
-			close(data->token[cmd].fdin);
+		close(data->token[cmd].fdin);
 	unlink(data->token[cmd].here_doc);
-	// ft_free(data->token[cmd].here_doc);
-	return (0);
+	return (1);
 }
 
 int	set_arg(t_data *data, int i, int cmd, int j)
@@ -98,7 +98,7 @@ int	check_arg(t_data *data, int i, t_type type)
 	{
 		if ((data->token[cmd].type == type) && (data->token[i].type == word
 				|| data->token[i].type == string
-				|| data->token[i].type == variable))
+				|| (data->token[i].type == variable && data->token[i].tab[0][0] != '\0')))
 		{
 			data->token[i].type = arg;
 			if (set_arg(data, i, cmd, j) != 0)

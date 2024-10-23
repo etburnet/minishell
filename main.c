@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/23 15:10:04 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/23 19:37:48 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	ft_minishell(char *s, t_data *data)
 		ret = identify_command(data);
 	if (ret == 0)
 		execution(data);
+	if(ret == 1)
+		ret = 0;
 	free_data_token(data);
 	return (ret);
 }
@@ -93,8 +95,6 @@ int	main(int argc, char *argv[], char **env)
 		if (data->arg == NULL)
 			ft_exit(data, NULL, 0);
 		ft_main_loop(data);
-		// if (ret != 0)
-		// 	return (ret);
 	}
 	return (0);
 }
