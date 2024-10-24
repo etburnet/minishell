@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/20 11:13:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/23 19:38:25 by opdi-bia         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/10/24 10:42:11 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -91,6 +92,7 @@ int	set_heredoc(t_data *data, int i)
 		if (data->token[i].type == here_doc)
 		{
 			data->token[i + 1].type = delimiter;
+			data->token[i + 1].type = delimiter;
 			new = dup(0);
 			if (new == -1)
 				return (perror("dup"), -1);
@@ -99,6 +101,7 @@ int	set_heredoc(t_data *data, int i)
 			if (ret != 0)
 				return (close(new), ret);
 			close(new);
+			cmd_is_del(data, cmd);
 			cmd_is_del(data, cmd);
 		}
 		i++;

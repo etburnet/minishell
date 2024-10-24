@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/23 12:42:36 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 10:38:58 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,5 +204,6 @@ void		check_first_last(t_data *data);
 int			command_return(t_data *data, t_token tok, int ret);
 int			manage_pipe(t_data *data, t_token *tok);
 void		manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int cmd);
+int			ft_check_entry(t_data *data, int cmd, int fdin, int fdout);
 
 #endif

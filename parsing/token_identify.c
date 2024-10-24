@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_identify.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/23 18:26:14 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 10:42:47 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ char	*remove_meta_c(char *s, int i, int j)
 	ft_memset(temp, '\0', len + 1);
 	if (s == NULL)
 		return (NULL);
+	// printf("ici %s\n", s);
 	while (i <= len)
 	{
 		if (is_metacharcter(s, i) == 1 && len == 1)

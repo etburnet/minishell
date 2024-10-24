@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:40:34 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/23 13:53:53 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 10:40:42 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,25 @@ int	command_return(t_data *data, t_token tok, int ret)
 		return (ret);
 	}
 	ft_close(data, tok.fdin, tok.fdout, -1);
+	return (0);
+}
+
+int	ft_check_entry(t_data *data, int cmd, int fdin, int fdout)
+{
+	int		fd;
+	
+	fd = open(data->token[cmd].tab[0], O_WRONLY);
+	if (errno == EISDIR)
+		return (ft_close(data, fdin, fdout, cmd),
+			perror(data->token[cmd].tab[0]), 126);
+	if (fd >= 0)
+		close(fd);
+	fd = access(data->token[cmd].tab[0], X_OK);
+	if (fd != 0 && errno == EACCES)
+		return (ft_close(data, fdin, fdout, cmd),
+			perror(data->token[cmd].tab[0]), 127);
+	if (!data->token[cmd].full_path)
+		return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(data,
+				fdin, fdout, cmd), 127);
 	return (0);
 }
