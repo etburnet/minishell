@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/20 11:13:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/23 14:03:58 by opdi-bia         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/10/24 12:02:29 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -56,15 +57,15 @@ int	process_here_doc(t_data *data, int new, int cmd, int i)
 		return (-1);
 	buffer = readline(">");
 	if (buffer == NULL && g_sig_recieved == 0)
-		return (ft_free(buffer), close(data->token[cmd].fdin), put_error(ERR_MALLOC, NULL), 3);
+		return (g_sig_recieved = 1, ft_free(buffer), close(data->token[cmd].fdin), 3);
 	while (buffer != NULL)
 	{
 		buffer = check_line(data, data->token[cmd].fdin, buffer, &del);
 		if (buffer == NULL && del == 0 && g_sig_recieved == 0)
-			return (ft_free(buffer), close(data->token[cmd].fdin), put_error(ERR_MALLOC, NULL), 3);
+			return (g_sig_recieved = 1, ft_free(buffer), close(data->token[cmd].fdin), 3);
 	}
 	if (buffer == NULL && g_sig_recieved == 1)
-		return (close(data->token[cmd].fdin), ft_free(buffer), interrupt_heredoc(data, new, cmd), 1);
+		return (close(data->token[cmd].fdin), ft_free(buffer), interrupt_heredoc(data, new, cmd));
 	close(data->token[cmd].fdin);
 	return (ft_free(buffer), 0);
 }
@@ -76,7 +77,6 @@ void	cmd_is_del(t_data *data, int cmd)
 		if(data->token[cmd].fdin)
 			close(data->token[cmd].fdin);
 		unlink(data->token[cmd].here_doc);
-		// ft_free(data->token[cmd].here_doc);
 	}
 }
 
@@ -94,7 +94,7 @@ int	set_heredoc(t_data *data, int i)
 			data->token[i + 1].type = delimiter;
 			new = dup(0);
 			if (new == -1)
-				return (perror("OUT dup"), -1);
+				return (perror("dup"), -1);
 			cmd = search_cmd(data, i, i);
 			ret = process_here_doc(data, new, cmd, i);
 			if (ret != 0)
@@ -104,6 +104,6 @@ int	set_heredoc(t_data *data, int i)
 		}
 		i++;
 	}
-	init_signal_handler(data, 3);
+	init_signal_handler(data, 1);
 	return (0);
 }

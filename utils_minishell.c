@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/20 16:35:50 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/24 11:38:39 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	get_this_env(char *var, char **cp_env)
 
 void	put_error(char *message, char *var)
 {
+	ft_putstr_fd("Minishell: ", 2);
 	ft_putstr_fd(message, 2);
 	if (var != NULL)
 		ft_putstr_fd(var, 2);

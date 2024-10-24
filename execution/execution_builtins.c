@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_builtins.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:55:05 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 19:18:25 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:10:45 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,18 @@ int	exec_built_in(t_data *data, int cmd, int fdin, int fdout)
 
 	ret = 0;
 	pid = fork();
+	data->last_pid = pid;
 	if (pid == -1)
 		return (perror("fork"), 1);
 	if (pid == 0)
 	{
+		if(fdin < 0 || fdout < 0)
+		{
+			close_all(data, fdin, fdout, cmd);
+			exit (0);
+		}
 		if (dup2(fdin, 0) == -1 || dup2(fdout, data->append_id) == -1)
-			return (perror("dup2"), 1);
+			return (perror("builtins dup2"), 1);
 		close_all(data, fdin, fdout, cmd);
 		clear_history();
 		ret = which_builtin(data, data->token[cmd].tab);
@@ -53,7 +59,7 @@ int	which_builtin(t_data *data, char **cmd_tab)
 	else if (ft_strncmp(cmd_tab[0], "env", 4) == 0)
 		ret = print_env(data);
 	else if (ft_strncmp(cmd_tab[0], "exit", 5) == 0)
-		ret = ft_exit(data, cmd_tab, 0);
+		ret = ft_exit(data, cmd_tab, 0, 1);
 	else
 		return (put_error(ERR_CMD, cmd_tab[0]), 2);
 	return (ret);

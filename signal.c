@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:11:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/21 18:27:15 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 12:03:00 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	handle_signal_fork(int signum)
 	if (signum == SIGINT)
 	{
 		printf("\n");
-		g_sig_recieved = 1;
+		g_sig_recieved = 3;
 	}
 	if (signum == SIGQUIT)
 	{
@@ -30,13 +30,20 @@ void	handle_signal_fork(int signum)
 
 void	handle_signal(int signum)
 {
-	if (signum == SIGINT)
+	if (signum == SIGINT && g_sig_recieved == 1)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	else if (signum == SIGINT)
 	{
 		g_sig_recieved = 1;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_sig_recieved = 0;
 	}
 }
 
@@ -63,15 +70,15 @@ void	ft_signal(void (*handle_function))
 void	init_signal_handler(t_data *data, int i)
 {
 	struct sigaction	sa;
-
+	
 	(void)data;
-	if (atoi(&data->cp_env[get_this_env("SHLVL", data->cp_env)][6]) > 2)
+	if(atoi(&data->cp_env[get_this_env("SHLVL", data->cp_env)][6]) > 2)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
-		return ;
+		return;
 	}
-	if (i == 1 || i == 3)
+	if (i == 1)
 		ft_signal(handle_signal);
 	else if (i == 2)
 		ft_signal(handle_sig_heredoc);

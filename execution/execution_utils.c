@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:19:29 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/23 18:24:50 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/24 13:04:57 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,11 @@ int	create_hd_file(t_data *data, int cmd)
 		return (put_error(ERR_MALLOC, NULL), 3);
 	if (data->token[cmd].here_doc != NULL)
 		ft_free(data->token[cmd].here_doc);
-	data->token[cmd].here_doc = ft_strjoin("temp_file_here_doc", itoa);
+	data->token[cmd].here_doc = ft_strjoin("/tmp/.temp_file_here_doc", itoa);
 	ft_free(itoa);
 	return (0);
 }
+
 int	open_file(t_data *data, t_token token, int i, int cmd)
 {
 	int	fd;
