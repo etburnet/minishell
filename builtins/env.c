@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:27:46 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 12:59:09 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 19:13:41 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ int	print_env(t_data *data)
 	while (data->cp_env[i])
 	{
 		len = ft_strlen(data->cp_env[i]);
-		if (write(1, data->cp_env[i++], len) != len)
+		if (write(1, data->cp_env[i], len) != len)
 			return (perror("pwd: write error"), 1);
 		if (write(1, "\n", 1) != 1)
 			return (perror("pwd: write error"), 1);
+		i++;
 	}
 	return (0);
 }

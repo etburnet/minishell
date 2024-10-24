@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:54:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 17:41:25 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/24 18:31:56 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 	pid_t	pid;
 	int		ret;
 
-	printf("fdin %d, fdout %d\n", fdin, fdout);
+//	printf("fdin %d, fdout %d\n", fdin, fdout);
 	ret = ft_check_entry(data, cmd, fdin, fdout);
 	if (ret != 0)
 		return (ret);
@@ -94,7 +94,7 @@ int	bring_command(t_data *data, int *i)
 			if (*i == data->lenght_token)
 				return (-1);
 			if(data->token[*i].type == pipes)
-				cmd = -1;
+				return(cmd);
 			if(data->token[*i].last == 1)
 				close_all(data, -1, -1, cmd);
 		}
@@ -137,6 +137,7 @@ int	execution(t_data *data)
 
 	status = 0;
 	pid = 0;
+	data->last_pid = 0;
 	check_first_last(data);
 	ret = prepare_fd(data);
 	if (ret == -1)

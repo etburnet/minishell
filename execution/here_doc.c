@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:13:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 17:41:41 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/24 18:57:21 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ int	process_here_doc(t_data *data, int new, int cmd, int i)
 		return (-1);
 	buffer = readline(">");
 	if (buffer == NULL && g_sig_recieved == 0)
-		return (g_sig_recieved = 1, ft_free(buffer), close(data->token[cmd].fdin),unlink(data->token[cmd].here_doc), 3);
+		return (g_sig_recieved = 1, close(new), ft_free(buffer), close(data->token[cmd].fdin),unlink(data->token[cmd].here_doc), 3);
 	while (buffer != NULL)
 	{
 		buffer = check_line(data, data->token[cmd].fdin, buffer, &del);
 		if (buffer == NULL && del == 0 && g_sig_recieved == 0)
-			return (g_sig_recieved = 1, ft_free(buffer), close(data->token[cmd].fdin),unlink(data->token[cmd].here_doc), 3);
+			return (g_sig_recieved = 1, close(new), ft_free(buffer), close(data->token[cmd].fdin),unlink(data->token[cmd].here_doc), 3);
 	}
 	if (buffer == NULL && g_sig_recieved == 1)
 		return (close(data->token[cmd].fdin), ft_free(buffer), interrupt_heredoc(data, new, cmd));

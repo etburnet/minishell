@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 17:39:21 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/24 19:02:23 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_main_loop(t_data *data)
 	int	ret;
 
 	ret = 0;
-	if (g_sig_recieved == 1 || g_sig_recieved == 3)
+	if (g_sig_recieved == 1 || g_sig_recieved == 3 || g_sig_recieved == 5)
 		data->status = 130;
 	else if (g_sig_recieved == 2)
 		data->status = 131;

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:43:04 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 17:41:48 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/24 19:08:19 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ int	check_command(t_data *data)
 			else
 			{
 				data->token[i].type = command;
-				data->token[i].full_path = ft_find_cmd(data,
-						data->token[i].tab);
+				data->token[i].full_path = ft_find_cmd(data, data->token[i].tab);
 				if (check_arg(data, i, command) == 3)
 					return (3);
 			}
@@ -113,11 +112,11 @@ int	identify_command(t_data *data)
 	ret = set_heredoc(data, 0);
 	if (ret != 0)
 		return (ret);
-	// int i = 0;
-	// while(i < data->lenght_token)
-	// {
-	// 	printf("tok %d = %s, type %d\n", i, data->token[i].tab[0], data->token[i].type);
-	// 	i++;
-	// }
+	int i = 0;
+	while(i < data->lenght_token)
+	{
+		printf("tok %d = %s, type %d\n", i, data->token[i].tab[0], data->token[i].type);
+		i++;
+	}
 	return (0);
 }
