@@ -1,6 +1,0 @@
-*.o
-*.gch
-*.a
-temp_file_here_doc.txt
-
-libft/libft.h.gch

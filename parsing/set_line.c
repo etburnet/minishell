@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/23 17:47:43 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 13:05:52 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,15 @@ char	*set_string(t_data *data, char *s, int len, int len_arg)
 	i = 0;
 	j = 0;
 	if (len == len_arg)
-		return (temp = ft_strdup(data->arg));
+	{
+		temp = ft_strdup(data->arg);
+		if(temp == NULL)
+			return (NULL);
+		return(temp);
+	}
 	temp = malloc(sizeof(char) * (len + 2));
 	if (temp == NULL)
-		return (ft_putstr_fd(ERR_MALLOC, 2), NULL);
+		return (NULL);
 	ft_memset(temp, '\0', len + 1);
 	while (i < len_arg)
 	{

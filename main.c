@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 10:52:03 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/24 16:09:33 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_minishell(char *s, t_data *data)
 	if (ret == 0)
 		ret = identify_command(data);
 	if (ret == 0)
-		execution(data);
+		execution(data); 
 	if(ret == 1)
 		ret = 0;
 	free_data_token(data);
@@ -34,7 +34,7 @@ int	ft_main_loop(t_data *data)
 	int	ret;
 
 	ret = 0;
-	if (g_sig_recieved == 1)
+	if (g_sig_recieved == 1 || g_sig_recieved == 3)
 		data->status = 130;
 	else if (g_sig_recieved == 2)
 		data->status = 131;
@@ -45,7 +45,7 @@ int	ft_main_loop(t_data *data)
 		add_history(data->arg);
 		ret = init_data(data, data->arg);
 		if (ret == 3)
-			return (ft_clean(data), ret);
+			return (ret);
 		else if (ret == 0)
 		{
 			ret = ft_minishell(data->source, data);
@@ -62,15 +62,15 @@ int	ft_init_main(t_data *data, char **env)
 	int	ret;
 
 	ret = 0;
-/* 	if (!isatty(STDIN_FILENO))
-		return (put_error("No infile ./minishell exec", NULL), free(data), 1); */
+	// if (!isatty(STDIN_FILENO))
+	// 	return (put_error("No infile ./minishell exec", NULL), free(data), 1);
 	ret = copy_env(data, env);
 	if (ret == 3)
-		ft_exit(data, NULL, ret, 0);
+		ft_exit(data, NULL, ret);
 	else if (ret == 1)
 		edit_pwd(data);
 	if (update_shlvl(data) == 3)
-		ft_exit(data, NULL, 3, 0);
+		ft_exit(data, NULL, 3);
 	return (0);
 }
 
@@ -93,7 +93,7 @@ int	main(int argc, char *argv[], char **env)
 		init_signal_handler(data, 1);
 		data->arg = readline("minishell$ ");
 		if (data->arg == NULL)
-			ft_exit(data, NULL, 0, 0);
+			ft_exit(data, NULL, 0);
 		ft_main_loop(data);
 	}
 	return (0);

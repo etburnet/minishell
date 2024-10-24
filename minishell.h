@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 10:45:44 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/23 12:42:36 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int			copy_env(t_data *data, char **cp_env);
 int			echo(char **tab);
 int			cd(t_data *data, char **tab);
 int			pwd(t_data *data);
-int			ft_exit(t_data *data, char **tab, int n, int is_pipe);
+int			ft_exit(t_data *data, char **tab, int n);
 int			export(t_data *data, char **tab);
 int			unset(t_data *data, char **tab);
 int			ft_err_exit(t_data *data, char *err_msg, int n);
@@ -204,6 +204,5 @@ void		check_first_last(t_data *data);
 int			command_return(t_data *data, t_token tok, int ret);
 int			manage_pipe(t_data *data, t_token *tok);
 void		manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int cmd);
-int			ft_check_entry(t_data *data, int cmd, int fdin, int fdout);
 
 #endif

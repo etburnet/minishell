@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_cmd_identify.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:18:49 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 10:43:01 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/24 14:55:12 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	interrupt_heredoc(t_data *data, int new, int cmd)
 	if (dup2(new, STDIN_FILENO) == -1)
 		return (perror("dup2"), -1);
 	close(new);
+	init_signal_handler(data, 1);
 	if(data->token[cmd].fdin)
 		close(data->token[cmd].fdin);
 	unlink(data->token[cmd].here_doc);

@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:11:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/23 19:38:16 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:55:58 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	handle_signal_fork(int signum)
 	if (signum == SIGINT)
 	{
 		printf("\n");
-		g_sig_recieved = 1;
+		g_sig_recieved = 3;
 	}
 	if (signum == SIGQUIT)
 	{
@@ -30,13 +30,20 @@ void	handle_signal_fork(int signum)
 
 void	handle_signal(int signum)
 {
-	if (signum == SIGINT)
+	if(signum == SIGINT && g_sig_recieved == 1)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	else if (signum == SIGINT)
 	{
 		g_sig_recieved = 1;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_sig_recieved = 0;
 	}
 }
 
@@ -63,9 +70,17 @@ void	ft_signal(void (*handle_function))
 void	init_signal_handler(t_data *data, int i)
 {
 	struct sigaction	sa;
+	int atoi;
+	int gtv;
 	
 	(void)data;
-	if(atoi(&data->cp_env[get_this_env("SHLVL", data->cp_env)][6]) > 2)
+	gtv = get_this_env("SHLVL", data->cp_env);
+	if(gtv < 0)
+		return;
+	atoi = ft_atoi(&data->cp_env[gtv][6]);
+	if(atoi < 0)
+		return;
+	if(atoi > 2)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);

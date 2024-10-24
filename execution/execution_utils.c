@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:19:29 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 10:44:55 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/24 15:31:45 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	there_is_pipe(t_data *data, int cmd)
 {
-	int	i;
+	int i;
 
 	i = cmd;
-	while (i < data->lenght_token)
+	while(i < data->lenght_token)
 	{
-		if (data->token[i].type == pipes)
+		if(data->token[i].type == pipes)
 			data->token[cmd].last = 0;
 		i++;
 	}
@@ -62,30 +62,35 @@ void	ft_close(t_data *data, int fd1, int fd2, int cmd)
 		close(fd2);
 	if (cmd > -1 && data->token[cmd].here_doc != NULL)
 	{
-		if (data->token[cmd].fdin)
+		if(data->token[cmd].fdin)
 			close(data->token[cmd].fdin);
 		unlink(data->token[cmd].here_doc);
 		// ft_free(data->token[cmd].here_doc);
 	}
 }
-int	create_hd_file(t_data *data, int cmd)
+int		create_hd_file(t_data *data, int cmd)
 {
-	char	*itoa;
-
+	char *itoa;
+	
 	itoa = ft_itoa(cmd);
-	if (itoa == NULL)
-		return (put_error(ERR_MALLOC, NULL), 3);
-	if (data->token[cmd].here_doc != NULL)
+	if(itoa == NULL)
+		return(put_error(ERR_MALLOC, NULL), 3);
+	if(data->token[cmd].here_doc != NULL)
+	{
+		ft_free(itoa);
 		ft_free(data->token[cmd].here_doc);
-	data->token[cmd].here_doc = ft_strjoin("/tmp/.temp_file_here_doc", itoa);
+	}
+	data->token[cmd].here_doc = ft_strjoin("temp_file_here_doc", itoa);
+	if(data->token[cmd].here_doc == NULL)
+		return(ft_free(itoa), put_error(ERR_MALLOC, NULL), 3);
 	ft_free(itoa);
-	return (0);
+	return(0);
 }
-
 int	open_file(t_data *data, t_token token, int i, int cmd)
 {
 	int	fd;
-
+	
+	
 	fd = 0;
 	if (i == 0)
 		fd = open(token.tab[0], O_RDONLY);
@@ -93,9 +98,9 @@ int	open_file(t_data *data, t_token token, int i, int cmd)
 		fd = open(token.tab[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (i == 3)
 	{
-		if (create_hd_file(data, cmd) == 3)
-			return (-1);
-		fd = open(data->token[cmd].here_doc, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		if(create_hd_file(data, cmd) == 3)
+			return(-1);
+		fd = open(data->token[cmd].here_doc , O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
 			return (perror("temp_file_here_doc"), -1);
 	}
@@ -112,8 +117,7 @@ int	catch_cmd(t_data *data, int i)
 {
 	while (i < data->lenght_token && data->token[i].type != pipes)
 	{
-		if (data->token[i].type == command || data->token[i].type == built_in
-			|| data->token[i].type == variable)
+		if (data->token[i].type == command || data->token[i].type == built_in || data->token[i].type == variable)
 			return (i);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:49 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/23 14:01:00 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:37:17 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void	free_data_token(t_data *data)
 	i = 0;
 	if (data->source_lenght < 0 || !data->token || !data->source)
 		return ;
-	while (i < data->lenght_token)
+	while (i < data->lenght_token && data->token[i].tab)
 	{
 		j = 0;
-		if (!data->token[i].tab)
-			return ;
-		while (j <= data->token[i].nb_arg)
+		// if (!data->token[i].tab)
+		// 	return ;
+		while (j <= data->token[i].nb_arg && data->token[i].tab[j])
 			ft_free(data->token[i].tab[j++]);
 		ft_free(data->token[i].full_path);
 		ft_free(data->token[i].here_doc);

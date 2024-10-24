@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:27:46 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/21 18:27:48 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 12:59:09 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,8 @@ int	copy_env(t_data *data, char **env)
 	{
 		data->cp_env[i] = ft_strdup(env[i]);
 		if (data->cp_env[i] == NULL)
-			return (free_tab(data->cp_env), put_error(ERR_MALLOC, NULL), 3);
+			return (put_error(ERR_MALLOC, NULL), 3);
 		i++;
 	}
-	if (tab_len == 0)
-		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 12:48:54 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 15:16:37 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 12:58:04 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ int	replace_var(t_data *data, char *res, char *var, int *i)
 int	expand_init(t_token tok, char **res, char **var, char **tok_dup)
 {
 	*res = malloc(sizeof(char) * BUFSIZ);
-	if (!res)
+	if (!*res)
 		return (3);
 	memset(*res, '\0', BUFSIZ);
 	*var = malloc(sizeof(char) * (ft_strlen(tok.tab[0]) + 1));
-	if (!var)
+	if (!*var)
 		return (ft_free(*res), 3);
 	*tok_dup = ft_strdup(tok.tab[0]);
-	if (tok_dup == NULL)
+	if (*tok_dup == NULL)
 		return (ft_free(*res), ft_free(*var), 3);
 	return (0);
 }

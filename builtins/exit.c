@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:59:33 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 10:45:25 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/23 15:08:38 by opdi-bia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ int	ft_long_check(char *str)
 	return (0);
 }
 
-int	ft_exit(t_data *data, char **tab, int n, int is_pipe)
+int	ft_exit(t_data *data, char **tab, int n)
 {
-	if (is_pipe == 0)
-		ft_putstr_fd("exit\n", 2);
+	if ((tab == NULL && n == 0))
+		n = 0;
 	else if (tab != NULL && tab[0] != NULL && tab[1] == NULL)
 		n = data->status;
 	else if (tab != NULL)
