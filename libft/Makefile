@@ -6,7 +6,7 @@
 #    By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/07 12:48:48 by eburnet           #+#    #+#              #
-#    Updated: 2024/10/10 11:57:57 by eburnet          ###   ########.fr        #
+#    Updated: 2024/10/24 17:16:04 by eburnet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ OBJS = $(SRCS:.c=.o)
 HEADERS = libft.h
 
 .c.o: 
-	gcc $(CFLAGS) $(HEADERS) -c $<
+	cc $(CFLAGS) $(HEADERS) -c $<
 
 $(NAME): $(OBJS)
 	ar rc $(NAME) $(OBJS)

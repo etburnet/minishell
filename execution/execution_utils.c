@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:19:29 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 15:31:45 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 17:40:36 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int		create_hd_file(t_data *data, int cmd)
 	ft_free(itoa);
 	return(0);
 }
+
 int	open_file(t_data *data, t_token token, int i, int cmd)
 {
 	int	fd;

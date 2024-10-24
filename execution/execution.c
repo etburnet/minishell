@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:54:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/23 17:01:58 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 17:41:25 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,26 @@
 int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 {
 	pid_t	pid;
-	int		fd;
+	int		ret;
 
-	fd = open(data->token[cmd].tab[0], O_WRONLY);
-	if (errno == EISDIR)
-		return (ft_close(data, fdin, fdout, cmd),
-			put_error("is a directory: ", data->token[cmd].tab[0]), 126);
-	if (!data->token[cmd].full_path)
-		return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(data, fdin, fdout, cmd),
-			127);
+	printf("fdin %d, fdout %d\n", fdin, fdout);
+	ret = ft_check_entry(data, cmd, fdin, fdout);
+	if (ret != 0)
+		return (ret);
 	pid = fork();
+	data->last_pid = pid;
 	if (pid == -1)
 		return (perror("fork"), 1);
 	if (pid > 0)
 		init_signal_handler(data, 4);
 	else if (pid == 0)
 	{
-		if (ft_child(data, cmd, fdin, fdout) == 1)
-			return (1);
-		return (2);
+		if(fdin < 0 || fdout < 0)
+			return(1);
+		ret = ft_child(data, cmd, fdin, fdout);
+		return (ret);
 	}
+	//printf("ici\n");
 	ft_close(data, fdin, fdout, cmd);
 	return (0);
 }
@@ -53,7 +53,7 @@ int	dispatch_cmd(t_data *data, t_token token, int cmd)
 	else if (token.type == built_in)
 	{
 		if (ft_strncmp(token.tab[0], "exit", 5) == 0 && alone == 1)
-			ret = ft_exit(data, token.tab, 0);
+			ret = ft_exit(data, token.tab, 0, 0);
 		else if (ft_strncmp(token.tab[0], "cd", 5) == 0 && alone == 1)
 			ret = cd(data, token.tab);
 		else if (ft_strncmp(token.tab[0], "unset", 5) == 0 && alone == 1)
@@ -73,14 +73,21 @@ int	bring_command(t_data *data, int *i)
 	cmd = -1;
 	while (*i < data->lenght_token && data->token[*i].type != pipes)
 	{
-		if (cmd == -1)
+		//printf("1 %s\n", data->token[*i].tab[0]);
+		if (cmd < 0)
 			cmd = catch_cmd(data, *i);
+		if (cmd >= 0 && data->token[cmd].tab[0][0] == '\0')
+			cmd = catch_cmd(data, ++(*i));
 		if (cmd == -1)
-			while (*i < data->lenght_token - 1 && data->token[*i].type != pipes)
+			while (*i < data->lenght_token - 1 && data->token[*i].type != pipes && data->token[*i].type != infile && data->token[*i].type != outfile && data->token[*i].type != append)
 				(*i)++;
 		if (*i < data->lenght_token)
-			manage_files(data, data->token[*i], &data->token[cmd], cmd);
-		if (cmd >= 0 && *i < data->lenght_token && (data->token[cmd].fdin == -1 || data->token[cmd].fdout == -1))
+			manage_files(data, data->token[*i], &data->token[cmd], &cmd);
+		if (cmd == -2)
+			while (*i < data->lenght_token && data->token[*i].type != pipes)
+				(*i)++;
+		if (cmd >= 0 && *i < data->lenght_token && (data->token[cmd].fdin == -1
+				|| data->token[cmd].fdout == -1))
 		{
 			while (*i < data->lenght_token && data->token[*i].type != pipes)
 				(*i)++;
@@ -113,7 +120,8 @@ int	prepare_fd(t_data *data)
 		tok = data->token[cmd];
 		if (manage_pipe(data, &tok))
 			return (1);
-		ret = dispatch_cmd(data, tok, cmd);
+		if (tok.fdin >= 0 && tok.fdout >= 1)
+			ret = dispatch_cmd(data, tok, cmd);
 		if (command_return(data, tok, ret))
 			return (command_return(data, tok, ret));
 		i++;
@@ -138,7 +146,9 @@ int	execution(t_data *data)
 	while (pid != -1)
 	{
 		pid = waitpid(-1, &status, 0);
-		data->status = status % 255;
+		//printf("%d\n", status);
+		if (pid == data->last_pid)
+			data->status = status % 255;
 		if (WEXITSTATUS(status) != 0)
 			return (1);
 	}

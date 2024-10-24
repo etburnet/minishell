@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_minishell.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 15:20:19 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/10/24 17:40:04 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	get_this_env(char *var, char **cp_env)
 
 void	put_error(char *message, char *var)
 {
+	ft_putstr_fd("Minishell: ", 2);
 	ft_putstr_fd(message, 2);
 	if (var != NULL)
 		ft_putstr_fd(var, 2);
