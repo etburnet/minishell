@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:54:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 10:41:31 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/24 10:46:19 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	dispatch_cmd(t_data *data, t_token token, int cmd)
 	else if (token.type == built_in)
 	{
 		if (ft_strncmp(token.tab[0], "exit", 5) == 0 && alone == 1)
-			ret = ft_exit(data, token.tab, 0);
+			ret = ft_exit(data, token.tab, 0, 0);
 		else if (ft_strncmp(token.tab[0], "cd", 5) == 0 && alone == 1)
 			ret = cd(data, token.tab);
 		else if (ft_strncmp(token.tab[0], "unset", 5) == 0 && alone == 1)

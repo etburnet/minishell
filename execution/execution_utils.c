@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:19:29 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 10:40:21 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/10/24 10:44:55 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,15 @@ int	create_hd_file(t_data *data, int cmd)
 		return (put_error(ERR_MALLOC, NULL), 3);
 	if (data->token[cmd].here_doc != NULL)
 		ft_free(data->token[cmd].here_doc);
-	data->token[cmd].here_doc = ft_strjoin("temp_file_here_doc", itoa);
+	data->token[cmd].here_doc = ft_strjoin("/tmp/.temp_file_here_doc", itoa);
 	ft_free(itoa);
 	return (0);
 }
+
 int	open_file(t_data *data, t_token token, int i, int cmd)
 {
 	int	fd;
-	
-	
+
 	fd = 0;
 	if (i == 0)
 		fd = open(token.tab[0], O_RDONLY);
@@ -93,9 +93,9 @@ int	open_file(t_data *data, t_token token, int i, int cmd)
 		fd = open(token.tab[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (i == 3)
 	{
-		if(create_hd_file(data, cmd) == 3)
-			return(-1);
-		fd = open(data->token[cmd].here_doc , O_RDWR | O_CREAT | O_TRUNC, 0644);
+		if (create_hd_file(data, cmd) == 3)
+			return (-1);
+		fd = open(data->token[cmd].here_doc, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
 			return (perror("temp_file_here_doc"), -1);
 	}
