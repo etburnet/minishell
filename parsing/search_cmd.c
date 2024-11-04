@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 13:00:07 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 19:07:34 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:09:14 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*ft_cmd_path(char **path, char *full_path, char **cmd_tab)
 		full_path = malloc(sizeof(char) * (ft_strlen(path[i])
 					+ ft_strlen(cmd_tab[0]) + 2));
 		if (full_path == NULL)
-			return (free_tab(path), NULL);
+			return (ft_free_tab(path), NULL);
 		full_path[0] = '\0';
 		ft_strlcat(full_path, path[i], ft_strlen(path[i]) + 1);
 		ft_strlcat(full_path, "/", ft_strlen(full_path) + 2);
@@ -61,7 +61,7 @@ char	*ft_cmd_path(char **path, char *full_path, char **cmd_tab)
 		i++;
 	}
 	if (full_path == NULL)
-		free_tab(path);
+		ft_free_tab(path);
 	return (full_path);
 }
 
@@ -73,7 +73,7 @@ char	*ft_find_cmd(t_data *data, char **cmd_tab)
 	full_path = NULL;
 	path = NULL;
 	if (cmd_tab[0] == NULL)
-		return (free_tab(path), NULL);
+		return (ft_free_tab(path), NULL);
 	if (access(cmd_tab[0], X_OK) == 0)
 	{
 		full_path = malloc(sizeof(char) * ft_strlen(cmd_tab[0]) + 1);
@@ -89,6 +89,6 @@ char	*ft_find_cmd(t_data *data, char **cmd_tab)
 	full_path = ft_cmd_path(path, full_path, cmd_tab);
 	if (full_path == NULL)
 		return (NULL);
-	free_tab(path);
+	ft_free_tab(path);
 	return (full_path);
 }

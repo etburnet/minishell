@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 10:29:16 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/20 16:24:29 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:09:14 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	del_env(t_data *data, char *delete)
 			dup_env[i[1]++] = ft_strdup(data->cp_env[i[0]]);
 		i[0]++;
 	}
-	free_tab(data->cp_env);
+	ft_free_tab(data->cp_env);
 	data->cp_env = dup_env;
 	return (0);
 }

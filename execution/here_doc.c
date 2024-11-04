@@ -6,10 +6,9 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:13:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 18:57:21 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:17:31 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../minishell.h"
 
@@ -18,7 +17,7 @@ int	expand_init_here(char *str, char **res, char **var, char **tok_dup)
 	*res = malloc(sizeof(char) * BUFSIZ);
 	if (!*res)
 		return (3);
-	memset(*res, '\0', BUFSIZ);
+	ft_memset(*res, '\0', BUFSIZ);
 	*var = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (!*var)
 		return (ft_free(*res), 3);
@@ -27,6 +26,7 @@ int	expand_init_here(char *str, char **res, char **var, char **tok_dup)
 		return (ft_free(*res), ft_free(*var), 3);
 	return (0);
 }
+
 int	expand_here_doc(t_data *data, char **str)
 {
 	t_expand	exp;
@@ -57,24 +57,28 @@ int	process_here_doc(t_data *data, int new, int cmd, int i)
 		return (-1);
 	buffer = readline(">");
 	if (buffer == NULL && g_sig_recieved == 0)
-		return (g_sig_recieved = 1, close(new), ft_free(buffer), close(data->token[cmd].fdin),unlink(data->token[cmd].here_doc), 3);
+		return (g_sig_recieved = 1, close(new), ft_free(buffer),
+			close(data->token[cmd].fdin), unlink(data->token[cmd].here_doc), 3);
 	while (buffer != NULL)
 	{
 		buffer = check_line(data, data->token[cmd].fdin, buffer, &del);
 		if (buffer == NULL && del == 0 && g_sig_recieved == 0)
-			return (g_sig_recieved = 1, close(new), ft_free(buffer), close(data->token[cmd].fdin),unlink(data->token[cmd].here_doc), 3);
+			return (g_sig_recieved = 1, close(new), ft_free(buffer),
+				close(data->token[cmd].fdin), unlink(data->token[cmd].here_doc),
+				3);
 	}
 	if (buffer == NULL && g_sig_recieved == 1)
-		return (close(data->token[cmd].fdin), ft_free(buffer), interrupt_heredoc(data, new, cmd));
+		return (close(data->token[cmd].fdin), ft_free(buffer),
+			interrupt_heredoc(data, new, cmd));
 	close(data->token[cmd].fdin);
 	return (ft_free(buffer), 0);
 }
 
 void	cmd_is_del(t_data *data, int cmd)
 {
-	if(data->token[cmd].type == delimiter)
+	if (data->token[cmd].type == delimiter)
 	{
-		if(data->token[cmd].fdin)
+		if (data->token[cmd].fdin)
 			close(data->token[cmd].fdin);
 		unlink(data->token[cmd].here_doc);
 	}
@@ -91,11 +95,11 @@ int	set_heredoc(t_data *data, int i)
 	{
 		if (data->token[i].type == here_doc)
 		{
-			if((i + 1) >= data->lenght_token)
-				return(put_error(ERR_SYNTAX, &data->token[i].tab[0][0]),
+			if ((i + 1) >= data->lenght_token)
+				return (put_error(ERR_SYNTAX, &data->token[i].tab[0][0]),
 					data->status = 2, 1);
-			if(check_operator(data->token[i + 1].tab[0][0]) == 1)
-				return(put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]),
+			if (check_operator(data->token[i + 1].tab[0][0]) == 1)
+				return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]),
 					data->status = 2, 1);
 			data->token[i + 1].type = delimiter;
 			new = dup(0);

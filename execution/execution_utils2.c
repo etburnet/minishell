@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:40:34 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 17:48:05 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:27:40 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,19 @@ int	ft_child(t_data *data, int cmd, int fdin, int fdout)
 	close_all(data, fdin, fdout, cmd);
 	init_signal_handler(data, 5);
 	clear_history();
-	if (execve(data->token[cmd].full_path, data->token[cmd].tab, data->cp_env) == -1)
-		put_error(ERR_CMD, data->token[cmd].tab[0]);
-	if(errno == EACCES)
-		return (27);
+	execve(data->token[cmd].full_path, data->token[cmd].tab, data->cp_env);
+	if (errno == EFAULT)
+		return (put_error(ERR_CMD, data->token[cmd].tab[0]), 127);
+	if (errno == EACCES)
+		return (127);
 	return (2);
 }
 
 void	manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int *cmd)
 {
 	int	fd;
-	
+
 	fd = -2;
-	//printf("manage file %s, cmd %d\n", tok_i.tab[0], *cmd);
 	if (*cmd == -1)
 	{
 		if (tok_i.type == infile)
@@ -47,27 +47,28 @@ void	manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int *cmd)
 	}
 	if (tok_i.type == infile)
 	{
-		if(tok_cmd->fdin != -1 && tok_cmd->fdin != 0)
+		if (tok_cmd->fdin != -1 && tok_cmd->fdin != 0)
 			close(tok_cmd->fdin);
 		tok_cmd->fdin = open_file(data, tok_i, 0, *cmd);
 	}
 	else if (tok_i.type == outfile)
 	{
-		if(tok_cmd->fdout != -1 && tok_cmd->fdout != 1)
+		if (tok_cmd->fdout != -1 && tok_cmd->fdout != 1)
 			close(tok_cmd->fdout);
 		tok_cmd->fdout = open_file(data, tok_i, 1, *cmd);
 	}
 	else if (tok_i.type == append_out)
 	{
-		if(tok_cmd->fdout != -1 && tok_cmd->fdout != 1)
+		if (tok_cmd->fdout != -1 && tok_cmd->fdout != 1)
 			close(tok_cmd->fdout);
-		tok_cmd->fdout = open_file(data, tok_i, 5, *cmd);;
+		tok_cmd->fdout = open_file(data, tok_i, 5, *cmd);
+		;
 	}
 	else if (tok_i.type == append_id)
 		data->append_id = ft_atoi(tok_i.tab[0]);
-	else if(tok_i.type == here_doc)
+	else if (tok_i.type == here_doc)
 	{
-		if(tok_cmd->fdin != -1 && tok_cmd->fdin != 0)
+		if (tok_cmd->fdin != -1 && tok_cmd->fdin != 0)
 			close(tok_cmd->fdin);
 		tok_cmd->fdin = open_file(data, tok_i, 4, *cmd);
 	}
@@ -75,12 +76,12 @@ void	manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int *cmd)
 
 int	manage_pipe(t_data *data, t_token *tok)
 {
-	//printf("ofd0 %d, ofd1 %d\n", data->old_pipe[0], data->old_pipe[1]);
+	// printf("ofd0 %d, ofd1 %d\n", data->old_pipe[0], data->old_pipe[1]);
 	if (pipe(data->pipe_fd) == -1)
 		return (perror("pipe"), 1);
 	if (tok->first != 1 && tok->fdin == 0 && data->old_pipe[0] > -1)
 		tok->fdin = data->old_pipe[0];
-	else if (tok->first != 1 && data->old_pipe[0] > -1 )
+	else if (tok->first != 1 && data->old_pipe[0] > -1)
 		close(data->pipe_fd[0]);
 	data->old_pipe[0] = data->pipe_fd[0];
 	if (tok->last != 1 && tok->fdout == 1)
@@ -88,7 +89,7 @@ int	manage_pipe(t_data *data, t_token *tok)
 	else
 		close(data->pipe_fd[1]);
 	data->old_pipe[1] = data->pipe_fd[1];
-	//printf("fd0 %d, fd1 %d\n", data->pipe_fd[0], data->pipe_fd[1]);
+	// printf("fd0 %d, fd1 %d\n", data->pipe_fd[0], data->pipe_fd[1]);
 	return (0);
 }
 
@@ -106,9 +107,10 @@ int	command_return(t_data *data, t_token tok, int ret)
 
 int	ft_check_entry(t_data *data, int cmd, int fdin, int fdout)
 {
-	int		fd;
-	
-	if (ft_strncmp(data->token[cmd].tab[0], "./", 2) == 0 || data->token[cmd].tab[0][0] == '/')
+	int	fd;
+
+	if (ft_strncmp(data->token[cmd].tab[0], "./", 2) == 0
+		|| data->token[cmd].tab[0][0] == '/')
 	{
 		fd = open(data->token[cmd].tab[0], O_WRONLY);
 		if (errno == EISDIR)
@@ -121,8 +123,8 @@ int	ft_check_entry(t_data *data, int cmd, int fdin, int fdout)
 			return (ft_close(data, fdin, fdout, cmd),
 				perror(data->token[cmd].tab[0]), 126);
 	}
-	if (!data->token[cmd].full_path)
-		return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(data,
-				fdin, fdout, cmd), 127);
+	/* 	if (!data->token[cmd].full_path)
+			return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(data,
+					fdin, fdout, cmd), 127); */
 	return (0);
 }

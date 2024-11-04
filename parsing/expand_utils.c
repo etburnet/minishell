@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 12:48:54 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 17:43:30 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:21:00 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	expand_init(t_token tok, char **res, char **var, char **tok_dup)
 	*res = malloc(sizeof(char) * BUFSIZ);
 	if (!*res)
 		return (3);
-	memset(*res, '\0', BUFSIZ);
+	ft_memset(*res, '\0', BUFSIZ);
 	*var = malloc(sizeof(char) * (ft_strlen(tok.tab[0]) + 1));
 	if (!*var)
 		return (ft_free(*res), 3);

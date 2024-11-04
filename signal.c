@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:11:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 19:02:00 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:42:16 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	handle_signal_fork(int signum)
 
 void	handle_signal(int signum)
 {
-	if(signum == SIGINT && g_sig_recieved == 1)
+	if (signum == SIGINT && g_sig_recieved == 1)
 	{
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -70,21 +70,21 @@ void	ft_signal(void (*handle_function))
 void	init_signal_handler(t_data *data, int i)
 {
 	struct sigaction	sa;
-	int atoi;
-	int gtv;
-	
+	int					atoi;
+	int					gtv;
+
 	(void)data;
 	gtv = get_this_env("SHLVL", data->cp_env);
-	if(gtv < 0)
-		return;
+	if (gtv < 0)
+		return ;
 	atoi = ft_atoi(&data->cp_env[gtv][6]);
-	if(atoi < 0)
-		return;
-	if(atoi > 2)
+	if (atoi < 0)
+		return ;
+	if (atoi > 2)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
-		return;
+		return ;
 	}
 	if (i == 1)
 		ft_signal(handle_signal);

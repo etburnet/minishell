@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:09:58 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/22 15:42:20 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/11/04 16:27:24 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	expand_loop(t_data *data, t_expand *exp)
 	while (exp->tok_dup[exp->j])
 	{
 		exp->k = 0;
-		memset(exp->var, '\0', (ft_strlen(exp->tok_dup) + 1));
+		ft_memset(exp->var, '\0', (ft_strlen(exp->tok_dup) + 1));
 		if (expand_check(exp) == 1)
 			return (0);
 		else if (exp->tok_dup[exp->j] == '\'' && exp->dq == 0)
@@ -128,7 +128,7 @@ int	expand(t_data *data, t_token tok, int i)
 	exp.res[exp.i] = '\0';
 	ft_free(tok.tab[0]);
 	tok.tab[0] = exp.res;
-	if(exp.replaced == 1)
+	if (exp.replaced == 1)
 		data->token[i].type = variable;
 	return (ft_free(exp.var), ft_free(exp.tok_dup), 0);
 }

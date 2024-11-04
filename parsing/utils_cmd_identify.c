@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:18:49 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 17:42:04 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:27:04 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	search_cmd(t_data *data, int i, int index)
 
 char	*check_line(t_data *data, int fdin, char *buffer, int *del)
 {
-	if (ft_strncmp(buffer, data->del, (strlen(data->del) + 1)) == 0)
+	if (ft_strncmp(buffer, data->del, (ft_strlen(data->del) + 1)) == 0)
 	{
 		*del = 1;
 		free(buffer);
@@ -64,7 +64,7 @@ int	interrupt_heredoc(t_data *data, int new, int cmd)
 		return (perror("dup2"), -1);
 	close(new);
 	init_signal_handler(data, 1);
-	if(data->token[cmd].fdin)
+	if (data->token[cmd].fdin)
 		close(data->token[cmd].fdin);
 	unlink(data->token[cmd].here_doc);
 	return (1);
@@ -99,7 +99,8 @@ int	check_arg(t_data *data, int i, t_type type)
 	{
 		if ((data->token[cmd].type == type) && (data->token[i].type == word
 				|| data->token[i].type == string
-				|| (data->token[i].type == variable && data->token[i].tab[0][0] != '\0')))
+				|| (data->token[i].type == variable
+					&& data->token[i].tab[0][0] != '\0')))
 		{
 			data->token[i].type = arg;
 			if (set_arg(data, i, cmd, j) != 0)

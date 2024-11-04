@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:39:22 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 17:40:04 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:26:22 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_free(char *str)
 		free(str);
 }
 
-void	free_tab(char **tab)
+void	ft_free_tab(char **tab)
 {
 	int	i;
 
@@ -44,7 +44,7 @@ int	get_this_env(char *var, char **cp_env)
 	var_eq = malloc(sizeof(char) * (len + 2));
 	if (!var_eq)
 		return (put_error(ERR_MALLOC, NULL), -1);
-	memset(var_eq, '\0', len + 2);
+	ft_memset(var_eq, '\0', len + 2);
 	ft_strlcpy(var_eq, var, len + 1);
 	var_eq[len] = '=';
 	while (cp_env[i] != NULL)
@@ -65,8 +65,6 @@ void	put_error(char *message, char *var)
 	if (var != NULL)
 		ft_putstr_fd(var, 2);
 	ft_putstr_fd("\n", 2);
-	rl_replace_line("", 0);
-	rl_redisplay();
 }
 
 char	**my_realloc(t_token token, size_t size)
@@ -86,6 +84,6 @@ char	**my_realloc(t_token token, size_t size)
 			return (put_error(ERR_MALLOC, NULL), NULL);
 		i++;
 	}
-	free_tab(token.tab);
+	ft_free_tab(token.tab);
 	return (temp);
 }

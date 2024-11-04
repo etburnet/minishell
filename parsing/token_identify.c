@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 17:42:10 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:27:12 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	check_string(t_data *data, int i)
 	if (data->token[i].type != undefine)
 		return (0);
 	if (ft_strchr(data->token[i].tab[0], '\'') != 0
-		|| ft_strchr(data->token[i].tab[0], '\"') != 0)
+			|| ft_strchr(data->token[i].tab[0], '\"') != 0)
 	{
 		data->token[i].type = string;
 		data->token[i].tab[0] = remove_quote(data->token[i].tab[0], 0, 0);
@@ -86,7 +86,7 @@ char	*remove_meta_c(char *s, int i, int j)
 	return (temp);
 }
 
-char *remove_var_quote(char *s, int i, int j)
+char	*remove_var_quote(char *s, int i, int j)
 {
 	char	*tmp;
 
@@ -128,8 +128,9 @@ int	identify_token(t_data *data)
 		if (data->token[i].type == undefine)
 			data->token[i].type = word;
 		data->token[i].tab[0] = remove_meta_c(data->token[i].tab[0], 0, 0);
-		if(data->token[i].type == variable)
-			data->token[i].tab[0] = remove_var_quote(data->token[i].tab[0], 0, 0);
+		if (data->token[i].type == variable)
+			data->token[i].tab[0] = remove_var_quote(data->token[i].tab[0], 0,
+					0);
 		if (!data->token[i].tab[0])
 			return (3);
 		if (!data->token[i].tab[0])

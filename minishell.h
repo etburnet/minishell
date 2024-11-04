@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/24 17:39:42 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:26:46 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_token
 	int		last;
 	int		fdin;
 	int		fdout;
-	char 	*here_doc;
+	char	*here_doc;
 }			t_token;
 
 typedef struct s_data
@@ -87,7 +87,7 @@ typedef struct s_data
 	int		start;
 	int		status;
 	int		here;
-	char 	*del;
+	char	*del;
 	int		append_id;
 	char	**cp_env;
 	int		last_pid;
@@ -124,10 +124,10 @@ int			dup_env(t_data *data, char *new);
 int			open_ch_dir(char *dir);
 int			is_var_ok(char *name);
 int			add_or_update(t_data *data, char *name, char **cat);
-int    		cd_home(t_data *data);
+int			cd_home(t_data *data);
 
 /* Utils */
-void		free_tab(char **tab);
+void		ft_free_tab(char **tab);
 int			get_this_env(char *var, char **cp_env);
 void		put_error(char *message, char *var);
 char		**my_realloc(t_token token, size_t size);
@@ -204,7 +204,8 @@ void		close_all(t_data *data, int fdin, int fdout, int cmd);
 void		check_first_last(t_data *data);
 int			command_return(t_data *data, t_token tok, int ret);
 int			manage_pipe(t_data *data, t_token *tok);
-void		manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int *cmd);
+void		manage_files(t_data *data, t_token tok_i, t_token *tok_cmd,
+				int *cmd);
 int			ft_check_entry(t_data *data, int cmd, int fdin, int fdout);
 
 #endif

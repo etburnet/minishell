@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:55:05 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 15:10:45 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:27:47 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@ int	exec_built_in(t_data *data, int cmd, int fdin, int fdout)
 		return (perror("fork"), 1);
 	if (pid == 0)
 	{
-		if(fdin < 0 || fdout < 0)
+		if (fdin < 0 || fdout < 0)
 		{
 			close_all(data, fdin, fdout, cmd);
-			exit (0);
+			exit(0);
 		}
 		if (dup2(fdin, 0) == -1 || dup2(fdout, data->append_id) == -1)
 			return (perror("builtins dup2"), 1);
-		close_all(data, fdin, fdout, cmd);
 		clear_history();
 		ret = which_builtin(data, data->token[cmd].tab);
+		close_all(data, fdin, fdout, cmd);
 		ft_clean(data);
 		exit(ret);
 	}

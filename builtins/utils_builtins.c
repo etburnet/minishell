@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:49 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 17:40:10 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:27:49 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	free_data_token(t_data *data)
 	while (i < data->lenght_token && data->token[i].tab)
 	{
 		j = 0;
-		// if (!data->token[i].tab)
-		// 	return ;
 		while (j <= data->token[i].nb_arg && data->token[i].tab[j])
 			ft_free(data->token[i].tab[j++]);
 		ft_free(data->token[i].full_path);
@@ -109,8 +107,8 @@ int	cd_home(t_data *data)
 {
 	DIR			*stream_dir;
 	struct stat	path_stat;
-	char	*dir;
-	int		home_id;
+	char		*dir;
+	int			home_id;
 
 	home_id = get_this_env("HOME", data->cp_env);
 	if (home_id == -1)
@@ -124,7 +122,8 @@ int	cd_home(t_data *data)
 	{
 		stream_dir = opendir(dir);
 		if (stream_dir == NULL)
-			return (free(dir), put_error("No such file or directory: ", dir), 1);
+			return (free(dir), put_error("No such file or directory: ", dir),
+				1);
 		closedir(stream_dir);
 		if (chdir(dir) == -1)
 			return (free(dir), 1);

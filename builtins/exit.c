@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:59:33 by eburnet           #+#    #+#             */
-/*   Updated: 2024/10/24 11:29:34 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/04 16:09:20 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_clean(t_data *data)
 		ft_free(data->arg);
 	}
 	if (data->cp_env != NULL)
-		free_tab(data->cp_env);
+		ft_free_tab(data->cp_env);
 	free(data);
 }
 
