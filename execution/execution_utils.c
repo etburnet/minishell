@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:19:29 by eburnet           #+#    #+#             */
-/*   Updated: 2024/11/04 16:27:42 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/05 16:56:32 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ void	ft_close(t_data *data, int fd1, int fd2, int cmd)
 		if (data->token[cmd].fdin)
 			close(data->token[cmd].fdin);
 		unlink(data->token[cmd].here_doc);
-		// ft_free(data->token[cmd].here_doc);
 	}
 }
+
 int	create_hd_file(t_data *data, int cmd)
 {
 	char	*itoa;
@@ -76,10 +76,7 @@ int	create_hd_file(t_data *data, int cmd)
 	if (itoa == NULL)
 		return (put_error(ERR_MALLOC, NULL), 3);
 	if (data->token[cmd].here_doc != NULL)
-	{
-		ft_free(itoa);
 		ft_free(data->token[cmd].here_doc);
-	}
 	data->token[cmd].here_doc = ft_strjoin("/tmp/.temp_file_here_doc", itoa);
 	if (data->token[cmd].here_doc == NULL)
 		return (ft_free(itoa), put_error(ERR_MALLOC, NULL), 3);
@@ -111,23 +108,4 @@ int	open_file(t_data *data, t_token token, int i, int cmd)
 	if (fd < 0)
 		return (perror(token.tab[0]), data->status = 1, -1);
 	return (fd);
-}
-
-int	catch_cmd(t_data *data, int i)
-{
-	while (i < data->lenght_token && data->token[i].type != pipes)
-	{
-		if (data->token[i].type == command || data->token[i].type == built_in
-			|| data->token[i].type == variable)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-void	close_all(t_data *data, int fdin, int fdout, int cmd)
-{
-	ft_close(data, fdin, fdout, cmd);
-	ft_close(data, data->pipe_fd[0], data->pipe_fd[1], -1);
-	ft_close(data, data->old_pipe[0], data->old_pipe[1], -1);
 }

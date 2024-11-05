@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token_identify.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:41:19 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/22 15:58:16 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/11/05 13:48:37 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,11 @@ char	*remove_quote(char *s, int i, int j)
 	}
 	ft_free(s);
 	return (tmp);
+}
+
+int	is_metacharcter(char *s, int i)
+{
+	if (s[i] == '\\' || s[i] == '\n' || s[i] == '\t')
+		return (1);
+	return (0);
 }

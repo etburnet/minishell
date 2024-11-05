@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 13:30:56 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/11/04 16:27:14 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/05 13:49:57 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	is_operator(char *s, char *temp, int *i, int *j)
 	else
 	{
 		if (s[*i + 1] != ' ' && (*i > 0 && s[*i - 1] != ' ') && temp[*j
-			- 1] != ' ')
+				- 1] != ' ')
 		{
 			add_space(temp, j);
 			put_string_to_cpy(s, temp, i, j);
@@ -107,12 +107,7 @@ char	*set_string(t_data *data, char *s, int len, int len_arg)
 	i = 0;
 	j = 0;
 	if (len == len_arg)
-	{
-		temp = ft_strdup(data->arg);
-		if (temp == NULL)
-			return (NULL);
-		return (temp);
-	}
+		return (set_temp(data));
 	temp = malloc(sizeof(char) * (len + 2));
 	if (temp == NULL)
 		return (NULL);

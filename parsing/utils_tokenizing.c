@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_tokenizing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:34:13 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/10/21 18:34:16 by opdi-bia         ###   ########.fr       */
+/*   Updated: 2024/11/05 13:49:37 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,14 @@ int	ft_isdigit_edit(char *c)
 			return (1);
 	}
 	return (0);
+}
+
+char	*set_temp(t_data *data)
+{
+	char	*temp;
+
+	temp = ft_strdup(data->arg);
+	if (temp == NULL)
+		return (NULL);
+	return (temp);
 }

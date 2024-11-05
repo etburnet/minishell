@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 12:48:54 by eburnet           #+#    #+#             */
-/*   Updated: 2024/11/04 16:21:00 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/05 13:40:55 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,37 @@ int	expand_init(t_token tok, char **res, char **var, char **tok_dup)
 	if (*tok_dup == NULL)
 		return (ft_free(*res), ft_free(*var), 3);
 	return (0);
+}
+
+int	expand_init_here(char *str, char **res, char **var, char **tok_dup)
+{
+	*res = malloc(sizeof(char) * BUFSIZ);
+	if (!*res)
+		return (3);
+	ft_memset(*res, '\0', BUFSIZ);
+	*var = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!*var)
+		return (ft_free(*res), 3);
+	*tok_dup = ft_strdup(str);
+	if (*tok_dup == NULL)
+		return (ft_free(*res), ft_free(*var), 3);
+	return (0);
+}
+
+int	expand_here_doc(t_data *data, char **str)
+{
+	t_expand	exp;
+
+	exp.i = 0;
+	exp.j = 0;
+	exp.k = 0;
+	exp.dq = 0;
+	if (expand_init_here(*str, &exp.res, &exp.var, &exp.tok_dup) == 3)
+		return (put_error(ERR_MALLOC, NULL), 3);
+	if (expand_loop(data, &exp) == 3)
+		return (ft_free(exp.var), ft_free(exp.res), ft_free(exp.tok_dup), 3);
+	exp.res[exp.i] = '\0';
+	ft_free(*str);
+	*str = exp.res;
+	return (ft_free(exp.var), ft_free(exp.tok_dup), 0);
 }

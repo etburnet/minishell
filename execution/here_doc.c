@@ -6,44 +6,11 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:13:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/11/04 16:17:31 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/05 16:24:43 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	expand_init_here(char *str, char **res, char **var, char **tok_dup)
-{
-	*res = malloc(sizeof(char) * BUFSIZ);
-	if (!*res)
-		return (3);
-	ft_memset(*res, '\0', BUFSIZ);
-	*var = malloc(sizeof(char) * (ft_strlen(str) + 1));
-	if (!*var)
-		return (ft_free(*res), 3);
-	*tok_dup = ft_strdup(str);
-	if (*tok_dup == NULL)
-		return (ft_free(*res), ft_free(*var), 3);
-	return (0);
-}
-
-int	expand_here_doc(t_data *data, char **str)
-{
-	t_expand	exp;
-
-	exp.i = 0;
-	exp.j = 0;
-	exp.k = 0;
-	exp.dq = 0;
-	if (expand_init_here(*str, &exp.res, &exp.var, &exp.tok_dup) == 3)
-		return (put_error(ERR_MALLOC, NULL), 3);
-	if (expand_loop(data, &exp) == 3)
-		return (ft_free(exp.var), ft_free(exp.res), ft_free(exp.tok_dup), 3);
-	exp.res[exp.i] = '\0';
-	ft_free(*str);
-	*str = exp.res;
-	return (ft_free(exp.var), ft_free(exp.tok_dup), 0);
-}
 
 int	process_here_doc(t_data *data, int new, int cmd, int i)
 {
@@ -84,36 +51,45 @@ void	cmd_is_del(t_data *data, int cmd)
 	}
 }
 
+int	parsing_here_doc(t_data *data, int i, int *new)
+{
+	if ((i + 1) >= data->lenght_token)
+		return (put_error(ERR_SYNTAX, &data->token[i].tab[0][0]),
+			data->status = 2, 1);
+	if (check_operator(data->token[i + 1].tab[0][0]) == 1)
+		return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]),
+			data->status = 2, 1);
+	data->token[i + 1].type = delimiter;
+	*new = dup(0);
+	if (*new == -1)
+		return (perror("dup"), -1);
+	return (0);
+}
+
 int	set_heredoc(t_data *data, int i)
 {
 	int	cmd;
 	int	new;
 	int	ret;
 
-	init_signal_handler(data, 2);
 	while (i < data->lenght_token)
 	{
 		if (data->token[i].type == here_doc)
 		{
-			if ((i + 1) >= data->lenght_token)
-				return (put_error(ERR_SYNTAX, &data->token[i].tab[0][0]),
-					data->status = 2, 1);
-			if (check_operator(data->token[i + 1].tab[0][0]) == 1)
-				return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]),
-					data->status = 2, 1);
-			data->token[i + 1].type = delimiter;
-			new = dup(0);
-			if (new == -1)
-				return (perror("dup"), -1);
+			ret = parsing_here_doc(data, i, &new);
+			if (ret != 0)
+				return (ret);
 			cmd = search_cmd(data, i, i);
+			signal(SIGINT, ft_here_doc_signal);
+			signal(SIGQUIT, SIG_IGN);
 			ret = process_here_doc(data, new, cmd, i);
 			if (ret != 0)
 				return (ret);
 			close(new);
+			signal(SIGINT, ft_signal);
 			cmd_is_del(data, cmd);
 		}
 		i++;
 	}
-	init_signal_handler(data, 1);
 	return (0);
 }

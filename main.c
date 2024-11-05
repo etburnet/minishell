@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/11/04 16:57:02 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/05 16:36:45 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_main_loop(t_data *data)
 	int	ret;
 
 	ret = 0;
-	if (g_sig_recieved == 1 || g_sig_recieved == 3 || g_sig_recieved == 5)
+	if (g_sig_recieved == 130 || g_sig_recieved == 13)
 		data->status = 130;
 	else if (g_sig_recieved == 2)
 		data->status = 131;
@@ -62,8 +62,8 @@ int	ft_init_main(t_data *data, char **env)
 	int	ret;
 
 	ret = 0;
-	if (!isatty(STDIN_FILENO))
-		return (put_error("No infile ./minishell exec", NULL), free(data), 1);
+/* 	if (!isatty(STDIN_FILENO))
+		return (put_error("No infile ./minishell exec", NULL), free(data), 1); */
 	ret = copy_env(data, env);
 	if (ret == 3)
 		ft_exit(data, NULL, ret, 0);
@@ -90,7 +90,8 @@ int	main(int argc, char *argv[], char **env)
 	data->status = 0;
 	while (1)
 	{
-		init_signal_handler(data, 1);
+		signal(SIGINT, ft_signal);
+		signal(SIGQUIT, SIG_IGN);
 		data->arg = readline("minishell$ ");
 		if (data->arg == NULL)
 			ft_exit(data, NULL, 0, 0);

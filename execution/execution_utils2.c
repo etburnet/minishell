@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:40:34 by eburnet           #+#    #+#             */
-/*   Updated: 2024/11/04 16:27:40 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/05 16:49:55 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,54 @@
 
 int	ft_child(t_data *data, int cmd, int fdin, int fdout)
 {
-	if (dup2(fdin, 0) == -1 || dup2(fdout, data->append_id) == -1)
-		return (perror("dup2"), 1);
+	char *full_p;
+	
+	printf("fdin %d, out %d\n", fdin, fdout);
+	if (data->token[cmd].full_path == NULL)
+		full_p = "\0";
+	else
+		full_p = data->token[cmd].full_path;
+	signal(SIGINT, ft_child_signal);
+	signal(SIGQUIT, SIG_DFL);
+	if (dup2(fdin, 0) == -1 )
+		return (perror("dup2 in"), 1);
+	if ( dup2(fdout, data->append_id) == -1)
+		return (perror("dup2 ap"), 1);
 	close_all(data, fdin, fdout, cmd);
-	init_signal_handler(data, 5);
 	clear_history();
-	execve(data->token[cmd].full_path, data->token[cmd].tab, data->cp_env);
-	if (errno == EFAULT)
+	execve(full_p, data->token[cmd].tab, data->cp_env);
+	if (errno == EFAULT || errno == ENOENT)
 		return (put_error(ERR_CMD, data->token[cmd].tab[0]), 127);
 	if (errno == EACCES)
 		return (127);
 	return (2);
+}
+
+void	open_redir(t_data *data, t_token tok_i, t_token *tok_cmd, int *cmd)
+{
+	if (tok_i.type == outfile || tok_i.type == append_out)
+	{
+		if (tok_cmd->fdout != -1 && tok_cmd->fdout != 1)
+			close(tok_cmd->fdout);
+		if (tok_i.type == outfile)
+			tok_cmd->fdout = open_file(data, tok_i, 1, *cmd);
+		else if (tok_i.type == append_out)
+			tok_cmd->fdout = open_file(data, tok_i, 5, *cmd);
+	}
+	else if (tok_i.type == append_id)
+		data->append_id = ft_atoi(tok_i.tab[0]);
+	else if (tok_i.type == infile || tok_i.type == here_doc)
+	{
+		if (tok_cmd->fdin != -1 && tok_cmd->fdin != 0)
+			close(tok_cmd->fdin);
+		if (tok_i.type == infile)
+		{
+			tok_cmd->fdin = open_file(data, tok_i, 0, *cmd);
+			ft_close(data, data->old_pipe[0], -1, -1);
+		}
+		else if (tok_i.type == here_doc)
+			tok_cmd->fdin = open_file(data, tok_i, 4, *cmd);
+	}
 }
 
 void	manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int *cmd)
@@ -45,40 +82,14 @@ void	manage_files(t_data *data, t_token tok_i, t_token *tok_cmd, int *cmd)
 		ft_close(data, fd, -1, -1);
 		return ;
 	}
-	if (tok_i.type == infile)
-	{
-		if (tok_cmd->fdin != -1 && tok_cmd->fdin != 0)
-			close(tok_cmd->fdin);
-		tok_cmd->fdin = open_file(data, tok_i, 0, *cmd);
-	}
-	else if (tok_i.type == outfile)
-	{
-		if (tok_cmd->fdout != -1 && tok_cmd->fdout != 1)
-			close(tok_cmd->fdout);
-		tok_cmd->fdout = open_file(data, tok_i, 1, *cmd);
-	}
-	else if (tok_i.type == append_out)
-	{
-		if (tok_cmd->fdout != -1 && tok_cmd->fdout != 1)
-			close(tok_cmd->fdout);
-		tok_cmd->fdout = open_file(data, tok_i, 5, *cmd);
-		;
-	}
-	else if (tok_i.type == append_id)
-		data->append_id = ft_atoi(tok_i.tab[0]);
-	else if (tok_i.type == here_doc)
-	{
-		if (tok_cmd->fdin != -1 && tok_cmd->fdin != 0)
-			close(tok_cmd->fdin);
-		tok_cmd->fdin = open_file(data, tok_i, 4, *cmd);
-	}
+	open_redir(data, tok_i, tok_cmd, cmd);
 }
 
 int	manage_pipe(t_data *data, t_token *tok)
 {
-	// printf("ofd0 %d, ofd1 %d\n", data->old_pipe[0], data->old_pipe[1]);
 	if (pipe(data->pipe_fd) == -1)
 		return (perror("pipe"), 1);
+	//printf("fd0 %d, fd1 %d\n", data->pipe_fd[0], data->pipe_fd[1]);
 	if (tok->first != 1 && tok->fdin == 0 && data->old_pipe[0] > -1)
 		tok->fdin = data->old_pipe[0];
 	else if (tok->first != 1 && data->old_pipe[0] > -1)
@@ -89,19 +100,6 @@ int	manage_pipe(t_data *data, t_token *tok)
 	else
 		close(data->pipe_fd[1]);
 	data->old_pipe[1] = data->pipe_fd[1];
-	// printf("fd0 %d, fd1 %d\n", data->pipe_fd[0], data->pipe_fd[1]);
-	return (0);
-}
-
-int	command_return(t_data *data, t_token tok, int ret)
-{
-	if (ret != 2 && ret != 127 && ret != 126 && ret != 0)
-	{
-		ft_close(data, tok.fdin, tok.fdout, -1);
-		data->status = ret % 255;
-		return (ret);
-	}
-	ft_close(data, tok.fdin, tok.fdout, -1);
 	return (0);
 }
 
@@ -110,12 +108,15 @@ int	ft_check_entry(t_data *data, int cmd, int fdin, int fdout)
 	int	fd;
 
 	if (ft_strncmp(data->token[cmd].tab[0], "./", 2) == 0
-		|| data->token[cmd].tab[0][0] == '/')
+		|| ft_strchr(data->token[cmd].tab[0], '/') != NULL)
 	{
 		fd = open(data->token[cmd].tab[0], O_WRONLY);
 		if (errno == EISDIR)
 			return (ft_close(data, fdin, fdout, cmd),
 				perror(data->token[cmd].tab[0]), 126);
+		else if (errno == ENOENT)
+			return (ft_close(data, fdin, fdout, cmd),
+				perror(data->token[cmd].tab[0]), 127);
 		if (fd >= 0)
 			close(fd);
 		fd = access(data->token[cmd].tab[0], X_OK);
@@ -123,8 +124,5 @@ int	ft_check_entry(t_data *data, int cmd, int fdin, int fdout)
 			return (ft_close(data, fdin, fdout, cmd),
 				perror(data->token[cmd].tab[0]), 126);
 	}
-	/* 	if (!data->token[cmd].full_path)
-			return (put_error(ERR_CMD, data->token[cmd].tab[0]), ft_close(data,
-					fdin, fdout, cmd), 127); */
 	return (0);
 }

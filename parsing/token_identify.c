@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:16:52 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/11/04 16:27:12 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/05 13:50:12 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,13 @@ int	check_string(t_data *data, int i)
 	if (data->token[i].type != undefine)
 		return (0);
 	if (ft_strchr(data->token[i].tab[0], '\'') != 0
-			|| ft_strchr(data->token[i].tab[0], '\"') != 0)
+		|| ft_strchr(data->token[i].tab[0], '\"') != 0)
 	{
 		data->token[i].type = string;
 		data->token[i].tab[0] = remove_quote(data->token[i].tab[0], 0, 0);
 		if (data->token[i].tab[0] == NULL)
 			return (put_error(ERR_MALLOC, NULL), 3);
 	}
-	return (0);
-}
-
-int	is_metacharcter(char *s, int i)
-{
-	if (s[i] == '\\' || s[i] == '\n' || s[i] == '\t')
-		return (1);
 	return (0);
 }
 

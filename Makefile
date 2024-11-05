@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: opdi-bia <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 16:35:33 by opdi-bia          #+#    #+#              #
-#    Updated: 2024/10/24 15:25:00 by opdi-bia         ###   ########.fr        #
+#    Updated: 2024/11/05 13:23:07 by eburnet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC=main.c\
 	builtins/unset.c\
 	builtins/utils_builtins.c\
 	execution/execution_utils2.c\
+	execution/execution_utils3.c\
 	execution/execution.c\
 	execution/execution_utils.c\
 	execution/execution_builtins.c\

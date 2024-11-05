@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 10:54:09 by eburnet           #+#    #+#             */
-/*   Updated: 2024/11/04 16:27:35 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/05 16:26:26 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 	data->last_pid = pid;
 	if (pid == -1)
 		return (perror("fork"), 1);
-	if (pid > 0)
-		init_signal_handler(data, 4);
 	else if (pid == 0)
 	{
 		if (fdin < 0 || fdout < 0)
@@ -37,6 +35,8 @@ int	ft_execute(t_data *data, int cmd, int fdin, int fdout)
 			ft_exit(data, NULL, ret, 1);
 		return (ret);
 	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	ft_close(data, fdin, fdout, cmd);
 	return (0);
 }
@@ -71,6 +71,7 @@ int	dispatch_cmd(t_data *data, t_token token, int cmd)
 int	bring_command(t_data *data, int *i)
 {
 	int	cmd;
+	int	ret;
 
 	cmd = -1;
 	while (*i < data->lenght_token && data->token[*i].type != pipes)
@@ -80,28 +81,17 @@ int	bring_command(t_data *data, int *i)
 		if (cmd >= 0 && data->token[cmd].tab[0][0] == '\0')
 			cmd = catch_cmd(data, ++(*i));
 		if (cmd == -1)
-			while (*i < data->lenght_token - 1 && data->token[*i].type != pipes
-				&& data->token[*i].type != infile
-				&& data->token[*i].type != outfile
-				&& data->token[*i].type != append)
+			while (*i < data->lenght_token - 1
+				&& ft_check_file(data->token[*i]) == 0)
 				(*i)++;
 		if (*i < data->lenght_token)
 			manage_files(data, data->token[*i], &data->token[cmd], &cmd);
 		if (cmd == -2)
 			while (*i < data->lenght_token && data->token[*i].type != pipes)
 				(*i)++;
-		if (cmd >= 0 && *i < data->lenght_token && (data->token[cmd].fdin == -1
-				|| data->token[cmd].fdout == -1))
-		{
-			while (*i < data->lenght_token && data->token[*i].type != pipes)
-				(*i)++;
-			if (*i == data->lenght_token)
-				return (-1);
-			if (data->token[*i].type == pipes)
-				return (cmd);
-			if (data->token[*i].last == 1)
-				close_all(data, -1, -1, cmd);
-		}
+		ret = ft_check_fd(data, i, &cmd);
+		if (ret != -2)
+			return (ret);
 		(*i)++;
 	}
 	return (cmd);
@@ -146,7 +136,7 @@ int	execution(t_data *data)
 	ret = prepare_fd(data);
 	if (ret == -1)
 		return (1);
-	if (ret != 0 && ret != 127)
+	if (ret != 0)
 		return (data->status = ret % 255, ret);
 	while (pid != -1)
 	{
@@ -154,5 +144,6 @@ int	execution(t_data *data)
 		if (pid == data->last_pid)
 			data->status = status % 255;
 	}
+	ft_check_signal(status);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 11:15:08 by eburnet           #+#    #+#             */
-/*   Updated: 2024/11/04 16:27:21 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/05 13:50:30 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	is_greater(t_data *data, int i)
 {
 	if ((i + 1) < data->lenght_token && check_operator(data->token[i
-			+ 1].tab[0][0]) == 1)
+				+ 1].tab[0][0]) == 1)
 		return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]),
 			data->status = 2, 1);
 	if ((i + 1) >= data->lenght_token)
@@ -32,7 +32,7 @@ int	is_greater(t_data *data, int i)
 int	is_append(t_data *data, int i)
 {
 	if ((i + 1) < data->lenght_token && check_operator(data->token[i
-			+ 1].tab[0][0]) == 1)
+				+ 1].tab[0][0]) == 1)
 		return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]),
 			data->status = 2, 1);
 	if ((i + 1) >= data->lenght_token)
@@ -81,7 +81,7 @@ int	check_infile(t_data *data)
 		if (data->token[i].type == less)
 		{
 			if ((i + 1) < data->lenght_token && check_operator(data->token[i
-					+ 1].tab[0][0]) == 1)
+						+ 1].tab[0][0]) == 1)
 				return (put_error(ERR_SYNTAX, &data->token[i + 1].tab[0][0]),
 					1);
 			if ((i + 1) >= data->lenght_token)

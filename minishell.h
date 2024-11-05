@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:35:30 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/11/04 16:26:46 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/05 13:48:57 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ int			edit_pwd(t_data *data);
 int			dup_env(t_data *data, char *new);
 int			open_ch_dir(char *dir);
 int			is_var_ok(char *name);
+int			add_env_var(char *name, char *value, t_data *data);
 int			add_or_update(t_data *data, char *name, char **cat);
 int			cd_home(t_data *data);
 
@@ -136,10 +137,10 @@ int			update_shlvl(t_data *data);
 void		ft_free(char *str);
 
 /* Signal */
-void		init_signal_handler(t_data *data, int i);
-void		handle_signal(int signum);
-void		handle_sig_heredoc(int signum);
-void		handle_slash(int signum);
+void		ft_signal(int signum);
+void		ft_here_doc_signal(int signum);
+void		ft_child_signal(int signum);
+void		ft_check_signal(int status);
 
 /* Init */
 int			init_data(t_data *tok, char *s);
@@ -174,6 +175,7 @@ char		*remove_quote(char *s, int i, int j);
 int			count_space(t_data *data, char *s, int i, int j);
 void		add_space(char *temp, int *j);
 int			check_operator(char c);
+int			is_metacharcter(char *s, int i);
 
 /* Cmd_identify */
 int			identify_command(t_data *data);
@@ -188,6 +190,7 @@ int			is_special_char(char *s);
 int			check_outfile(t_data *data);
 int			check_infile(t_data *data);
 int			expand_here_doc(t_data *data, char **str);
+char		*set_temp(t_data *data);
 
 /* Exec */
 int			execution(t_data *data);
@@ -207,5 +210,7 @@ int			manage_pipe(t_data *data, t_token *tok);
 void		manage_files(t_data *data, t_token tok_i, t_token *tok_cmd,
 				int *cmd);
 int			ft_check_entry(t_data *data, int cmd, int fdin, int fdout);
+int			ft_check_file(t_token tok);
+int			ft_check_fd(t_data *data, int *i, int *cmd);
 
 #endif
