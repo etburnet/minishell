@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 11:14:03 by opdi-bia          #+#    #+#             */
-/*   Updated: 2024/11/05 16:36:45 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/06 11:41:00 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ int	ft_init_main(t_data *data, char **env)
 	int	ret;
 
 	ret = 0;
-/* 	if (!isatty(STDIN_FILENO))
-		return (put_error("No infile ./minishell exec", NULL), free(data), 1); */
+	if (!isatty(STDIN_FILENO))
+		return (put_error("No infile ./minishell exec", NULL), free(data), 1);
 	ret = copy_env(data, env);
 	if (ret == 3)
 		ft_exit(data, NULL, ret, 0);

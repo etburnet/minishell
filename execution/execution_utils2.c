@@ -6,7 +6,7 @@
 /*   By: eburnet <eburnet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:40:34 by eburnet           #+#    #+#             */
-/*   Updated: 2024/11/05 16:49:55 by eburnet          ###   ########.fr       */
+/*   Updated: 2024/11/06 11:42:47 by eburnet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,18 @@
 
 int	ft_child(t_data *data, int cmd, int fdin, int fdout)
 {
-	char *full_p;
-	
-	printf("fdin %d, out %d\n", fdin, fdout);
+	char	*full_p;
+
 	if (data->token[cmd].full_path == NULL)
 		full_p = "\0";
 	else
 		full_p = data->token[cmd].full_path;
 	signal(SIGINT, ft_child_signal);
 	signal(SIGQUIT, SIG_DFL);
-	if (dup2(fdin, 0) == -1 )
-		return (perror("dup2 in"), 1);
-	if ( dup2(fdout, data->append_id) == -1)
-		return (perror("dup2 ap"), 1);
+	if (dup2(fdin, 0) == -1)
+		return (perror("dup2 fdin"), 1);
+	if (dup2(fdout, data->append_id) == -1)
+		return (perror("dup2 fdout"), 1);
 	close_all(data, fdin, fdout, cmd);
 	clear_history();
 	execve(full_p, data->token[cmd].tab, data->cp_env);
@@ -55,10 +54,7 @@ void	open_redir(t_data *data, t_token tok_i, t_token *tok_cmd, int *cmd)
 		if (tok_cmd->fdin != -1 && tok_cmd->fdin != 0)
 			close(tok_cmd->fdin);
 		if (tok_i.type == infile)
-		{
 			tok_cmd->fdin = open_file(data, tok_i, 0, *cmd);
-			ft_close(data, data->old_pipe[0], -1, -1);
-		}
 		else if (tok_i.type == here_doc)
 			tok_cmd->fdin = open_file(data, tok_i, 4, *cmd);
 	}
@@ -89,11 +85,10 @@ int	manage_pipe(t_data *data, t_token *tok)
 {
 	if (pipe(data->pipe_fd) == -1)
 		return (perror("pipe"), 1);
-	//printf("fd0 %d, fd1 %d\n", data->pipe_fd[0], data->pipe_fd[1]);
 	if (tok->first != 1 && tok->fdin == 0 && data->old_pipe[0] > -1)
 		tok->fdin = data->old_pipe[0];
-	else if (tok->first != 1 && data->old_pipe[0] > -1)
-		close(data->pipe_fd[0]);
+	else if (tok->fdin > 0 && data->old_pipe[0] > -1)
+		close(data->old_pipe[0]);
 	data->old_pipe[0] = data->pipe_fd[0];
 	if (tok->last != 1 && tok->fdout == 1)
 		tok->fdout = data->pipe_fd[1];
